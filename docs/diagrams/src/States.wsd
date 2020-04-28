@@ -1,0 +1,33 @@
+@startuml
+hide empty description
+[*] -> Initializing
+Initializing : initIO
+Initializing : initAndReadOutRTC
+Initializing : initGUI
+Initializing -down-> Active : EvInitializingDone
+
+state Active{
+
+    [*] ->Controller : EvWakeUpInterrupt
+    [*] ->UserInteraction : EvUserInteraction
+
+    state UserInteraction{
+    UserInteraction : TurnOnDisplay
+    UserInteraction : do something
+    UserInteraction --> Controller
+    }
+    
+    Controller -down-> [*]
+    Active --> Sleeping : ready for sleep
+}
+
+
+state Sleeping{
+    Sleeping : turnOffDisplay
+    Sleeping : enterDeepsleep
+
+    Sleeping -left-> Active : EvWakeUpInterrupt
+    Sleeping -left-> Active : EvUserInteraction
+}
+
+@enduml

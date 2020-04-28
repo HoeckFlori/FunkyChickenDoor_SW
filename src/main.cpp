@@ -1,11 +1,14 @@
 #include <Arduino.h>
-#include "TheBase.hpp"
+#include "MainControl.hpp"
 
-TheBase m_TheBase = TheBase();
+MainControl m_mainControl = MainControl();
 
-void setup(void) {
-  m_TheBase.setup();
+void setup(void)
+{
+  m_mainControl.init();
 }
-void loop() {
-  m_TheBase.loop();
+
+void loop()
+{
+  m_mainControl.cycle();
 }
