@@ -35,6 +35,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper) : m_timeKeeper(timeKeeper)
     CLI.addCommand("memory", showMemory);
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
+    CLI.addCommand("showInfo", showInfo);
 }
 
 void ConsoleAgent::cycle()
@@ -54,10 +55,11 @@ int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F(" Available commands for the Chicken Door Terminal:"));
-    dev->println(F(" -> 'help'    Show this help context"));
-    dev->println(F(" -> 'memory'  Show available RAM in bytes"));
-    dev->println(F(" -> 'getTime' Show actual system time"));
-    dev->println(F(" -> 'setTime' Set new time"));
+    dev->println(F(" -> 'help'      Show this help context"));
+    dev->println(F(" -> 'memory'    Show available RAM in bytes"));
+    dev->println(F(" -> 'getTime'   Show actual system time"));
+    dev->println(F(" -> 'setTime'   Set new time"));
+    dev->println(F(" -> 'showInfo' Show all relevant information (dynamic/static) of the system"));
     return 0; // no error
 }
 
@@ -90,7 +92,7 @@ int ConsoleAgent::setTime(CLIClient *dev, int argc, char **argv)
     if (!((argc > 1) && (argc < 4)))
     {
         // arguments are not valid, show error message and skip command
-        dev->println(F("-> Usage: setTime 28.04.2020 02:30"));
+        dev->println(F("-> Usage: 'setTime 28.04.2020 02:30'"));
         return -1;
     }
     else
@@ -120,6 +122,28 @@ int ConsoleAgent::setTime(CLIClient *dev, int argc, char **argv)
     dev->print(F("new Time: "));
     dev->println(timeBuffer);
     m_mySelf->m_timeKeeper->setTime(newTime);
+
+    return 0;
+}
+
+int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
+{
+    String timeBuffer(F("DD.MM.YYYY hh:mm"));
+
+    dev->print(F("Sunrise: "));
+    m_mySelf->m_timeKeeper->getTodaysSunrise().toString(timeBuffer.begin());
+    dev->println(timeBuffer);
+
+    dev->print(F("Sunset:  "));
+    timeBuffer = F("DD.MM.YYYY hh:mm");
+    m_mySelf->m_timeKeeper->getTodaysSunset().toString(timeBuffer.begin());
+    dev->println(timeBuffer);
+
+    dev->print(F("Daylightsaving: "));
+    if (m_mySelf->m_timeKeeper->daylightSavingOn())
+        dev->println(F("yes (summertime)"));
+    else
+        dev->println(F("no (wintertime)"));
 
     return 0;
 }

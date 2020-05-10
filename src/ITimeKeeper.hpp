@@ -15,5 +15,11 @@ public:
     };
 
     virtual DateTime getCurrentTime() = 0;
+    virtual DateTime getTodaysSunrise() = 0;
+    virtual DateTime getTodaysSunset() = 0;
     virtual void setTime(const DateTime &newTime) = 0;
+    virtual bool daylightSavingOn() = 0;
+
+    // xxx getSunriseToday() = 0;
+    // yyy getSunsetToday = 0;
 };

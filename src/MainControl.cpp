@@ -46,5 +46,5 @@ void MainControl::cycle()
     // String buffer2("DD.MM.YYYY, hh:mm:ss");
     // Serial.println(time.toString(buffer2.begin()));
 
-    delay(1000);
+    // delay(1000);
 }

@@ -23,6 +23,7 @@ private:
     static int showMemory(CLIClient *dev, int argc, char **argv);
     static int getDateTime(CLIClient *dev, int argc, char **argv);
     static int setTime(CLIClient *dev, int argc, char **argv);
+    static int showInfo(CLIClient *dev, int argc, char **argv);
 
     // connections to relevant softwareparts
     ITimeKeeper *m_timeKeeper;
