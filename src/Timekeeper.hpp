@@ -6,21 +6,27 @@
 #include "Dusk2Dawn.h"
 // #include "SunSet.h"
 
+// forward declaration
+class IDataStorage;
+
 class Timekeeper : public virtual ITimeKeeper
 {
 public:
-    explicit Timekeeper();
+    explicit Timekeeper(IDataStorage *dataStorage);
 
     // ITimeKeeper
     DateTime getCurrentTime() override;
     DateTime getTodaysSunrise() override;
     DateTime getTodaysSunset() override;
     void setTime(const DateTime &newTime) override;
-    bool daylightSavingOn() override;
+    void setDaylightSaving(bool daylightSaving) override;
+    bool getDaylightSaving() const override;
 
 private:
     RTC_DS3231 m_myClock = RTC_DS3231();
     Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8149, 12.6338, +1);
+
+    IDataStorage *m_dataStorage;
 
     bool m_daylightSaving;
 

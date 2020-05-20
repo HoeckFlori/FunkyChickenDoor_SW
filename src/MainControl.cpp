@@ -15,9 +15,11 @@ void MainControl::init()
     Serial.begin(115200, SERIAL_8N1);
 
     // init participants
-    m_gui = new GuiSt7735();
-    m_timeKeeper = new Timekeeper();
 
+    // todo(FHk) init IDataStorage here
+
+    m_gui = new GuiSt7735();
+    m_timeKeeper = new Timekeeper(m_dataStorage);
     m_consoleAgent = new ConsoleAgent(m_timeKeeper);
 
     //    delay(1000);

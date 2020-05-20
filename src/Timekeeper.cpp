@@ -1,10 +1,19 @@
 #include "Timekeeper.hpp"
+#include "IDataStorage.hpp"
 
-Timekeeper::Timekeeper()
-    : m_daylightSaving(true) //!!! make this setable
+Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
+                                                    m_daylightSaving(false)
 {
     if (!m_myClock.begin())
         Serial.println(F("Could not contact RTC"));
+    if (m_dataStorage)
+    {
+        m_daylightSaving = m_dataStorage->getDayLightSavingSetting();
+    }
+    else
+    {
+        Serial.println(F("ERROR - Timekeeper: no access to IDataStorage"));
+    }
 }
 
 DateTime Timekeeper::getCurrentTime()
@@ -33,7 +42,16 @@ void Timekeeper::setTime(const DateTime &newTime)
     m_myClock.adjust(newTime);
 }
 
-bool Timekeeper::daylightSavingOn()
+void Timekeeper::setDaylightSaving(bool daylightSaving)
+{
+    m_daylightSaving = daylightSaving;
+    if (m_dataStorage)
+    {
+        m_dataStorage->setDayLightSavingSetting(daylightSaving);
+    }
+}
+
+bool Timekeeper::getDaylightSaving() const
 {
     return m_daylightSaving;
 }

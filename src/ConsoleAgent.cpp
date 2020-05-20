@@ -35,6 +35,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper) : m_timeKeeper(timeKeeper)
     CLI.addCommand("memory", showMemory);
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
+    CLI.addCommand("setDaylightSaving", setDaylightSaving);
     CLI.addCommand("showInfo", showInfo);
 }
 
@@ -55,10 +56,11 @@ int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F(" Available commands for the Chicken Door Terminal:"));
-    dev->println(F(" -> 'help'      Show this help context"));
-    dev->println(F(" -> 'memory'    Show available RAM in bytes"));
-    dev->println(F(" -> 'getTime'   Show actual system time"));
-    dev->println(F(" -> 'setTime'   Set new time"));
+    dev->println(F(" -> 'help'     Show this help context"));
+    dev->println(F(" -> 'memory'   Show available RAM in bytes"));
+    dev->println(F(" -> 'getTime'  Show actual system time"));
+    dev->println(F(" -> 'setTime'  Set new time"));
+    dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
     dev->println(F(" -> 'showInfo' Show all relevant information (dynamic/static) of the system"));
     return 0; // no error
 }
@@ -99,7 +101,7 @@ int ConsoleAgent::setTime(CLIClient *dev, int argc, char **argv)
     {
         // extract date
         {
-            String date = argv[1];
+            String date(argv[1]);
             d = date.toInt();
             int indexOfColon1 = date.indexOf(F("."));
             m = date.substring(indexOfColon1 + 1).toInt();
@@ -108,7 +110,7 @@ int ConsoleAgent::setTime(CLIClient *dev, int argc, char **argv)
         }
         // extract time
         {
-            String time = argv[2];
+            String time(argv[2]);
             hh = time.toInt();
             int indexOfColon = time.indexOf(F(":"));
             mm = time.substring(indexOfColon + 1).toInt();
@@ -126,24 +128,58 @@ int ConsoleAgent::setTime(CLIClient *dev, int argc, char **argv)
     return 0;
 }
 
+int ConsoleAgent::setDaylightSaving(CLIClient *dev, int argc, char **argv)
+{
+    if (argc == 1)
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'setDaylightSaving on' (or off)"));
+        return -1;
+    }
+    String daylightSavingInput(argv[1]);
+    if (daylightSavingInput.equals(F("on")))
+    {
+        dev->println(F("... set on"));
+        m_mySelf->m_timeKeeper->setDaylightSaving(true);
+        return 0;
+    }
+    else if (daylightSavingInput.equals(F("off")))
+    {
+        dev->println(F("... set off"));
+        m_mySelf->m_timeKeeper->setDaylightSaving(false);
+        return 0;
+    }
+    else
+    {
+        // argument is not valid, show error message and skip command
+        dev->print(F("-> Input error! '"));
+        dev->print(daylightSavingInput);
+        dev->println("' not found.");
+        return -1;
+    }
+}
+
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 {
-    String timeBuffer(F("DD.MM.YYYY hh:mm"));
+    // show current time
+    getDateTime(dev, argc, argv);
 
-    dev->print(F("Sunrise: "));
+    // show sunrise and sunset
+    String timeBuffer(F("DD.MM.YYYY hh:mm"));
+    dev->print(F("Sunrise:           "));
     m_mySelf->m_timeKeeper->getTodaysSunrise().toString(timeBuffer.begin());
     dev->println(timeBuffer);
-
-    dev->print(F("Sunset:  "));
+    dev->print(F("Sunset:            "));
     timeBuffer = F("DD.MM.YYYY hh:mm");
     m_mySelf->m_timeKeeper->getTodaysSunset().toString(timeBuffer.begin());
     dev->println(timeBuffer);
 
-    dev->print(F("Daylightsaving: "));
-    if (m_mySelf->m_timeKeeper->daylightSavingOn())
-        dev->println(F("yes (summertime)"));
+    // show daylight saving option
+    dev->print(F("Daylightsaving:    "));
+    if (m_mySelf->m_timeKeeper->getDaylightSaving())
+        dev->println(F("on (summertime)"));
     else
-        dev->println(F("no (wintertime)"));
+        dev->println(F("off (wintertime)"));
 
     return 0;
 }
