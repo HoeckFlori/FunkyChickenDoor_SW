@@ -56,6 +56,18 @@ bool Timekeeper::getDaylightSaving() const
     return m_daylightSaving;
 }
 
+void Timekeeper::setPositionAndTimezone(float latitude, float longitude, float timezone)
+{
+    // build new Dusk2Dawn engine
+    m_dusk2Dawn = Dusk2Dawn(latitude, longitude, timezone);
+
+    // store new position information in the DataStorage
+    if (m_dataStorage)
+    {
+        m_dataStorage->setPosition(latitude, longitude, timezone);
+    }
+}
+
 void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnMidnight)
 {
     TimeSpan timeOffset(minutes * 60);

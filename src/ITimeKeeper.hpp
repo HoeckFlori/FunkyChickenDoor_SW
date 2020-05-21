@@ -20,7 +20,5 @@ public:
     virtual void setTime(const DateTime &newTime) = 0;
     virtual void setDaylightSaving(bool daylightSaving) = 0;
     virtual bool getDaylightSaving() const = 0;
-
-    // xxx getSunriseToday() = 0;
-    // yyy getSunsetToday = 0;
+    virtual void setPositionAndTimezone(float latitude, float longitude, float timezone) = 0;
 };

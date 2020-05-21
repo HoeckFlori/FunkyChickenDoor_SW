@@ -36,6 +36,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper) : m_timeKeeper(timeKeeper)
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
+    CLI.addCommand("setPosition", setPosition);
     CLI.addCommand("showInfo", showInfo);
 }
 
@@ -56,12 +57,13 @@ int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F(" Available commands for the Chicken Door Terminal:"));
-    dev->println(F(" -> 'help'     Show this help context"));
-    dev->println(F(" -> 'memory'   Show available RAM in bytes"));
-    dev->println(F(" -> 'getTime'  Show actual system time"));
-    dev->println(F(" -> 'setTime'  Set new time"));
+    dev->println(F(" -> 'help'        Show this help context"));
+    dev->println(F(" -> 'memory'      Show available RAM in bytes"));
+    dev->println(F(" -> 'getTime'     Show actual system time"));
+    dev->println(F(" -> 'setTime'     Set new time"));
     dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
-    dev->println(F(" -> 'showInfo' Show all relevant information (dynamic/static) of the system"));
+    dev->println(F(" -> 'setPosition' Set position of your chicken house"));
+    dev->println(F(" -> 'showInfo'    Show all relevant information (dynamic/static) of the system"));
     return 0; // no error
 }
 
@@ -156,6 +158,48 @@ int ConsoleAgent::setDaylightSaving(CLIClient *dev, int argc, char **argv)
         dev->print(daylightSavingInput);
         dev->println("' not found.");
         return -1;
+    }
+}
+
+int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
+{
+    float latitude(0);
+    float longitude(0);
+    float timezone(0);
+
+    if (!((argc > 1) && (argc < 5)))
+    {
+        // arguments are not valid, show error message and skip command
+        dev->println(F("-> Usage: 'setPosition 47.81440 12.63520, +1' (latitude longitude timezone)"));
+        return -1;
+    }
+    else
+    {
+        // extract latitude
+        {
+            String lat(argv[1]);
+            latitude = lat.toFloat();
+        }
+        // extract longitude
+        {
+            String longi(argv[2]);
+            longitude = longi.toFloat();
+        }
+        // extract timezone
+        {
+            String timez(argv[3]);
+            timezone = timez.toFloat();
+        }
+
+        dev->print(F("latitude:  "));
+        dev->println(latitude, 5);
+        dev->print(F("longitude: "));
+        dev->println(longitude, 5);
+        dev->print(F("timezone:  "));
+        dev->println(timezone, 0);
+
+        m_mySelf->m_timeKeeper->setPositionAndTimezone(latitude, longitude, timezone);
+        return 0;
     }
 }
 

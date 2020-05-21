@@ -1,10 +1,8 @@
 #pragma once
 
 #include "ITimeKeeper.hpp"
-//#include <DS3232RTC.h> // https://github.com/JChristensen/DS3232RTC
 #include "RTClib.h"
 #include "Dusk2Dawn.h"
-// #include "SunSet.h"
 
 // forward declaration
 class IDataStorage;
@@ -21,10 +19,11 @@ public:
     void setTime(const DateTime &newTime) override;
     void setDaylightSaving(bool daylightSaving) override;
     bool getDaylightSaving() const override;
+    void setPositionAndTimezone(float latitude, float longitude, float timezone) override;
 
 private:
     RTC_DS3231 m_myClock = RTC_DS3231();
-    Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8149, 12.6338, +1);
+    Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8144, 12.6352, +1); // todo(FHk) remove this, when the DataStorage is available and initialize it in the ctor
 
     IDataStorage *m_dataStorage;
 
