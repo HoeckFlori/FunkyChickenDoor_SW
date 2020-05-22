@@ -21,7 +21,7 @@ uint16_t getFreeSram()
 // the ConsoleAgent gets handled in a similar form like a singleton to access the members from the static command methods
 ConsoleAgent *ConsoleAgent::m_mySelf = 0;
 
-ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper) : m_timeKeeper(timeKeeper)
+ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage) : m_timeKeeper(timeKeeper), m_dataStorage(dataStorage)
 {
     m_mySelf = this;
 
@@ -170,7 +170,7 @@ int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
     if (!((argc > 1) && (argc < 5)))
     {
         // arguments are not valid, show error message and skip command
-        dev->println(F("-> Usage: 'setPosition 47.81440 12.63520, +1' (latitude longitude timezone)"));
+        dev->println(F("-> Usage: 'setPosition 47.81440 12.63520 +1' (latitude longitude timezone)"));
         return -1;
     }
     else
@@ -224,6 +224,18 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
         dev->println(F("on (summertime)"));
     else
         dev->println(F("off (wintertime)"));
+
+    if (m_mySelf->m_dataStorage)
+    {
+        // show position
+        dev->print(F("Position: "));
+        dev->print(m_mySelf->m_dataStorage->getPositionLatitude(), 5);
+        dev->print(F(", "));
+        dev->println(m_mySelf->m_dataStorage->getPositionLongitude(), 5);
+        // show timezone
+        dev->print(F("Timezone: "));
+        dev->println(m_mySelf->m_dataStorage->getTimeZone(), 1);
+    }
 
     return 0;
 }

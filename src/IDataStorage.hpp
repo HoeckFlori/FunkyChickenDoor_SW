@@ -5,13 +5,18 @@ class IDataStorage
 public:
     virtual ~IDataStorage() = default;
 
-    virtual bool getDayLightSavingSetting() = 0;
+    /**
+     * @brief Erase the entire non-volatile memory and restore it to its original state
+     */
+    virtual void doFactoryReset() = 0;
+
+    virtual bool getDayLightSavingSetting() const = 0;
     virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
 
     virtual void setPosition(float latitude, float longitude, float timezone) = 0;
-    virtual float getPositionLatitude() = 0;
-    virtual float getPositionLongitude() = 0;
-    virtual float getTimeZone() = 0;
+    virtual float getPositionLatitude() const = 0;
+    virtual float getPositionLongitude() const = 0;
+    virtual float getTimeZone() const = 0;
 
     /*
     Settings we will need to persist

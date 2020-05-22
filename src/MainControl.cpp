@@ -3,6 +3,7 @@
 #include "GuiSt7735.hpp"
 #include "Timekeeper.hpp"
 #include "ConsoleAgent.hpp"
+#include "DataStorage.hpp"
 
 MainControl::MainControl()
     : m_counter(0)
@@ -15,12 +16,10 @@ void MainControl::init()
     Serial.begin(115200, SERIAL_8N1);
 
     // init participants
-
-    // todo(FHk) init IDataStorage here
-
+    m_dataStorage = new DataStorage();
     m_gui = new GuiSt7735();
     m_timeKeeper = new Timekeeper(m_dataStorage);
-    m_consoleAgent = new ConsoleAgent(m_timeKeeper);
+    m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage);
 
     //    delay(1000);
     //    Serial.println("Building MainControl");

@@ -2,6 +2,7 @@
 #include <CLI.h> // https://github.com/MajenkoLibraries/CLI
 #include "IConsoleAgent.hpp"
 #include "ITimeKeeper.hpp"
+#include "IDataStorage.hpp"
 
 // forward declaration
 // CLI_COMMAND(connectFunc);
@@ -9,7 +10,7 @@
 class ConsoleAgent : public virtual IConsoleAgent
 {
 public:
-    explicit ConsoleAgent(ITimeKeeper *timeKeeper);
+    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage);
     void cycle() override;
 
 private:
@@ -29,4 +30,5 @@ private:
 
     // connections to relevant softwareparts
     ITimeKeeper *m_timeKeeper;
+    IDataStorage *m_dataStorage;
 };
