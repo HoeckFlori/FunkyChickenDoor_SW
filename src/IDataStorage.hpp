@@ -5,11 +5,6 @@ class IDataStorage
 public:
     virtual ~IDataStorage() = default;
 
-    /**
-     * @brief Erase the entire non-volatile memory and restore it to its original state
-     */
-    virtual void doFactoryReset() = 0;
-
     virtual bool getDayLightSavingSetting() const = 0;
     virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
 

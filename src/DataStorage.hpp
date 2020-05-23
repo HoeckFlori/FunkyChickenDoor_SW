@@ -9,7 +9,6 @@ public:
     virtual ~DataStorage() = default;
 
     // IDataStorage
-    void doFactoryReset() override;
     bool getDayLightSavingSetting() const override;
     void setDayLightSavingSetting(bool daylightsaving) override;
     void setPosition(float latitude, float longitude, float timezone) override;

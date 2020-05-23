@@ -1,14 +1,14 @@
 #include <Arduino.h>
 #include "MainControl.hpp"
 
-MainControl m_mainControl = MainControl();
+MainControl *m_mainControl;
 
 void setup(void)
 {
-  m_mainControl.init();
+  m_mainControl = new MainControl();
 }
 
 void loop()
 {
-  m_mainControl.cycle();
+  m_mainControl->cycle();
 }

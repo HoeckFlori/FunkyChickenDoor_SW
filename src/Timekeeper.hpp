@@ -38,10 +38,10 @@ private:
      */
     void addMinutesToDate(DateTime &date, int32_t minutes, bool startOnMidnight = true);
 
-    /**
-    * @brief Helper function to print the parameter date to the serial console
-    * 
-    * @param date The to printed DateTime object
-    */
-    void printTimeToConsole(DateTime &date) const;
+    // /**
+    // * @brief Helper function to print the parameter date to the serial console
+    // *
+    // * @param date The to printed DateTime object
+    // */
+    // void printTimeToConsole(DateTime &date) const;
 };

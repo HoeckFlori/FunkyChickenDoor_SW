@@ -80,9 +80,9 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
     date = date + timeOffset;
 }
 
-void Timekeeper::printTimeToConsole(DateTime &date) const
-{
-    String timeBuffer(F("DD.MM.YYYY hh:mm:ss"));
-    date.toString(timeBuffer.begin());
-    Serial.println(timeBuffer);
-}
+// void Timekeeper::printTimeToConsole(DateTime &date) const
+// {
+//     String timeBuffer(F("DD.MM.YYYY hh:mm:ss"));
+//     date.toString(timeBuffer.begin());
+//     Serial.println(timeBuffer);
+// }

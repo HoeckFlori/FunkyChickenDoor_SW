@@ -163,9 +163,9 @@ int ConsoleAgent::setDaylightSaving(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
 {
-    float latitude(0);
-    float longitude(0);
-    float timezone(0);
+    float latitude;
+    float longitude;
+    float timezone;
 
     if (!((argc > 1) && (argc < 5)))
     {

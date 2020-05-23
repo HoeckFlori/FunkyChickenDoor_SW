@@ -9,10 +9,6 @@ MainControl::MainControl()
     : m_counter(0)
 {
     // !!! Do not place initialization of anything in here. It doesn't work, I don't know why. FHk
-}
-
-void MainControl::init()
-{
     Serial.begin(115200, SERIAL_8N1);
 
     // init participants

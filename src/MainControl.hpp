@@ -10,9 +10,12 @@
 class MainControl
 {
 public:
-    MainControl();
+    explicit MainControl();
+    ~MainControl() = default;
 
-    void init();
+    MainControl(const MainControl &obj);              // copy constructor
+    MainControl &operator=(const MainControl &other); // assigment constructor
+
     void cycle();
 
 private:

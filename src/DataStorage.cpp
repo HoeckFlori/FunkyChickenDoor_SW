@@ -10,20 +10,17 @@ DataStorage::DataStorage()
     if (EEPROM.read(_formatInfo) != 0xAA)
     {
         Serial.println(F("EEPROM is not formated! Formating ..."));
-        doFactoryReset();
+
+        // write 0xAA on position 0 of the EEPROM to shows that it is formatted
+        EEPROM.write(_formatInfo, 0xAA);
+
+        // clear rest of the EEPROM (set all memory cells to 0x00)
+        for (uint16_t i(_formatInfo + 1); i < EEPROM.length(); i++)
+        {
+            EEPROM.write(i, 0x00);
+        }
+
         Serial.println(F("... done!"));
-    }
-}
-
-void DataStorage::doFactoryReset()
-{
-    // write 0xAA on position 0 of the EEPROM to shows that it is formatted
-    EEPROM.write(_formatInfo, 0xAA);
-
-    // clear rest of the EEPROM (set all memory cells to 0x00)
-    for (uint16_t i(_formatInfo + 1); i < EEPROM.length(); i++)
-    {
-        EEPROM.write(i, 0x00);
     }
 }
 
