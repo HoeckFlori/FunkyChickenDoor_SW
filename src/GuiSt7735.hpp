@@ -2,11 +2,12 @@
 
 #include "IGui.hpp"
 
-#include <SPI.h>
+// #include <SPI.h>
 // #include <SD.h>
 // #include <SdFat.h>
 // #include <Adafruit_ImageReader.h>
 // #include <Adafruit_SPIFlash.h>
+// #include <Adafruit_ST7735.h>
 #include <TFT.h>
 
 // TODO(FHk) make this c++ conform!!!

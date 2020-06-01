@@ -4,6 +4,7 @@
 #include "IGui.hpp"
 #include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
+#include "views/IViewController.hpp"
 // #include "IDoorSteering.hpp"
 // #include "ISleepingGuard.hpp"
 
@@ -21,11 +22,12 @@ public:
 private:
     IConsoleAgent *m_consoleAgent;
     // IDoorSteering *m_door;
-    IGui *m_gui;
-    // GuiSt7735 m_st7735;
     // ISleepingGuard *m_sleepingGuard;
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
+
+    IGui *m_gui;
+    IViewController *m_viewController;
 
     int m_counter;
 };
