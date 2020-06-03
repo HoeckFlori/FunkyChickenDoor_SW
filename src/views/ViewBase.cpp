@@ -9,6 +9,15 @@ ViewBase::ViewBase(IModel *model, Adafruit_GFX *tft,
       m_defaultColorFrames(colorFrames),
       m_defaultColorText(colorText)
 {
-    // draw background (once for all)
-    m_tft->fillScreen(m_defaultColorBackground);
+  // register the view instance als listener to the model
+  m_model->registerModelEventListener(this);
+
+  // draw background (once for all)
+  m_tft->fillScreen(m_defaultColorBackground);
+}
+
+ViewBase::~ViewBase()
+{
+  // remove the model listener
+  m_model->removeModelEventListener();
 }

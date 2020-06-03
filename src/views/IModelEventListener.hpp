@@ -13,4 +13,11 @@ public:
         DOOR_STATE_CHANGED,
         NEW_ERROR_AVAILABLE
     };
+
+    /**
+     * @brief The 'callback' method, that can be registred to the model.
+     * 
+     * @param event The information about events from the Model.
+     */
+    virtual void modelListener(IModelEventListener::Event event) = 0;
 };

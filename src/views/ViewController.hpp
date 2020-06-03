@@ -1,6 +1,7 @@
 #pragma once
 
 #include <TFT.h>
+#include "../ITimeKeeper.hpp"
 #include "IViewController.hpp"
 #include "IView.hpp"
 #include "IModel.hpp"
@@ -13,7 +14,7 @@
 class ViewController : public virtual IViewController
 {
 public:
-    explicit ViewController();
+    ViewController(ITimeKeeper *timekeeper);
     ~ViewController() = default;
 
     // IViewController

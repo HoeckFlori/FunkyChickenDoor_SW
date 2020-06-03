@@ -25,6 +25,9 @@ private:
     RTC_DS3231 m_myClock = RTC_DS3231();
     Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8144, 12.6352, +1); // todo(FHk) remove this, when the DataStorage is available and initialize it in the ctor
 
+    DateTime m_todaysSunrise;
+    DateTime m_todaysSunset;
+
     IDataStorage *m_dataStorage;
 
     bool m_daylightSaving;

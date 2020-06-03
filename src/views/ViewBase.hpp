@@ -3,20 +3,22 @@
 #include <TFT.h>
 #include "IView.hpp"
 #include "IModel.hpp"
+#include "IModelEventListener.hpp"
 
 /**
  * @brief The ViewBase is the base for all implemented and to implemented views.
- *        It holds all needed access to Model, the TFT, ... (whatever is comming)
- *        and the default color settings.
+ *        It holds all needed access to Model and the relevant listener, the TFT,
+ *        ... (whatever is comming) and the default color settings.
  */
-class ViewBase : public virtual IView
+class ViewBase : public virtual IView,
+                 public virtual IModelEventListener
 {
 public:
     ViewBase(IModel *model, Adafruit_GFX *tft,
              uint16_t colorBackground,
              uint16_t colorFrames,
              uint16_t colorText);
-    virtual ~ViewBase() = default;
+    virtual ~ViewBase();
 
 protected:
     IModel *m_model;

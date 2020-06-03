@@ -27,13 +27,19 @@ void OptionModeBaseLayout::drawBaseLayout()
 
 void OptionModeBaseLayout::printCurrentTimeToScreen(int hour, int minute, int second)
 {
-    printTimeToScreen(/*x*/ 5, /*y*/ 5, /*textsize*/ 2, hour, minute, second);
+    printTimeToScreen(/*x*/ 5, /*y*/ 5, /*textsize*/ 2, /* show seconds*/ true, hour, minute, second);
 }
 
 void OptionModeBaseLayout::printTimeToScreen(int x0, int y0, int textSize, bool showSeconds, int hour, int minute, int second)
 {
     m_tft->setTextSize(textSize);
     m_tft->setTextColor(m_defaultColorText);
+
+    // clear previous time (first simple version, improve it to just clear the to updating field)
+    m_tft->fillRect(x0, y0,
+                    /*w*/ (showSeconds ? (textSize * (5 + 1) * 8) : (textSize * (5 + 1) * 5)),
+                    /*h*/ (textSize * 7),
+                    m_defaultColorBackground);
 
     // print the hour
     m_tft->setCursor(x0, y0);

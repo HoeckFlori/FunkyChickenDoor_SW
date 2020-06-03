@@ -16,7 +16,7 @@ MainControl::MainControl()
     m_dataStorage = new DataStorage();
     m_timeKeeper = new Timekeeper(m_dataStorage);
     m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage);
-    m_viewController = new ViewController();
+    m_viewController = new ViewController(m_timeKeeper);
 }
 
 void MainControl::cycle()

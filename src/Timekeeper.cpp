@@ -23,18 +23,30 @@ DateTime Timekeeper::getCurrentTime()
 
 DateTime Timekeeper::getTodaysSunrise()
 {
+    // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
+    // each call would need ~9000µ.
     DateTime today = m_myClock.now();
-    int eventInMinutes = m_dusk2Dawn.sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
-    addMinutesToDate(today, eventInMinutes);
-    return today;
+    if (today.day() != m_todaysSunrise.day())
+    { // current sunrise not up to date -> update it
+        int eventInMinutes = m_dusk2Dawn.sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
+        m_todaysSunrise = today;
+        addMinutesToDate(m_todaysSunrise, eventInMinutes);
+    }
+    return m_todaysSunrise;
 }
 
 DateTime Timekeeper::getTodaysSunset()
 {
+    // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
+    // each call would need ~9000µ.
     DateTime today = m_myClock.now();
-    int eventInMinutes = m_dusk2Dawn.sunset(today.year(), today.month(), today.day(), m_daylightSaving);
-    addMinutesToDate(today, eventInMinutes);
-    return today;
+    if (today.day() != m_todaysSunset.day())
+    { // current sunrise not up to date -> update it
+        int eventInMinutes = m_dusk2Dawn.sunset(today.year(), today.month(), today.day(), m_daylightSaving);
+        m_todaysSunset = today;
+        addMinutesToDate(m_todaysSunset, eventInMinutes);
+    }
+    return m_todaysSunset;
 }
 
 void Timekeeper::setTime(const DateTime &newTime)

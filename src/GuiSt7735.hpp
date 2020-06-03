@@ -15,6 +15,8 @@
 #define TFT_RST 9
 #define TFT_DC 8
 
+// !!!! We do not need this class anymore -> Kick it out, when you took over all already implemented stuff!
+
 class GuiSt7735 : public virtual IGui
 {
 public:

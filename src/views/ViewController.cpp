@@ -1,11 +1,11 @@
 #include "ViewController.hpp"
-
 #include "AutomaticView.hpp"
+#include "Model.hpp"
 
-ViewController::ViewController()
+ViewController::ViewController(ITimeKeeper *timekeeper)
 {
     // TODO(FHk) build model
-    m_model = nullptr;
+    m_model = new Model(timekeeper);
 
     m_tft = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
     m_tft->initR(INITR_BLACKTAB); // You will need to do this in every sketch
@@ -17,6 +17,10 @@ ViewController::ViewController()
 
 void ViewController::cycle()
 {
+    if (m_model)
+    {
+        m_model->cycle();
+    }
     if (m_activeView)
     {
         m_activeView->cycle();

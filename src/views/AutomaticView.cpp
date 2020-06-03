@@ -1,4 +1,5 @@
 #include "AutomaticView.hpp"
+#include "RTClib.h"
 
 AutomaticView::AutomaticView(IModel *model, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, tft,
@@ -18,17 +19,45 @@ AutomaticView::AutomaticView(IModel *model, Adafruit_GFX *tft)
     m_tft->print(F("Sunrise:"));
     m_tft->setCursor(5, 65);
     m_tft->print(F("Sunset:"));
-
-    // testing only
-    printCurrentTimeToScreen(9, 8, 7);
-    printSunriseToScreen(5, 30);
-    printSunsetToScreen(20, 45);
 }
 
 void AutomaticView::cycle()
 {
     // call parent method
     OptionModeBaseLayout::cycle();
+}
+
+void AutomaticView::modelListener(IModelEventListener::Event event)
+{
+
+    switch (event)
+    {
+    case Event::TIME_UPDATE:
+        if (auto timekeeperAccess = m_model->getTimeKeeper())
+        {
+            auto newTime = timekeeperAccess->getCurrentTime();
+            printCurrentTimeToScreen(newTime.hour(), newTime.minute(), newTime.second());
+        }
+        break;
+    case Event::SUNRISE_SUNSET_UPDATE:
+        if (auto timekeeperAccess = m_model->getTimeKeeper())
+        {
+            auto sunrise = timekeeperAccess->getTodaysSunrise();
+            printSunriseToScreen(sunrise.hour(), sunrise.minute());
+            auto sunset = timekeeperAccess->getTodaysSunset();
+            printSunsetToScreen(sunset.hour(), sunset.minute());
+        }
+        break;
+    case Event::MODE_CHANGED:
+        break;
+    case Event::DOOR_STATE_CHANGED:
+        break;
+    case Event::NEW_ERROR_AVAILABLE:
+        break;
+    default:
+        // uncomment not needed events above
+        break;
+    }
 }
 
 void AutomaticView::printSunriseToScreen(int hour, int minute)

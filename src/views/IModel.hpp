@@ -1,5 +1,6 @@
 #pragma once
 #include "IModelEventListener.hpp"
+#include "../ITimeKeeper.hpp"
 
 /**
  * @brief The central, UI independent data structure for the UI. The Model directly manages the
@@ -13,6 +14,11 @@ public:
     virtual ~IModel() = default;
 
     /**
+     * @brief The cycle method that must be called regulary from the 'main-cycle'
+     */
+    virtual void cycle() = 0;
+
+    /**
      * @brief Register a Listener from View side to the model.
      * 
      * @param listener The listener. Normaly directly the View itself
@@ -24,4 +30,11 @@ public:
      * 
      */
     virtual void removeModelEventListener() = 0;
+
+    /**
+     * @brief Get access to the Timerkeeper
+     * 
+     * @return Timekeeper* The Timekeeper
+     */
+    virtual ITimeKeeper *getTimeKeeper() = 0;
 };

@@ -15,6 +15,9 @@ public:
     // IView
     void cycle() override;
 
+    // IModelViewListener
+    void modelListener(IModelEventListener::Event event) override;
+
 private:
     /**
      * @brief Print the todays sunrise to the screen
