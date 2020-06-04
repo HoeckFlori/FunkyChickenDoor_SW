@@ -43,6 +43,8 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
         break;
     case Event::NEW_ERROR_AVAILABLE:
         break;
+    case Event::RELOAD_EVERYTHING:
+        break;
     default:
         // uncomment not needed events above
         break;

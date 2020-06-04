@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include "MainControl.hpp"
-#include "GuiSt7735.hpp"
 #include "Timekeeper.hpp"
 #include "ConsoleAgent.hpp"
 #include "DataStorage.hpp"

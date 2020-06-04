@@ -11,7 +11,8 @@ public:
         SUNRISE_SUNSET_UPDATE,
         MODE_CHANGED,
         DOOR_STATE_CHANGED,
-        NEW_ERROR_AVAILABLE
+        NEW_ERROR_AVAILABLE,
+        RELOAD_EVERYTHING
     };
 
     /**
