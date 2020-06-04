@@ -16,16 +16,17 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
     }
 }
 
-DateTime Timekeeper::getCurrentTime()
+DateTime &Timekeeper::getCurrentTime()
 {
-    return m_myClock.now();
+    m_lastQueriedTime = m_myClock.now();
+    return m_lastQueriedTime;
 }
 
-DateTime Timekeeper::getTodaysSunrise()
+DateTime &Timekeeper::getTodaysSunrise()
 {
     // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
     // each call would need ~9000µ.
-    DateTime today = m_myClock.now();
+    DateTime today = m_lastQueriedTime;
     if (today.day() != m_todaysSunrise.day())
     { // current sunrise not up to date -> update it
         int eventInMinutes = m_dusk2Dawn.sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
@@ -35,11 +36,11 @@ DateTime Timekeeper::getTodaysSunrise()
     return m_todaysSunrise;
 }
 
-DateTime Timekeeper::getTodaysSunset()
+DateTime &Timekeeper::getTodaysSunset()
 {
     // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
     // each call would need ~9000µ.
-    DateTime today = m_myClock.now();
+    DateTime today = m_lastQueriedTime;
     if (today.day() != m_todaysSunset.day())
     { // current sunrise not up to date -> update it
         int eventInMinutes = m_dusk2Dawn.sunset(today.year(), today.month(), today.day(), m_daylightSaving);

@@ -19,6 +19,8 @@ public:
     void modelListener(IModelEventListener::Event event) override;
 
 private:
+    void drawBaseLayout() override;
+
     /**
      * @brief Print the todays sunrise to the screen
      * 

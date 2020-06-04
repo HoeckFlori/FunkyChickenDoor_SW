@@ -13,9 +13,9 @@ public:
     explicit Timekeeper(IDataStorage *dataStorage);
 
     // ITimeKeeper
-    DateTime getCurrentTime() override;
-    DateTime getTodaysSunrise() override;
-    DateTime getTodaysSunset() override;
+    DateTime &getCurrentTime() override;
+    DateTime &getTodaysSunrise() override;
+    DateTime &getTodaysSunset() override;
     void setTime(const DateTime &newTime) override;
     void setDaylightSaving(bool daylightSaving) override;
     bool getDaylightSaving() const override;
@@ -25,6 +25,7 @@ private:
     RTC_DS3231 m_myClock = RTC_DS3231();
     Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8144, 12.6352, +1); // todo(FHk) remove this, when the DataStorage is available and initialize it in the ctor
 
+    DateTime m_lastQueriedTime;
     DateTime m_todaysSunrise;
     DateTime m_todaysSunset;
 

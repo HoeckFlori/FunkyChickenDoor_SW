@@ -6,7 +6,6 @@ OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, Adafruit_GFX *tft,
                                            uint16_t colorText)
     : ViewBase::ViewBase(model, tft, colorBackground, colorFrames, colorText)
 {
-    drawBaseLayout();
 }
 
 void OptionModeBaseLayout::cycle()
@@ -22,7 +21,11 @@ void OptionModeBaseLayout::drawBaseLayout()
     //vertival boarder entire screen
     m_tft->fillRect(/*x*/ 105, /*y*/ 0, /*w*/ 4, /*h*/ m_tft->height(), m_defaultColorFrames);
 
-    // TODO(FHk) write information about summer- or wintertime to bottom of left side (when model is available)
+    if (auto timekeeperAccess = m_model->getTimeKeeper())
+    {
+        m_tft->setCursor(12, 119);
+        timekeeperAccess->getDaylightSaving() ? m_tft->print(F("<Summer time>")) : m_tft->print(F("<Winter time>"));
+    }
 }
 
 void OptionModeBaseLayout::printCurrentTimeToScreen(int hour, int minute, int second)

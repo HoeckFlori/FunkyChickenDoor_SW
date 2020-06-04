@@ -21,10 +21,7 @@ public:
     void cycle() override;
 
 protected:
-    /**
-     * @brief Draw all needed frames, ...
-     */
-    void drawBaseLayout();
+    void drawBaseLayout() override;
 
     /**
      * @brief Print the now actual time to the baselayout

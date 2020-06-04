@@ -7,18 +7,7 @@ AutomaticView::AutomaticView(IModel *model, Adafruit_GFX *tft)
                                                  ST7735_RED /*color of frames*/,
                                                  ST7735_WHITE /*text color*/)
 {
-
-    m_tft->setTextSize(1);
-
-    m_tft->setTextColor(ST7735_GREEN); // change default text color
-    m_tft->setCursor(25, 31);
-    m_tft->print(F("AUTOMATIC"));
-    m_tft->setTextColor(m_defaultColorText); // switch text color bach to default
-
-    m_tft->setCursor(5, 50);
-    m_tft->print(F("Sunrise:"));
-    m_tft->setCursor(5, 65);
-    m_tft->print(F("Sunset:"));
+    drawBaseLayout();
 }
 
 void AutomaticView::cycle()
@@ -58,6 +47,25 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
         // uncomment not needed events above
         break;
     }
+}
+
+void AutomaticView::drawBaseLayout()
+{
+    // call base method to (re)draw the basics
+    OptionModeBaseLayout::drawBaseLayout();
+
+    // AutomaticView specials:
+    m_tft->setTextSize(1);
+
+    m_tft->setTextColor(ST7735_GREEN); // change default text color
+    m_tft->setCursor(25, 31);
+    m_tft->print(F("AUTOMATIC"));
+    m_tft->setTextColor(m_defaultColorText); // switch text color bach to default
+
+    m_tft->setCursor(5, 50);
+    m_tft->print(F("Sunrise:"));
+    m_tft->setCursor(5, 65);
+    m_tft->print(F("Sunset:"));
 }
 
 void AutomaticView::printSunriseToScreen(int hour, int minute)

@@ -29,5 +29,11 @@ protected:
     uint16_t const m_defaultColorText;
 
     // add here all method who can be usefull from each view
+
+    /**
+     * @brief Draw all needed frames, ...
+     */
+    virtual void drawBaseLayout() = 0;
+
     // ...
 };
