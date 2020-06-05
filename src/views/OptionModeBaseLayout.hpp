@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ViewBase.hpp"
+#include "animations/DoorWidget.hpp"
 
 /**
  * @brief The OptionModeBaseLayout forms the basis layout for all implemented modes
@@ -21,6 +22,8 @@ public:
     void cycle() override;
 
 protected:
+    DoorWidget *m_doorWidget; // The door state animation which is part of each functional view
+
     void drawBaseLayout() override;
 
     /**
