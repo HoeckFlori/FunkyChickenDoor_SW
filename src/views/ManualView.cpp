@@ -9,9 +9,9 @@ ManualView::ManualView(IModel *model, Adafruit_GFX *tft)
 {
     m_doorWidget = new DoorWidget(m_model, m_tft,
                                   m_defaultColorBackground,
-                                  ST7735_MAGENTA, //m_defaultColorFrames,
+                                  m_defaultColorFrames,
                                   m_defaultColorText,
-                                  /*x0*/ 119, /*y0*/ 20);
+                                  /*x0*/ 114, /*y0*/ 20);
     drawBaseLayout();
 }
 

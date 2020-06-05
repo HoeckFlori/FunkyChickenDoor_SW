@@ -21,7 +21,20 @@ public:
     int16_t getHeightOfWidget() override;
     void cycle() override;
 
+    /* next jobs here:
+    [ ] add Doorstate to the Widget
+    [ ] build animations for door closing and opening
+    [x] build error screen to widget
+    */
+
 private:
-    const int16_t m_outerWidth = 30;
-    const int16_t m_outerHeight = 90;
+    const int16_t m_outerWidth = 42;
+    const int16_t m_outerHeight = 88;
+    const int16_t m_outerFrameThickness = 2;
+    const int16_t m_doorflapWidth = m_outerWidth - 2 * m_outerFrameThickness;
+    const int16_t m_doorflapHeight = m_doorflapWidth; // we have a square flap
+
+    void drawClearInnerPartOfTheDoorAssembly();
+    void drawDoorflap(uint8_t percentOpen);
+    void drawError();
 };
