@@ -1,0 +1,6 @@
+[submodule "pcb/extLibs/arduino-kicad-library"]
+	path = pcb/extLibs/arduino-kicad-library
+	url = https://github.com/Alarm-Siren/arduino-kicad-library
+[submodule "pcb/extLibs/SparkFun-KiCad-Libraries"]
+	path = pcb/extLibs/SparkFun-KiCad-Libraries
+	url = https://github.com/sparkfun/SparkFun-KiCad-Libraries

@@ -8,7 +8,11 @@ ViewController::ViewController(ITimeKeeper *timekeeper)
     // TODO(FHk) build model
     m_model = new Model(timekeeper);
 
-    m_tft = new Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
+    // with default hardware spi
+    m_tft = new Adafruit_ST7735(10 /* CS (chip selector pin) */,
+                                8 /* A0  (TFT SPI data or command selector pin) */,
+                                9 /* RST (Reset pin)*/);
+
     m_tft->initR(INITR_BLACKTAB); // You will need to do this in every sketch
     m_tft->setRotation(3);        // rotate screen to use it in "wide mode"
 

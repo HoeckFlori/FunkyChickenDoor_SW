@@ -1,0 +1,213 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L arduino:Arduino_Mega2560_Shield XA?
+U 1 1 5EDD6316
+P 3700 3750
+F 0 "XA?" H 3700 1369 60  0000 C CNN
+F 1 "Arduino_Mega2560_Shield" H 3700 1263 60  0000 C CNN
+F 2 "" H 4400 6500 60  0001 C CNN
+F 3 "https://store.arduino.cc/arduino-mega-2560-rev3" H 4400 6500 60  0001 C CNN
+	1    3700 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x16_Female J?
+U 1 1 5EDD9B3A
+P 9400 2300
+F 0 "J?" H 9150 1250 50  0000 C CNN
+F 1 "Conn_01x16_Female" H 9500 1350 50  0000 C CNN
+F 2 "" H 9400 2300 50  0001 C CNN
+F 3 "~" H 9400 2300 50  0001 C CNN
+	1    9400 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5EDDB4FB
+P 1300 5200
+F 0 "#PWR?" H 1300 4950 50  0001 C CNN
+F 1 "GND" H 1305 5027 50  0000 C CNN
+F 2 "" H 1300 5200 50  0001 C CNN
+F 3 "" H 1300 5200 50  0001 C CNN
+	1    1300 5200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 5000 1300 5000
+Wire Wire Line
+	1300 5000 1300 5200
+$Comp
+L power:GND #PWR?
+U 1 1 5EDDCCDC
+P 8900 3250
+F 0 "#PWR?" H 8900 3000 50  0001 C CNN
+F 1 "GND" H 8905 3077 50  0000 C CNN
+F 2 "" H 8900 3250 50  0001 C CNN
+F 3 "" H 8900 3250 50  0001 C CNN
+	1    8900 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8900 3250 8900 3100
+Wire Wire Line
+	8900 3100 9200 3100
+Wire Wire Line
+	8900 3100 8900 1600
+Wire Wire Line
+	8900 1600 9200 1600
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EDDDAF5
+P 1700 5300
+F 0 "#PWR?" H 1700 5150 50  0001 C CNN
+F 1 "+3V3" H 1715 5473 50  0000 C CNN
+F 2 "" H 1700 5300 50  0001 C CNN
+F 3 "" H 1700 5300 50  0001 C CNN
+	1    1700 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2400 5500 1700 5500
+Wire Wire Line
+	1700 5500 1700 5300
+Connection ~ 8900 3100
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EDDF72B
+P 8750 1600
+F 0 "#PWR?" H 8750 1450 50  0001 C CNN
+F 1 "+3V3" H 8765 1773 50  0000 C CNN
+F 2 "" H 8750 1600 50  0001 C CNN
+F 3 "" H 8750 1600 50  0001 C CNN
+	1    8750 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 1700 8750 1700
+Wire Wire Line
+	8750 1700 8750 1600
+Text Notes 9450 3150 0    63   ~ 0
+01  GND\n02  VSS\n03  NC\n04  NC\n05  NC\n06  RESET\n07  A0\n08  SDA\n09  SCK\n10  CS\n11  SD - SCK\n12  SD - MISO\n13  SD - MOSI\n14  CS\n15  LED +\n16  LED -
+Wire Wire Line
+	9200 3000 8750 3000
+Wire Wire Line
+	8750 3000 8750 1700
+Connection ~ 8750 1700
+Wire Wire Line
+	9200 2100 7950 2100
+Wire Wire Line
+	9200 2200 7950 2200
+Wire Wire Line
+	9200 2300 7950 2300
+Wire Wire Line
+	9200 2400 7950 2400
+Wire Wire Line
+	9200 2500 7950 2500
+Text Label 7950 2100 0    50   ~ 0
+TFT_reset
+Text Label 7950 2200 0    50   ~ 0
+TFT_A0
+Text Label 7950 2300 0    50   ~ 0
+TFT_SDA
+Text Label 7950 2400 0    50   ~ 0
+TFT_SCK
+Text Label 7950 2500 0    50   ~ 0
+TFT_CS
+Wire Wire Line
+	5000 2200 5900 2200
+Wire Wire Line
+	5000 2300 5900 2300
+Wire Wire Line
+	5000 2400 5900 2400
+Wire Wire Line
+	5000 2500 5900 2500
+Wire Wire Line
+	5000 2700 5900 2700
+Text Label 5900 2200 2    50   ~ 0
+TFT_A0
+Text Label 5900 2300 2    50   ~ 0
+TFT_reset
+Text Label 5900 2400 2    50   ~ 0
+TFT_CS
+Text Label 5900 2500 2    50   ~ 0
+TFT_SDA
+Text Label 5900 2700 2    50   ~ 0
+TFT_SCK
+Text Notes 7950 1250 0    50   ~ 10
+1,8 inch 128x160 SPI Serial TFT LCD Display Modul + SD Card Slot\n(1,8TFT V1.0 !!!)
+$Comp
+L Connector:Conn_01x04_Female J?
+U 1 1 5EE14116
+P 9400 4150
+F 0 "J?" H 9100 3700 50  0000 L CNN
+F 1 "Conn_01x04_Female" H 9100 3800 50  0000 L CNN
+F 2 "" H 9400 4150 50  0001 C CNN
+F 3 "~" H 9400 4150 50  0001 C CNN
+	1    9400 4150
+	1    0    0    -1  
+$EndComp
+Text Notes 9450 4400 0    63   ~ 0
+01 SCL\n02 SDA\n03 VCC\n04 GND
+Text Notes 7950 3750 0    50   ~ 10
+RTC DS3231 I²C AT24C32 RealTimeClock
+$Comp
+L power:GND #PWR?
+U 1 1 5EE1931E
+P 8900 4500
+F 0 "#PWR?" H 8900 4250 50  0001 C CNN
+F 1 "GND" H 8905 4327 50  0000 C CNN
+F 2 "" H 8900 4500 50  0001 C CNN
+F 3 "" H 8900 4500 50  0001 C CNN
+	1    8900 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 4350 8900 4350
+Wire Wire Line
+	8900 4350 8900 4500
+$Comp
+L power:+3V3 #PWR?
+U 1 1 5EE1A261
+P 8900 4000
+F 0 "#PWR?" H 8900 3850 50  0001 C CNN
+F 1 "+3V3" H 8915 4173 50  0000 C CNN
+F 2 "" H 8900 4000 50  0001 C CNN
+F 3 "" H 8900 4000 50  0001 C CNN
+	1    8900 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9200 4250 8900 4250
+Wire Wire Line
+	8900 4250 8900 4000
+Wire Wire Line
+	9200 4050 7950 4050
+Wire Wire Line
+	9200 4150 7950 4150
+Text Label 7950 4050 0    50   ~ 0
+RTC_SCL
+Text Label 7950 4150 0    50   ~ 0
+RTC_SDA
+Wire Wire Line
+	1500 2500 2400 2500
+Text Label 1500 2500 0    50   ~ 0
+RTC_SCL
+Text Label 1500 2400 0    50   ~ 0
+RTC_SDA
+Wire Wire Line
+	2400 2400 1500 2400
+$EndSCHEMATC
