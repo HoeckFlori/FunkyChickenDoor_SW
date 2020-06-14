@@ -20,6 +20,7 @@ private:
     static int connectFunction(CLIClient *dev, int argc, char **argv);
     static int help(CLIClient *dev, int argc, char **argv);
     static int showMemory(CLIClient *dev, int argc, char **argv);
+    static int reset(CLIClient *dev, int argc, char **argv);
     static int getDateTime(CLIClient *dev, int argc, char **argv);
     static int setTime(CLIClient *dev, int argc, char **argv);
     static int setDaylightSaving(CLIClient *dev, int argc, char **argv);

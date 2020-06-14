@@ -13,7 +13,7 @@ ViewController::ViewController(ITimeKeeper *timekeeper, IDoorSteering *doorSteer
                                 8 /* A0  (TFT SPI data or command selector pin) */,
                                 9 /* RST (Reset pin)*/);
 
-    m_tft->initR(INITR_BLACKTAB); // You will need to do this in every sketch
+    m_tft->initR(INITR_BLACKTAB); // Init ST7735S chip, black tab (You will need to do this in every sketch)
     m_tft->setRotation(3);        // rotate screen to use it in "wide mode"
 
     // TODO(FHk) for a first test we build here a view without a factory or any logic

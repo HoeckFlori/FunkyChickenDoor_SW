@@ -1,6 +1,7 @@
 #include "ConsoleAgent.hpp"
 #include <Arduino.h>
 #include <avr/pgmspace.h>
+#include <avr/wdt.h>
 #include "RTClib.h"
 
 // helper to check the available RAM
@@ -34,6 +35,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     //CLI.addCommand("help", (*function)(help(CLIClient * dev, int argc, char **argv)));
     CLI.addCommand("help", help);
     CLI.addCommand("memory", showMemory);
+    CLI.addCommand("reset", reset);
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
@@ -52,7 +54,7 @@ void ConsoleAgent::cycle()
 // CLI_COMMAND(connectFunction)
 int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 {
-    dev->println(F("Hello to the Chicken door terminal"));
+    dev->println(F("\nHello to the Chicken door terminal"));
     dev->println(F("Type 'help' to list commands."));
     dev->println();
     return 0; // no error
@@ -63,6 +65,7 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" Available commands for the Chicken Door Terminal:"));
     dev->println(F(" -> 'help'        Show this help context"));
     dev->println(F(" -> 'memory'      Show available RAM in bytes"));
+    dev->println(F(" -> 'reset'       Initiate a softreset"));
     dev->println(F(" -> 'getTime'     Show actual system time"));
     dev->println(F(" -> 'setTime'     Set new time"));
     dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
@@ -79,6 +82,18 @@ int ConsoleAgent::showMemory(CLIClient *dev, int argc, char **argv)
     dev->print(F("Available RAM: "));
     dev->print(getFreeSram());
     dev->println(F(" bytes"));
+    return 0;
+}
+
+int ConsoleAgent::reset(CLIClient *dev, int argc, char **argv)
+{
+    dev->println(F("Reset gets done ..."));
+    // fake watchdog failure to generate a reset
+    wdt_disable();
+    wdt_enable(WDTO_15MS);
+    while (1)
+    {
+    }
     return 0;
 }
 
