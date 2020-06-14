@@ -227,7 +227,7 @@ int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
 {
-    if (m_mySelf->m_doorSteering)
+    if ( !(m_mySelf->m_doorSteering) )
         return -1; // error
 
     m_mySelf->m_doorSteering->initDoor();
@@ -236,7 +236,7 @@ int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
 {
-    if (m_mySelf->m_doorSteering)
+    if ( !(m_mySelf->m_doorSteering) )
         return -1; // error
 
     m_mySelf->m_doorSteering->openDoor();
@@ -245,7 +245,7 @@ int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
 {
-    if (m_mySelf->m_doorSteering)
+    if ( !(m_mySelf->m_doorSteering) )
         return -1; // error
 
     m_mySelf->m_doorSteering->closeDoor();

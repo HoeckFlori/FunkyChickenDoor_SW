@@ -7,11 +7,6 @@ ManualView::ManualView(IModel *model, Adafruit_GFX *tft)
                                                  ST7735_RED /*color of frames*/,
                                                  ST7735_BLACK /*text color*/)
 {
-    m_doorWidget = new DoorWidget(m_model, m_tft,
-                                  m_defaultColorBackground,
-                                  m_defaultColorFrames,
-                                  m_defaultColorText,
-                                  /*x0*/ 114, /*y0*/ 20);
     drawBaseLayout();
 }
 

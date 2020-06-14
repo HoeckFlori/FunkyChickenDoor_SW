@@ -9,10 +9,11 @@ public:
     enum class DoorState
     {
         UNDEFINED,
+        INITIALIZING,
         OPEN,
         CLOSED,
-        MOVING_UP,
-        MOVING_DOWN,
+        OPENING,
+        CLOSING,
         ERROR
     };
 

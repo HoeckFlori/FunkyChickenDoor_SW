@@ -10,7 +10,12 @@ DoorWidget::DoorWidget(IModel *model, Adafruit_GFX *tft,
                  colorBackground,
                  colorFrames,
                  colorText,
-                 x0, y0)
+                 x0, y0),
+      m_animationClosingActive(false),
+      m_animationOpeningActive(false),
+      m_animationInitialization(false),
+      m_animationCounterRunner(0),
+      m_lastAnimationTimestamp(0)
 {
 }
 
@@ -19,12 +24,6 @@ void DoorWidget::setup()
     // draw the frame of the complete 'door arrangement'
     m_tft->fillRoundRect(m_x0, m_y0, m_outerWidth, m_outerHeight, /*radius*/ 4, m_defaultColorFrames);
     drawClearInnerPartOfTheDoorAssembly();
-
-    // scribling only
-    // drawDoorflap(100 /* % open*/);
-    drawDoorflap(50 /* % open*/);
-    // drawDoorflap(0   /* % open*/);
-    // drawError();
 }
 
 int16_t DoorWidget::getWidthOfWidget()
@@ -39,6 +38,8 @@ int16_t DoorWidget::getHeightOfWidget()
 
 void DoorWidget::cycle()
 {
+    doorAnimationCycle();
+    initializationCycle();
 }
 
 void DoorWidget::passModelEventToWidget(IModelEventListener::Event event)
@@ -53,21 +54,28 @@ void DoorWidget::passModelEventToWidget(IModelEventListener::Event event)
             switch (doorState)
             {
             case IDoorSteering::DoorState::UNDEFINED:
-                drawError(); // change this to an '?' state -> to be implemented
+                stopAnimations();
+                drawError(); // may change this to an '?' state
+                break;
+            case IDoorSteering::DoorState::INITIALIZING:
+                startAnimationInitialization();
                 break;
             case IDoorSteering::DoorState::OPEN:
+                stopAnimations();
                 drawDoorflap(100 /* percentOpen */);
                 break;
             case IDoorSteering::DoorState::CLOSED:
+                stopAnimations();
                 drawDoorflap(0 /* percentOpen */);
                 break;
-            case IDoorSteering::DoorState::MOVING_UP:
-                // TODO(FHk) --> implement a animation
+            case IDoorSteering::DoorState::OPENING:
+                startAnimationOpening();
                 break;
-            case IDoorSteering::DoorState::MOVING_DOWN:
-                // TODO(FHk) --> implement a animation
+            case IDoorSteering::DoorState::CLOSING:
+                startAnimationClosing();
                 break;
             case IDoorSteering::DoorState::ERROR:
+                stopAnimations();
                 drawError();
                 break;
             }
@@ -139,4 +147,138 @@ void DoorWidget::drawError()
     // Exclamation mark
     m_tft->fillRect(xCenter - 1, yCenter - 10, 3, 12, ST7735_RED);
     m_tft->fillRect(xCenter - 1, yCenter + 4, 3, 3, ST7735_RED);
+}
+
+void DoorWidget::startAnimationOpening()
+{
+    m_animationOpeningActive = true; // (!)
+    m_animationClosingActive = false;
+    m_animationInitialization = false;
+    drawClearInnerPartOfTheDoorAssembly();
+    m_lastAnimationTimestamp = millis();
+}
+
+void DoorWidget::startAnimationClosing()
+{
+    m_animationOpeningActive = false;
+    m_animationClosingActive = true; // (!)
+    m_animationInitialization = false;
+    drawClearInnerPartOfTheDoorAssembly();
+    m_lastAnimationTimestamp = millis();
+}
+
+void DoorWidget::startAnimationInitialization()
+{
+    m_animationOpeningActive = false;
+    m_animationClosingActive = false;
+    m_animationInitialization = true; // (!)
+    drawClearInnerPartOfTheDoorAssembly();
+    m_lastAnimationTimestamp = millis();
+    m_tft->setCursor(m_x0 + 9, m_y0 + (4 * m_outerHeight / 5));
+    m_tft->setTextSize(1);
+    m_tft->setTextColor(m_defaultColorText);
+    m_tft->print(F("init"));
+}
+
+void DoorWidget::stopAnimations()
+{
+    m_animationClosingActive = false;
+    m_animationOpeningActive = false;
+    m_animationInitialization = false;
+    m_animationCounterRunner = 0;
+}
+
+void DoorWidget::doorAnimationCycle()
+{
+    // check if animation work is to do
+    if (m_animationOpeningActive || m_animationClosingActive)
+    {
+        auto currentTime = millis();
+        if (currentTime >= m_lastAnimationTimestamp + m_animationTimeStepsInMs)
+        { // time for a new animation step
+            m_lastAnimationTimestamp = currentTime;
+
+            // draw new door position
+            if (m_animationOpeningActive)
+            { // 'moving up' animation
+                drawDoorflap((m_animationCounterRunner * 100) / m_animationCounterMax);
+            }
+            else
+            { // 'moving down' animation
+                drawDoorflap(100 - ((m_animationCounterRunner * 100) / m_animationCounterMax));
+            }
+
+            // update position
+            m_animationCounterRunner++;
+            if (m_animationCounterRunner > m_animationCounterMax)
+            {
+                m_animationCounterRunner = 0;
+            }
+        }
+    }
+    // Hint: I know that the animation can get into struggle, when the tickcoutner has an overflow.
+    //       But this happens approximately each 50 days and the animation has to run during that.
+    //       The coincidence of the two events is unlikely and would only disturb the animation, but
+    //       nothing else.
+}
+
+void DoorWidget::initializationCycle()
+{
+    if (m_animationInitialization)
+    {
+        auto currentTime = millis();
+        if (currentTime >= m_lastAnimationTimestamp + m_animationTimeStepsInMs)
+        { // time for a new animation step
+            m_lastAnimationTimestamp = currentTime;
+
+            // clear previous sector
+            auto sector = m_animationCounterRunner % 4; // we work with 4 sectors (0-3)
+            drawInitializationSektorHelper(sector, /*clear sector*/ true);
+
+            // draw new sector
+            m_animationCounterRunner++;
+            sector = m_animationCounterRunner % 4; // we work with 4 sectors (0-3)
+            drawInitializationSektorHelper(sector, /*clear sector*/ false);
+        }
+    }
+}
+
+void DoorWidget::drawInitializationSektorHelper(int sector, bool clearSector)
+{
+    auto const xdiff = 6;
+    auto const ydiff = 6;
+
+    int xCenterSector(0);
+    int yCenterSector(0);
+
+    switch (sector)
+    {
+    case 0:
+        // left, down
+        xCenterSector = m_xCenter - xdiff;
+        yCenterSector = m_yCenter + ydiff;
+        break;
+    case 1:
+        // left, up
+        xCenterSector = m_xCenter - xdiff;
+        yCenterSector = m_yCenter - ydiff;
+        break;
+    case 2:
+        // right, up
+        xCenterSector = m_xCenter + xdiff;
+        yCenterSector = m_yCenter - ydiff;
+        break;
+    case 3:
+        // right, down
+        xCenterSector = m_xCenter + xdiff;
+        yCenterSector = m_yCenter + ydiff;
+        break;
+    default:
+        break;
+    }
+
+    if (clearSector)
+        m_tft->fillCircle(xCenterSector, yCenterSector, 8, m_defaultColorBackground);
+    else
+        m_tft->fillCircle(xCenterSector, yCenterSector, 8, m_defaultColorFrames);
 }

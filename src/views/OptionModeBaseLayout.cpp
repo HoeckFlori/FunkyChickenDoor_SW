@@ -6,6 +6,11 @@ OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, Adafruit_GFX *tft,
                                            uint16_t colorText)
     : ViewBase::ViewBase(model, tft, colorBackground, colorFrames, colorText)
 {
+    m_doorWidget = new DoorWidget(m_model, m_tft,
+                                  m_defaultColorBackground,
+                                  m_defaultColorFrames,
+                                  m_defaultColorText,
+                                  /*x0*/ 114, /*y0*/ 20);
 }
 
 void OptionModeBaseLayout::cycle()

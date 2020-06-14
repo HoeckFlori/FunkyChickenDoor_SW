@@ -24,17 +24,20 @@ String DoorSteering::getDoorStateHumanReadable() const
     case DoorState::UNDEFINED:
         return F("UNDEFINED");
         break;
+    case DoorState::INITIALIZING:
+        return F("INITIALIZING");
+        break;
     case DoorState::OPEN:
         return F("OPEN");
         break;
     case DoorState::CLOSED:
         return F("CLOSED");
         break;
-    case DoorState::MOVING_UP:
-        return F("MOVING UP");
+    case DoorState::OPENING:
+        return F("OPENING");
         break;
-    case DoorState::MOVING_DOWN:
-        return F("MOVING DOWN");
+    case DoorState::CLOSING:
+        return F("CLOSING");
         break;
     case DoorState::ERROR:
         return F("ERROR");
@@ -46,15 +49,18 @@ String DoorSteering::getDoorStateHumanReadable() const
 
 void DoorSteering::initDoor()
 {
+    m_doorState = DoorState::INITIALIZING;
     // TODO(FHk)
 }
 
 void DoorSteering::closeDoor()
 {
+    m_doorState = DoorState::CLOSING;
     // TODO(FHk)
 }
 
 void DoorSteering::openDoor()
 {
+    m_doorState = DoorState::OPENING;
     // TODO(FHk)
 }

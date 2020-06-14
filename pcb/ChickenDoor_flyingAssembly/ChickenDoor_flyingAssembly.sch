@@ -90,24 +90,24 @@ Text Notes 9450 3150 0    63   ~ 0
 Wire Wire Line
 	9200 3000 9000 3000
 Wire Wire Line
-	9200 2100 7500 2100
+	9200 2100 8050 2100
 Wire Wire Line
-	9200 2200 7500 2200
+	9200 2200 7250 2200
 Wire Wire Line
-	9200 2300 7500 2300
+	9200 2300 7250 2300
 Wire Wire Line
-	9200 2400 7500 2400
+	9200 2400 7250 2400
 Wire Wire Line
-	9200 2500 7500 2500
-Text Label 7500 2100 0    50   ~ 0
+	9200 2500 7250 2500
+Text Label 7250 2100 0    50   ~ 0
 TFT_reset
-Text Label 7500 2200 0    50   ~ 0
+Text Label 7250 2200 0    50   ~ 0
 TFT_DataOrCommand
-Text Label 7500 2300 0    50   ~ 0
+Text Label 7250 2300 0    50   ~ 0
 TFT_SPI_MOSI
-Text Label 7500 2400 0    50   ~ 0
+Text Label 7250 2400 0    50   ~ 0
 TFT_SPI_Clock
-Text Label 7500 2500 0    50   ~ 0
+Text Label 7250 2500 0    50   ~ 0
 TFT_CS
 Wire Wire Line
 	5000 2200 5900 2200
@@ -182,7 +182,7 @@ RTC_SDA
 Wire Wire Line
 	2400 2400 1500 2400
 Wire Wire Line
-	9000 1450 9000 1700
+	9000 1450 9000 1500
 $Comp
 L Device:R R?
 U 1 1 5EE28B8A
@@ -238,4 +238,27 @@ F 3 "" H 9000 4000 50  0001 C CNN
 	1    9000 4000
 	1    0    0    -1  
 $EndComp
+$Comp
+L Device:R R?
+U 1 1 5EE6340C
+P 8050 1750
+F 0 "R?" H 8120 1796 50  0000 L CNN
+F 1 "10k" H 8120 1705 50  0000 L CNN
+F 2 "" V 7980 1750 50  0001 C CNN
+F 3 "~" H 8050 1750 50  0001 C CNN
+	1    8050 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9000 1500 8050 1500
+Wire Wire Line
+	8050 1500 8050 1600
+Connection ~ 9000 1500
+Wire Wire Line
+	9000 1500 9000 1700
+Wire Wire Line
+	8050 1900 8050 2100
+Connection ~ 8050 2100
+Wire Wire Line
+	8050 2100 7250 2100
 $EndSCHEMATC
