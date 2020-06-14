@@ -1,4 +1,5 @@
 #include "DoorWidget.hpp"
+#include "../../IDoorSteering.hpp"
 
 DoorWidget::DoorWidget(IModel *model, Adafruit_GFX *tft,
                        uint16_t colorBackground,
@@ -20,10 +21,10 @@ void DoorWidget::setup()
     drawClearInnerPartOfTheDoorAssembly();
 
     // scribling only
-    //drawDoorflap(100 /* % open*/);
-    //drawDoorflap(50  /* % open*/);
-    //drawDoorflap(0   /* % open*/);
-    drawError();
+    // drawDoorflap(100 /* % open*/);
+    drawDoorflap(50 /* % open*/);
+    // drawDoorflap(0   /* % open*/);
+    // drawError();
 }
 
 int16_t DoorWidget::getWidthOfWidget()
@@ -38,6 +39,43 @@ int16_t DoorWidget::getHeightOfWidget()
 
 void DoorWidget::cycle()
 {
+}
+
+void DoorWidget::passModelEventToWidget(IModelEventListener::Event event)
+{
+    switch (event)
+    {
+    case IModelEventListener::Event::DOOR_STATE_CHANGED:
+        // todo, here we work
+        if (m_model)
+        {
+            auto doorState = m_model->getDoorState();
+            switch (doorState)
+            {
+            case IDoorSteering::DoorState::UNDEFINED:
+                drawError(); // change this to an '?' state -> to be implemented
+                break;
+            case IDoorSteering::DoorState::OPEN:
+                drawDoorflap(100 /* percentOpen */);
+                break;
+            case IDoorSteering::DoorState::CLOSED:
+                drawDoorflap(0 /* percentOpen */);
+                break;
+            case IDoorSteering::DoorState::MOVING_UP:
+                // TODO(FHk) --> implement a animation
+                break;
+            case IDoorSteering::DoorState::MOVING_DOWN:
+                // TODO(FHk) --> implement a animation
+                break;
+            case IDoorSteering::DoorState::ERROR:
+                drawError();
+                break;
+            }
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void DoorWidget::drawClearInnerPartOfTheDoorAssembly()

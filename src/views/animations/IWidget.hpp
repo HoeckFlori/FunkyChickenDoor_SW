@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "../IModelEventListener.hpp"
 
 class IWidget
 {
@@ -30,4 +31,12 @@ public:
      * @brief The cycle method that must be called regulary from the 'main-cycle'
      */
     virtual void cycle() = 0;
+
+    /**
+     * @brief Views have the possibility to receive Events from the Model by a listener. This
+     *        method can be used to pass these events to Widgets which are embedded in a View.
+     * 
+     * @param event The Model event to pass
+     */
+    virtual void passModelEventToWidget(IModelEventListener::Event event) = 0;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WidgetBase.hpp"
+#include "../../IDoorSteering.hpp"
 
 /**
  * @brief The DoorWidget show the door with its different states
@@ -20,9 +21,10 @@ public:
     int16_t getWidthOfWidget() override;
     int16_t getHeightOfWidget() override;
     void cycle() override;
+    void passModelEventToWidget(IModelEventListener::Event event) override;
 
     /* next jobs here:
-    [ ] add Doorstate to the Widget
+    [x] add Doorstate to the Widget
     [ ] build animations for door closing and opening
     [x] build error screen to widget
     */

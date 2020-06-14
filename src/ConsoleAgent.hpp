@@ -3,14 +3,12 @@
 #include "IConsoleAgent.hpp"
 #include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
-
-// forward declaration
-// CLI_COMMAND(connectFunc);
+#include "IDoorSteering.hpp"
 
 class ConsoleAgent : public virtual IConsoleAgent
 {
 public:
-    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage);
+    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering);
     void cycle() override;
 
 private:
@@ -26,9 +24,13 @@ private:
     static int setTime(CLIClient *dev, int argc, char **argv);
     static int setDaylightSaving(CLIClient *dev, int argc, char **argv);
     static int setPosition(CLIClient *dev, int argc, char **argv);
+    static int initDoor(CLIClient *dev, int argc, char **argv);
+    static int openDoor(CLIClient *dev, int argc, char **argv);
+    static int closeDoor(CLIClient *dev, int argc, char **argv);
     static int showInfo(CLIClient *dev, int argc, char **argv);
 
     // connections to relevant softwareparts
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
+    IDoorSteering *m_doorSteering;
 };

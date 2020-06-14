@@ -21,7 +21,8 @@ uint16_t getFreeSram()
 // the ConsoleAgent gets handled in a similar form like a singleton to access the members from the static command methods
 ConsoleAgent *ConsoleAgent::m_mySelf = 0;
 
-ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage) : m_timeKeeper(timeKeeper), m_dataStorage(dataStorage)
+ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering)
+    : m_timeKeeper(timeKeeper), m_dataStorage(dataStorage), m_doorSteering(doorSteering)
 {
     m_mySelf = this;
 
@@ -37,6 +38,9 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage) :
     CLI.addCommand("setTime", setTime);
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
     CLI.addCommand("setPosition", setPosition);
+    CLI.addCommand("initDoor", initDoor);
+    CLI.addCommand("openDoor", openDoor);
+    CLI.addCommand("closeDoor", closeDoor);
     CLI.addCommand("showInfo", showInfo);
 }
 
@@ -63,6 +67,9 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'setTime'     Set new time"));
     dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
     dev->println(F(" -> 'setPosition' Set position of your chicken house"));
+    dev->println(F(" -> 'initDoor'    Start door initialization process"));
+    dev->println(F(" -> 'openDoor'    Open door manually  (changes also the operation mode)"));
+    dev->println(F(" -> 'closeDoor'   Close door manually  -\"-\""));
     dev->println(F(" -> 'showInfo'    Show all relevant information (dynamic/static) of the system"));
     return 0; // no error
 }
@@ -203,6 +210,33 @@ int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
     }
 }
 
+int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
+{
+    if (m_mySelf->m_doorSteering)
+        return -1; // error
+
+    m_mySelf->m_doorSteering->initDoor();
+    return 0;
+}
+
+int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
+{
+    if (m_mySelf->m_doorSteering)
+        return -1; // error
+
+    m_mySelf->m_doorSteering->openDoor();
+    return 0;
+}
+
+int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
+{
+    if (m_mySelf->m_doorSteering)
+        return -1; // error
+
+    m_mySelf->m_doorSteering->closeDoor();
+    return 0;
+}
+
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 {
     // show current time
@@ -236,6 +270,11 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
         dev->print(F("Timezone: "));
         dev->println(m_mySelf->m_dataStorage->getTimeZone(), 1);
     }
+
+    // show door status
+    dev->print(F("Doorstatus: '"));
+    dev->print(m_mySelf->m_doorSteering->getDoorStateHumanReadable());
+    dev->println(F("'"));
 
     return 0;
 }

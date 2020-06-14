@@ -18,7 +18,7 @@ void AutomaticView::cycle()
 
 void AutomaticView::modelListener(IModelEventListener::Event event)
 {
-
+    // local event handling
     switch (event)
     {
     case Event::TIME_UPDATE:
@@ -49,6 +49,9 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
         // uncomment not needed events above
         break;
     }
+
+    // pass event to widget(s)
+    m_doorWidget->passModelEventToWidget(event);
 }
 
 void AutomaticView::drawBaseLayout()

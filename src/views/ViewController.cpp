@@ -3,10 +3,10 @@
 #include "ManualView.hpp"
 #include "Model.hpp"
 
-ViewController::ViewController(ITimeKeeper *timekeeper)
+ViewController::ViewController(ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
 {
     // TODO(FHk) build model
-    m_model = new Model(timekeeper);
+    m_model = new Model(timekeeper, doorSteering);
 
     // with default hardware spi
     m_tft = new Adafruit_ST7735(10 /* CS (chip selector pin) */,

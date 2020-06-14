@@ -4,6 +4,7 @@
 #include "ConsoleAgent.hpp"
 #include "DataStorage.hpp"
 #include "views/ViewController.hpp"
+#include "DoorSteering.hpp"
 
 MainControl::MainControl()
     : m_counter(0)
@@ -13,9 +14,10 @@ MainControl::MainControl()
 
     // init participants
     m_dataStorage = new DataStorage();
+    m_door = new DoorSteering();
     m_timeKeeper = new Timekeeper(m_dataStorage);
-    m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage);
-    m_viewController = new ViewController(m_timeKeeper);
+    m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage, m_door);
+    m_viewController = new ViewController(m_timeKeeper, m_door);
 }
 
 void MainControl::cycle()
@@ -23,4 +25,5 @@ void MainControl::cycle()
     // kick all cycles of the components
     m_consoleAgent->cycle();
     m_viewController->cycle();
+    m_door->cycle();
 }

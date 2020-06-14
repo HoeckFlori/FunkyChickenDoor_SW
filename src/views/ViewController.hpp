@@ -2,6 +2,7 @@
 
 #include <TFT.h>
 #include "../ITimeKeeper.hpp"
+#include "../IDoorSteering.hpp"
 #include "IViewController.hpp"
 #include "IView.hpp"
 #include "IModel.hpp"
@@ -9,7 +10,7 @@
 class ViewController : public virtual IViewController
 {
 public:
-    ViewController(ITimeKeeper *timekeeper);
+    ViewController(ITimeKeeper *timekeeper, IDoorSteering *doorSteering);
     ~ViewController() = default;
 
     // IViewController

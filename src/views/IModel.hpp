@@ -2,6 +2,7 @@
 
 #include "IModelEventListener.hpp"
 #include "../ITimeKeeper.hpp"
+#include "../IDoorSteering.hpp"
 
 /**
  * @brief The central, UI independent data structure for the UI. The Model directly manages the
@@ -37,5 +38,12 @@ public:
      * 
      * @return Timekeeper* The Timekeeper
      */
-    virtual ITimeKeeper *getTimeKeeper() = 0;
+    virtual ITimeKeeper *getTimeKeeper() const = 0;
+
+    /**
+    * @brief Get the current status of the Door
+    * 
+    * @return IDoorSteering::DoorState 
+    */
+    virtual IDoorSteering::DoorState getDoorState() const = 0;
 };

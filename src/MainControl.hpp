@@ -5,7 +5,7 @@
 #include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
 #include "views/IViewController.hpp"
-// #include "IDoorSteering.hpp"
+#include "IDoorSteering.hpp"
 // #include "ISleepingGuard.hpp"
 
 class MainControl
@@ -21,7 +21,7 @@ public:
 
 private:
     IConsoleAgent *m_consoleAgent;
-    // IDoorSteering *m_door;
+    IDoorSteering *m_door;
     // ISleepingGuard *m_sleepingGuard;
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
