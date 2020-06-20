@@ -261,4 +261,6 @@ Wire Wire Line
 Connection ~ 8050 2100
 Wire Wire Line
 	8050 2100 7250 2100
+Text Notes 5300 3000 0    50   ~ 0
+D22 - D25 sind jetzt mal Taster drauf
 $EndSCHEMATC

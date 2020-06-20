@@ -6,6 +6,7 @@
 #include "IViewController.hpp"
 #include "IView.hpp"
 #include "IModel.hpp"
+#include "IOperatingElements.hpp"
 
 class ViewController : public virtual IViewController
 {
@@ -20,4 +21,5 @@ private:
     IModel *m_model;
     Adafruit_ST7735 *m_tft;
     IView *m_activeView;
+    IOperatingElements *m_operatingElements;
 };

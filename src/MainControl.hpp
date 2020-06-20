@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IConsoleAgent.hpp"
-#include "IGui.hpp"
 #include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
 #include "views/IViewController.hpp"
@@ -25,9 +24,5 @@ private:
     // ISleepingGuard *m_sleepingGuard;
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
-
-    IGui *m_gui;
     IViewController *m_viewController;
-
-    int m_counter;
 };

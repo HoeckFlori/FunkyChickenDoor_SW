@@ -7,7 +7,6 @@
 #include "DoorSteering.hpp"
 
 MainControl::MainControl()
-    : m_counter(0)
 {
     // !!! Do not place initialization of anything in here. It doesn't work, I don't know why. FHk
     Serial.begin(115200, SERIAL_8N1);
