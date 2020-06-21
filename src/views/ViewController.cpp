@@ -24,18 +24,11 @@ ViewController::ViewController(ITimeKeeper *timekeeper, IDoorSteering *doorSteer
 
 void ViewController::cycle()
 {
-    // TODO(FHk) kick out this existing checks, put everything in a single check in the constructor. Where should they go when they where created?
+    m_model->cycle();
+    m_operatingElements->cycle();
 
-    if (m_model)
-    {
-        m_model->cycle();
-    }
     if (m_activeView)
     {
         m_activeView->cycle();
-    }
-    if (m_operatingElements)
-    {
-        m_operatingElements->cycle();
     }
 }

@@ -23,39 +23,48 @@ void OperatingElements::cycle()
     if (m_backButton.wasPressed())
     {
         Serial.println(F("m_backButton was pressed!"));
-    }
-    if (m_backButton.wasReleased())
-    {
-        Serial.println(F("m_backButton was released!"));
+        if (m_listener)
+        {
+            m_listener->keyEventListener(IKeyEventListener::Event::BUTTON_BACK);
+        }
     }
 
     // ----------------------------
     if (m_enterButton.wasPressed())
     {
         Serial.println(F("m_enterButton was pressed!"));
-    }
-    if (m_enterButton.wasReleased())
-    {
-        Serial.println(F("m_enterButton was released!"));
+        if (m_listener)
+        {
+            m_listener->keyEventListener(IKeyEventListener::Event::BUTTON_ENTER);
+        }
     }
 
     // ----------------------------
     if (m_upButton.wasPressed())
     {
         Serial.println(F("m_upButton was pressed!"));
-    }
-    if (m_upButton.wasReleased())
-    {
-        Serial.println(F("m_upButton was released!"));
+        if (m_listener)
+        {
+            m_listener->keyEventListener(IKeyEventListener::Event::BUTTON_UP);
+        }
     }
 
     // ----------------------------
     if (m_downButton.wasPressed())
     {
         Serial.println(F("m_downButton was pressed!"));
+        if (m_listener)
+        {
+            m_listener->keyEventListener(IKeyEventListener::Event::BUTTON_DOWN);
+        }
     }
-    if (m_downButton.wasReleased())
-    {
-        Serial.println(F("m_downButton was released!"));
-    }
+}
+
+void OperatingElements::registerKeyEventListener(IKeyEventListener *listener)
+{
+    m_listener = listener;
+}
+void OperatingElements::removeKeyEventListener()
+{
+    m_listener = nullptr;
 }
