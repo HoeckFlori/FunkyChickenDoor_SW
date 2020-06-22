@@ -17,8 +17,6 @@ IDoorSteering::DoorState DoorSteering::getDoorState() const
 
 String DoorSteering::getDoorStateHumanReadable() const
 {
-    // return "test";
-
     switch (m_doorState)
     {
     case DoorState::UNDEFINED:

@@ -22,8 +22,11 @@ uint16_t getFreeSram()
 // the ConsoleAgent gets handled in a similar form like a singleton to access the members from the static command methods
 ConsoleAgent *ConsoleAgent::m_mySelf = 0;
 
-ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering)
-    : m_timeKeeper(timeKeeper), m_dataStorage(dataStorage), m_doorSteering(doorSteering)
+ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering, IOperationModeManager *operationModeManager)
+    : m_timeKeeper(timeKeeper),
+      m_dataStorage(dataStorage),
+      m_doorSteering(doorSteering),
+      m_operationMode(operationModeManager)
 {
     m_mySelf = this;
 
@@ -36,6 +39,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("help", help);
     CLI.addCommand("memory", showMemory);
     CLI.addCommand("reset", reset);
+    CLI.addCommand("changeOpMode", changeOpMode);
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
@@ -66,6 +70,7 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'help'        Show this help context"));
     dev->println(F(" -> 'memory'      Show available RAM in bytes"));
     dev->println(F(" -> 'reset'       Initiate a softreset"));
+    dev->println(F(" -> 'changeOpMode Change the door OperationMode"));
     dev->println(F(" -> 'getTime'     Show actual system time"));
     dev->println(F(" -> 'setTime'     Set new time"));
     dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
@@ -95,6 +100,38 @@ int ConsoleAgent::reset(CLIClient *dev, int argc, char **argv)
     {
     }
     return 0;
+}
+
+int ConsoleAgent::changeOpMode(CLIClient *dev, int argc, char **argv)
+{
+    if (argc == 1)
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'changeOpMode auto' (options are 'auto' or 'manual')"));
+        return -1;
+    }
+
+    String input(argv[1]);
+    if (input.equals(F("auto")))
+    {
+        dev->println(F("... set to 'AutomaticMode'"));
+        m_mySelf->m_operationMode->changeMode(IOperationModeManager::OpMode::AUTOMATIC);
+        return 0;
+    }
+    else if (input.equals(F("manual")))
+    {
+        dev->println(F("... set to 'ManualMode'"));
+        m_mySelf->m_operationMode->changeMode(IOperationModeManager::OpMode::MANUAL);
+        return 0;
+    }
+    else
+    {
+        // argument is not valid, show error message and skip command
+        dev->print(F("-> Input error! '"));
+        dev->print(input);
+        dev->println("' not found.");
+        return -1;
+    }
 }
 
 int ConsoleAgent::getDateTime(CLIClient *dev, int argc, char **argv)
@@ -227,7 +264,7 @@ int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
 {
-    if ( !(m_mySelf->m_doorSteering) )
+    if (!(m_mySelf->m_doorSteering))
         return -1; // error
 
     m_mySelf->m_doorSteering->initDoor();
@@ -236,7 +273,7 @@ int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
 {
-    if ( !(m_mySelf->m_doorSteering) )
+    if (!(m_mySelf->m_doorSteering))
         return -1; // error
 
     m_mySelf->m_doorSteering->openDoor();
@@ -245,7 +282,7 @@ int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
 {
-    if ( !(m_mySelf->m_doorSteering) )
+    if (!(m_mySelf->m_doorSteering))
         return -1; // error
 
     m_mySelf->m_doorSteering->closeDoor();
@@ -254,6 +291,11 @@ int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 {
+    // show OperationMode status
+    dev->print(F("OperationMode: '"));
+    dev->print(m_mySelf->m_operationMode->getOpModeHumanReadable());
+    dev->println(F("'"));
+
     // show current time
     getDateTime(dev, argc, argv);
 

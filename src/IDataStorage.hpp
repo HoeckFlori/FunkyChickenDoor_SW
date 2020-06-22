@@ -13,10 +13,14 @@ public:
     virtual float getPositionLongitude() const = 0;
     virtual float getTimeZone() const = 0;
 
+    virtual void setOperationMode(int opMode) = 0;
+    virtual int getOperationMode() const = 0;
+
     /*
     Settings we will need to persist
     [X] Daylight saving option, yes/no
     [X] Position
+    [X] Operation mode
     [ ] Opening delay sunrise, +/- minutes
     [ ] 'Do not open before' option, yes/no
     [ ] 'Do not open before' time, Time

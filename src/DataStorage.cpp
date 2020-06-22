@@ -61,3 +61,15 @@ float DataStorage::getTimeZone() const
     retVal = EEPROM.get(_timeZone, retVal);
     return retVal;
 }
+
+void DataStorage::setOperationMode(int opMode)
+{
+    EEPROM.put(_operationMode, opMode);
+}
+
+int DataStorage::getOperationMode() const
+{
+    int retVal(0);
+    retVal = EEPROM.get(_operationMode, retVal);
+    return retVal;
+}

@@ -4,11 +4,12 @@
 #include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
 #include "IDoorSteering.hpp"
+#include "IOperationModeManager.hpp"
 
 class ConsoleAgent : public virtual IConsoleAgent
 {
 public:
-    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering);
+    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering, IOperationModeManager *operationModeManager);
     void cycle() override;
 
 private:
@@ -21,6 +22,7 @@ private:
     static int help(CLIClient *dev, int argc, char **argv);
     static int showMemory(CLIClient *dev, int argc, char **argv);
     static int reset(CLIClient *dev, int argc, char **argv);
+    static int changeOpMode(CLIClient *dev, int argc, char **argv);
     static int getDateTime(CLIClient *dev, int argc, char **argv);
     static int setTime(CLIClient *dev, int argc, char **argv);
     static int setDaylightSaving(CLIClient *dev, int argc, char **argv);
@@ -34,4 +36,5 @@ private:
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
     IDoorSteering *m_doorSteering;
+    IOperationModeManager *m_operationMode;
 };

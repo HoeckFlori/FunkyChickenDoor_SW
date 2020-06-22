@@ -14,12 +14,8 @@ OperatingElements::OperatingElements()
 
 void OperatingElements::cycle()
 {
+    // --- BUTTON_BACK -------------------------
     m_backButton.read();
-    m_enterButton.read();
-    m_upButton.read();
-    m_downButton.read();
-
-    // ----------------------------
     if (m_backButton.wasPressed())
     {
         Serial.println(F("m_backButton was pressed!"));
@@ -29,7 +25,8 @@ void OperatingElements::cycle()
         }
     }
 
-    // ----------------------------
+    // --- BUTTON_ENTER -------------------------
+    m_enterButton.read();
     if (m_enterButton.wasPressed())
     {
         Serial.println(F("m_enterButton was pressed!"));
@@ -39,7 +36,8 @@ void OperatingElements::cycle()
         }
     }
 
-    // ----------------------------
+    // --- BUTTON_UP -------------------------
+    m_upButton.read();
     if (m_upButton.wasPressed())
     {
         Serial.println(F("m_upButton was pressed!"));
@@ -49,7 +47,8 @@ void OperatingElements::cycle()
         }
     }
 
-    // ----------------------------
+    // --- BUTTON_DOWN -------------------------
+    m_downButton.read();
     if (m_downButton.wasPressed())
     {
         Serial.println(F("m_downButton was pressed!"));

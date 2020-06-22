@@ -5,6 +5,7 @@
 #include "DataStorage.hpp"
 #include "views/ViewController.hpp"
 #include "DoorSteering.hpp"
+#include "OperationModeManager.hpp"
 
 MainControl::MainControl()
 {
@@ -13,9 +14,10 @@ MainControl::MainControl()
 
     // init participants
     m_dataStorage = new DataStorage();
+    m_operationMode = new OperationModeManager(m_dataStorage);
     m_door = new DoorSteering();
     m_timeKeeper = new Timekeeper(m_dataStorage);
-    m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage, m_door);
+    m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage, m_door, m_operationMode);
     m_viewController = new ViewController(m_timeKeeper, m_door);
 }
 

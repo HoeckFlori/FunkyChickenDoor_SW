@@ -6,6 +6,7 @@
 #include "views/IViewController.hpp"
 #include "IDoorSteering.hpp"
 // #include "ISleepingGuard.hpp"
+#include "IOperationModeManager.hpp"
 
 class MainControl
 {
@@ -25,4 +26,5 @@ private:
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
     IViewController *m_viewController;
+    IOperationModeManager *m_operationMode;
 };
