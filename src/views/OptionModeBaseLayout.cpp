@@ -34,6 +34,7 @@ void OptionModeBaseLayout::drawBaseLayout()
     {
         m_tft->setTextColor(m_defaultColorText);
         m_tft->setCursor(12, 119);
+        m_tft->setTextSize(1);
         timekeeperAccess->getDaylightSaving() ? m_tft->print(F("<Summer time>")) : m_tft->print(F("<Winter time>"));
     }
 

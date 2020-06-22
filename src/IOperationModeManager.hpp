@@ -4,8 +4,8 @@
 
 /**
  * @brief The OperationModeManager has the task to hold the OperationMode for the system.
- *        The Mode gets also stored and restored from nonvolatile Mmemory after a power 
- *        loss.
+ *        The Mode gets also stored and restored from nonvolatile memory after a power 
+ *        loss or reset.
  */
 class IOperationModeManager
 {
@@ -14,6 +14,7 @@ public:
 
     enum class OpMode : int
     {
+        UNDEFINED,
         AUTOMATIC,
         MANUAL
     };

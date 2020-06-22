@@ -7,11 +7,12 @@
 #include "IView.hpp"
 #include "IModel.hpp"
 #include "IOperatingElements.hpp"
+#include "IOperationModeManager.hpp"
 
 class ViewController : public virtual IViewController
 {
 public:
-    ViewController(ITimeKeeper *timekeeper, IDoorSteering *doorSteering);
+    ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering);
     ~ViewController() = default;
 
     // IViewController
@@ -22,4 +23,6 @@ private:
     Adafruit_ST7735 *m_tft;
     IView *m_activeView;
     IOperatingElements *m_operatingElements;
+    IOperationModeManager *m_operationModeManager;
+    IOperationModeManager::OpMode m_lastKnownOperationMode;
 };

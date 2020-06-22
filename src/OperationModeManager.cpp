@@ -9,7 +9,6 @@ OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess)
 
 IOperationModeManager::OpMode OperationModeManager::getMode() const
 {
-
     return m_mode;
 }
 
@@ -23,6 +22,9 @@ String OperationModeManager::getOpModeHumanReadable() const
 {
     switch (m_mode)
     {
+    case OpMode::UNDEFINED:
+        return F("undefined");
+        break;
     case OpMode::AUTOMATIC:
         return F("AutomaticMode");
         break;
