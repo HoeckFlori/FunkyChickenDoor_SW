@@ -10,7 +10,7 @@ class ManualView : public OptionModeBaseLayout
 {
 public:
     explicit ManualView(IModel *model, Adafruit_GFX *tft);
-    ~ManualView();
+    virtual ~ManualView() = default;
 
     // IView
     void cycle() override;

@@ -18,6 +18,8 @@ public:
     // IViewController
     void cycle() override;
 
+    void setViewForOpMode(IOperationModeManager::OpMode mode);
+
 private:
     IModel *m_model;
     Adafruit_ST7735 *m_tft;
@@ -25,4 +27,10 @@ private:
     IOperatingElements *m_operatingElements;
     IOperationModeManager *m_operationModeManager;
     IOperationModeManager::OpMode m_lastKnownOperationMode;
+
+    // //scribling:
+    // void requestViewRenewal(); // callback which can get called from the active view in case of OperationMode change, redrawing everything, ...
+    // //Achtung, wenn wir die View damit direkt abschießen haben wir ein unbestimmtes verhalten, da sich die view selbst einen Kopfschuß geben würde
+
+    // bool m_requestViewRenewal;
 };

@@ -10,11 +10,6 @@ ManualView::ManualView(IModel *model, Adafruit_GFX *tft)
     drawBaseLayout();
 }
 
-ManualView::~ManualView()
-{
-    // delete m_doorWidget;
-}
-
 void ManualView::cycle()
 {
     // call parent method
@@ -49,7 +44,8 @@ void ManualView::modelListener(IModelEventListener::Event event)
     }
 
     // pass event to widget(s)
-    m_doorWidget->passModelEventToWidget(event);
+    if (m_doorWidget)
+        m_doorWidget->passModelEventToWidget(event);
 }
 
 void ManualView::drawBaseLayout()

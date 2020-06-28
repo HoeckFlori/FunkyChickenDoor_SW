@@ -10,7 +10,7 @@ class AutomaticView : public OptionModeBaseLayout
 {
 public:
     explicit AutomaticView(IModel *model, Adafruit_GFX *tft);
-    ~AutomaticView() = default;
+    virtual ~AutomaticView() = default;
 
     // IView
     void cycle() override;

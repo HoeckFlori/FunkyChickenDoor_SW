@@ -8,6 +8,13 @@ AutomaticView::AutomaticView(IModel *model, Adafruit_GFX *tft)
                                                  ST7735_WHITE /*text color*/)
 {
     drawBaseLayout();
+    if (auto timekeeperAccess = m_model->getTimeKeeper())
+    {
+        auto sunrise = timekeeperAccess->getTodaysSunrise();
+        printSunriseToScreen(sunrise.hour(), sunrise.minute());
+        auto sunset = timekeeperAccess->getTodaysSunset();
+        printSunsetToScreen(sunset.hour(), sunset.minute());
+    }
 }
 
 void AutomaticView::cycle()
@@ -51,7 +58,8 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
     }
 
     // pass event to widget(s)
-    m_doorWidget->passModelEventToWidget(event);
+    if (m_doorWidget)
+        m_doorWidget->passModelEventToWidget(event);
 }
 
 void AutomaticView::drawBaseLayout()
@@ -75,10 +83,12 @@ void AutomaticView::drawBaseLayout()
 
 void AutomaticView::printSunriseToScreen(int hour, int minute)
 {
+    m_tft->setTextColor(m_defaultColorText);
     printTimeToScreen(/*x*/ 65, /*y*/ 50, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }
 
 void AutomaticView::printSunsetToScreen(int hour, int minute)
 {
+    m_tft->setTextColor(m_defaultColorText);
     printTimeToScreen(/*x*/ 65, /*y*/ 65, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }

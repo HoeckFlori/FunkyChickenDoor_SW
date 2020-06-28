@@ -22,7 +22,9 @@ private:
 
     IModelEventListener *m_eventListener;
 
-    // working variables
+    // // working variables
+    // bool m_fireAllEventsInNextCycle; // when there is a listener registration, will with the next cycle all possible events gets fired to synchronize the new listener
+
     DateTime m_timestamp;
     DateTime m_sunrise;
     DateTime m_sunset;

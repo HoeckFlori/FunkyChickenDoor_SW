@@ -11,6 +11,7 @@ OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, Adafruit_GFX *tft,
                                   m_defaultColorFrames,
                                   m_defaultColorText,
                                   /*x0*/ 114, /*y0*/ 20);
+    m_doorWidget->passModelEventToWidget(IModelEventListener::Event::DOOR_STATE_CHANGED); // for setup in the view
 }
 
 void OptionModeBaseLayout::cycle()
@@ -38,7 +39,8 @@ void OptionModeBaseLayout::drawBaseLayout()
         timekeeperAccess->getDaylightSaving() ? m_tft->print(F("<Summer time>")) : m_tft->print(F("<Winter time>"));
     }
 
-    m_doorWidget->setup();
+    if (m_doorWidget)
+        m_doorWidget->setup();
 }
 
 void OptionModeBaseLayout::printCurrentTimeToScreen(int hour, int minute, int second)

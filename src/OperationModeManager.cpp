@@ -5,6 +5,12 @@ OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess)
 {
     // Restore last known OperationMode
     m_mode = static_cast<OpMode>(m_dataStorage->getOperationMode());
+
+    // set a defined mode
+    if (m_mode == OpMode::UNDEFINED)
+    {
+        changeMode(OpMode::MANUAL);
+    }
 }
 
 IOperationModeManager::OpMode OperationModeManager::getMode() const

@@ -2,7 +2,8 @@
 
 Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
     : m_timeKeeper(timekeeper),
-      m_doorSteering(doorSteering)
+      m_doorSteering(doorSteering)/*,
+      m_fireAllEventsInNextCycle(false)*/
 {
 }
 
@@ -19,7 +20,7 @@ void Model::cycle()
         { // time has changed
             m_timestamp = newTime;
             // inform listener, if available
-            if (m_eventListener)
+            if (m_eventListener != nullptr)
             {
                 m_eventListener->modelListener(IModelEventListener::Event::TIME_UPDATE);
             }
@@ -31,7 +32,7 @@ void Model::cycle()
             m_sunrise = newSunrise;
             m_sunset = newSunset;
             // inform listener, if available
-            if (m_eventListener)
+            if (m_eventListener != nullptr)
             {
                 m_eventListener->modelListener(IModelEventListener::Event::SUNRISE_SUNSET_UPDATE);
             }
@@ -46,21 +47,25 @@ void Model::cycle()
         {
             m_doorState = newDoorState;
             // inform listener, if available
-            if (m_eventListener)
+            if (m_eventListener != nullptr)
             {
                 m_eventListener->modelListener(IModelEventListener::Event::DOOR_STATE_CHANGED);
             }
         }
     }
+
+    //add event for mode change here
 }
 
 void Model::registerModelEventListener(IModelEventListener *listener)
 {
     m_eventListener = listener;
+
 }
 
 void Model::removeModelEventListener()
 {
+    // delete m_eventListener;
     m_eventListener = nullptr;
 }
 

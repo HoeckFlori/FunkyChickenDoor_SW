@@ -5,9 +5,12 @@
 #include "OperatingElements.hpp"
 
 ViewController::ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
-    : m_operationModeManager(operationModeManager),
-      m_lastKnownOperationMode(IOperationModeManager::OpMode::UNDEFINED)
+    : m_activeView(nullptr),
+      m_operationModeManager(operationModeManager) /*,
+      m_lastKnownOperationMode(IOperationModeManager::OpMode::UNDEFINED) */
 {
+    m_lastKnownOperationMode = m_operationModeManager->getMode();
+
     m_model = new Model(timekeeper, doorSteering);
 
     m_tft = new Adafruit_ST7735(10 /* CS (chip selector pin) */,
@@ -17,6 +20,9 @@ ViewController::ViewController(IOperationModeManager *operationModeManager, ITim
     m_tft->setRotation(3);        // rotate screen to use it in "wide mode"
 
     m_operatingElements = new OperatingElements();
+
+    // set initial view
+    setViewForOpMode(m_lastKnownOperationMode);
 }
 
 void ViewController::cycle()
@@ -30,22 +36,30 @@ void ViewController::cycle()
     if (m_lastKnownOperationMode != m_operationModeManager->getMode())
     { // mode must have changed or it is a system start
         m_lastKnownOperationMode = m_operationModeManager->getMode();
-        switch (m_lastKnownOperationMode)
-        {
-        case IOperationModeManager::OpMode::UNDEFINED:
-            m_activeView = nullptr;
-            break;
-        case IOperationModeManager::OpMode::AUTOMATIC:
-            m_activeView = new AutomaticView(m_model, m_tft);
-            break;
-        case IOperationModeManager::OpMode::MANUAL:
-            m_activeView = new ManualView(m_model, m_tft);
-            break;
-        }
+        setViewForOpMode(m_lastKnownOperationMode);
     }
     // cycle the view itself
-    if (m_activeView)
+    if (m_activeView != nullptr)
     {
         m_activeView->cycle();
+    }
+}
+
+void ViewController::setViewForOpMode(IOperationModeManager::OpMode mode)
+{
+    switch (mode)
+    {
+    case IOperationModeManager::OpMode::AUTOMATIC:
+        delete m_activeView;
+        m_activeView = nullptr;
+        m_activeView = new AutomaticView(m_model, m_tft);
+        break;
+    case IOperationModeManager::OpMode::MANUAL:
+        delete m_activeView;
+        m_activeView = nullptr;
+        m_activeView = new ManualView(m_model, m_tft);
+        break;
+    default:
+        Serial.print("ERROR: No view available for requested OpMode");
     }
 }

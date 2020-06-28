@@ -16,7 +16,7 @@ public:
                          uint16_t colorBackground,
                          uint16_t colorFrames,
                          uint16_t colorText);
-    virtual ~OptionModeBaseLayout() {}
+    virtual ~OptionModeBaseLayout() = default;
 
     // IView
     void cycle() override;
