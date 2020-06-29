@@ -11,7 +11,7 @@ ViewController::ViewController(IOperationModeManager *operationModeManager, ITim
 {
     m_lastKnownOperationMode = m_operationModeManager->getMode();
 
-    m_model = new Model(timekeeper, doorSteering);
+    m_model = new Model(timekeeper, doorSteering, m_operationModeManager);
 
     m_tft = new Adafruit_ST7735(10 /* CS (chip selector pin) */,
                                 8 /* A0  (TFT SPI data or command selector pin) */,

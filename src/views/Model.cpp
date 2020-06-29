@@ -1,9 +1,9 @@
 #include "Model.hpp"
 
-Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
+Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager)
     : m_timeKeeper(timekeeper),
-      m_doorSteering(doorSteering)/*,
-      m_fireAllEventsInNextCycle(false)*/
+      m_doorSteering(doorSteering),
+      m_opModeManager(opModeManager)
 {
 }
 
@@ -60,7 +60,6 @@ void Model::cycle()
 void Model::registerModelEventListener(IModelEventListener *listener)
 {
     m_eventListener = listener;
-
 }
 
 void Model::removeModelEventListener()
@@ -77,4 +76,14 @@ ITimeKeeper *Model::getTimeKeeper() const
 IDoorSteering::DoorState Model::getDoorState() const
 {
     return m_doorState;
+}
+
+void Model::requestModeChange()
+{
+    auto currentMode = m_opModeManager->getMode();
+    // toggle the operation mode (at the moment we just have two modes)
+    if (currentMode == IOperationModeManager::OpMode::AUTOMATIC)
+        m_opModeManager->changeMode(IOperationModeManager::OpMode::MANUAL);
+    else
+        m_opModeManager->changeMode(IOperationModeManager::OpMode::AUTOMATIC);
 }

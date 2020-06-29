@@ -69,6 +69,7 @@ void AutomaticView::keyEventListener(IKeyEventListener::Event event)
     case IKeyEventListener::Event::BUTTON_BACK:
         break;
     case IKeyEventListener::Event::BUTTON_ENTER:
+        m_model->requestModeChange();
         break;
     case IKeyEventListener::Event::BUTTON_UP:
         break;

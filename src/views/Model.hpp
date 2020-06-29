@@ -2,11 +2,12 @@
 
 #include "IModel.hpp"
 #include "RTClib.h"
+#include "IOperationModeManager.hpp"
 
 class Model : public virtual IModel
 {
 public:
-    Model(ITimeKeeper *timeKeeper, IDoorSteering *doorSteering);
+    Model(ITimeKeeper *timeKeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager);
     ~Model() = default;
 
     // IModel
@@ -15,16 +16,16 @@ public:
     void removeModelEventListener() override;
     ITimeKeeper *getTimeKeeper() const override;
     IDoorSteering::DoorState getDoorState() const override;
+    void requestModeChange() override;
 
 private:
     ITimeKeeper *m_timeKeeper;
     IDoorSteering *m_doorSteering;
+    IOperationModeManager *m_opModeManager;
 
     IModelEventListener *m_eventListener;
 
     // // working variables
-    // bool m_fireAllEventsInNextCycle; // when there is a listener registration, will with the next cycle all possible events gets fired to synchronize the new listener
-
     DateTime m_timestamp;
     DateTime m_sunrise;
     DateTime m_sunset;

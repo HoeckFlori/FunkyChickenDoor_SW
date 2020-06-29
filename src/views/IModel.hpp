@@ -46,4 +46,10 @@ public:
     * @return IDoorSteering::DoorState 
     */
     virtual IDoorSteering::DoorState getDoorState() const = 0;
+
+    /**
+     * @brief Request a request of the OperationMode
+     * 
+     */
+    virtual void requestModeChange() = 0;
 };

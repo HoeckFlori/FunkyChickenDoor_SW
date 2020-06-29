@@ -3,9 +3,9 @@
 
 ManualView::ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,
-                                                 ST7735_WHITE /*background color*/,
+                                                 tft->newColor(/*R*/ 0x00, /*G*/ 0x00, /*B*/ 0x4D) /*background color*/,
                                                  ST7735_RED /*color of frames*/,
-                                                 ST7735_BLACK /*text color*/)
+                                                 ST7735_WHITE /*text color*/)
 {
     drawBaseLayout();
 }
@@ -55,6 +55,7 @@ void ManualView::keyEventListener(IKeyEventListener::Event event)
     case IKeyEventListener::Event::BUTTON_BACK:
         break;
     case IKeyEventListener::Event::BUTTON_ENTER:
+        m_model->requestModeChange();
         break;
     case IKeyEventListener::Event::BUTTON_UP:
         break;

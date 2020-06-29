@@ -32,6 +32,7 @@ void OperatingElements::cycle()
         Serial.println(F("m_enterButton was pressed!"));
         if (m_listener != nullptr)
         {
+            Serial.println(F("YYY"));
             m_listener->keyEventListener(IKeyEventListener::Event::BUTTON_ENTER);
         }
     }
