@@ -9,7 +9,7 @@
 class ManualView : public OptionModeBaseLayout
 {
 public:
-    explicit ManualView(IModel *model, Adafruit_GFX *tft);
+    explicit ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft);
     virtual ~ManualView() = default;
 
     // IView
@@ -17,6 +17,9 @@ public:
 
     // IModelViewListener
     void modelListener(IModelEventListener::Event event) override;
+
+    // IKeyEventListener
+    void keyEventListener(IKeyEventListener::Event event) override;
 
 private:
     void drawBaseLayout() override;

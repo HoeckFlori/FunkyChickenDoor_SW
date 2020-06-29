@@ -1,8 +1,8 @@
 #include "ManualView.hpp"
 #include "RTClib.h"
 
-ManualView::ManualView(IModel *model, Adafruit_GFX *tft)
-    : OptionModeBaseLayout::OptionModeBaseLayout(model, tft,
+ManualView::ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
+    : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,
                                                  ST7735_WHITE /*background color*/,
                                                  ST7735_RED /*color of frames*/,
                                                  ST7735_BLACK /*text color*/)
@@ -21,22 +21,22 @@ void ManualView::modelListener(IModelEventListener::Event event)
     // local event handling
     switch (event)
     {
-    case Event::TIME_UPDATE:
+    case IModelEventListener::Event::TIME_UPDATE:
         if (auto timekeeperAccess = m_model->getTimeKeeper())
         {
             auto newTime = timekeeperAccess->getCurrentTime();
             printCurrentTimeToScreen(newTime.hour(), newTime.minute(), newTime.second());
         }
         break;
-    case Event::SUNRISE_SUNSET_UPDATE:
+    case IModelEventListener::Event::SUNRISE_SUNSET_UPDATE:
         break;
-    case Event::MODE_CHANGED:
+    case IModelEventListener::Event::MODE_CHANGED:
         break;
-    case Event::DOOR_STATE_CHANGED:
+    case IModelEventListener::Event::DOOR_STATE_CHANGED:
         break;
-    case Event::NEW_ERROR_AVAILABLE:
+    case IModelEventListener::Event::NEW_ERROR_AVAILABLE:
         break;
-    case Event::RELOAD_EVERYTHING:
+    case IModelEventListener::Event::RELOAD_EVERYTHING:
         break;
     default:
         // uncomment not needed events above
@@ -46,6 +46,23 @@ void ManualView::modelListener(IModelEventListener::Event event)
     // pass event to widget(s)
     if (m_doorWidget)
         m_doorWidget->passModelEventToWidget(event);
+}
+
+void ManualView::keyEventListener(IKeyEventListener::Event event)
+{
+    switch (event)
+    {
+    case IKeyEventListener::Event::BUTTON_BACK:
+        break;
+    case IKeyEventListener::Event::BUTTON_ENTER:
+        break;
+    case IKeyEventListener::Event::BUTTON_UP:
+        break;
+    case IKeyEventListener::Event::BUTTON_DOWN:
+        break;
+    case IKeyEventListener::Event::BUTTON_SETTINGS:
+        break;
+    }
 }
 
 void ManualView::drawBaseLayout()

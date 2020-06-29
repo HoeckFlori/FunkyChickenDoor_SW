@@ -12,7 +12,7 @@
 class OptionModeBaseLayout : public ViewBase
 {
 public:
-    OptionModeBaseLayout(IModel *model, Adafruit_GFX *tft,
+    OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
                          uint16_t colorBackground,
                          uint16_t colorFrames,
                          uint16_t colorText);

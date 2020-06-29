@@ -9,7 +9,7 @@
 class AutomaticView : public OptionModeBaseLayout
 {
 public:
-    explicit AutomaticView(IModel *model, Adafruit_GFX *tft);
+    explicit AutomaticView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft);
     virtual ~AutomaticView() = default;
 
     // IView
@@ -17,6 +17,9 @@ public:
 
     // IModelViewListener
     void modelListener(IModelEventListener::Event event) override;
+
+    // IKeyEventListener
+    void keyEventListener(IKeyEventListener::Event event) override;
 
 private:
     void drawBaseLayout() override;

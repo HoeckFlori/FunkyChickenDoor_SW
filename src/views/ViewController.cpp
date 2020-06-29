@@ -52,12 +52,12 @@ void ViewController::setViewForOpMode(IOperationModeManager::OpMode mode)
     case IOperationModeManager::OpMode::AUTOMATIC:
         delete m_activeView;
         m_activeView = nullptr;
-        m_activeView = new AutomaticView(m_model, m_tft);
+        m_activeView = new AutomaticView(m_model, m_operatingElements, m_tft);
         break;
     case IOperationModeManager::OpMode::MANUAL:
         delete m_activeView;
         m_activeView = nullptr;
-        m_activeView = new ManualView(m_model, m_tft);
+        m_activeView = new ManualView(m_model, m_operatingElements, m_tft);
         break;
     default:
         Serial.print("ERROR: No view available for requested OpMode");

@@ -1,10 +1,10 @@
 #include "OptionModeBaseLayout.hpp"
 
-OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, Adafruit_GFX *tft,
+OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
                                            uint16_t colorBackground,
                                            uint16_t colorFrames,
                                            uint16_t colorText)
-    : ViewBase::ViewBase(model, tft, colorBackground, colorFrames, colorText)
+    : ViewBase::ViewBase(model, operatingElements, tft, colorBackground, colorFrames, colorText)
 {
     m_doorWidget = new DoorWidget(m_model, m_tft,
                                   m_defaultColorBackground,

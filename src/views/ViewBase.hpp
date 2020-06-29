@@ -3,7 +3,7 @@
 #include <TFT.h>
 #include "IView.hpp"
 #include "IModel.hpp"
-#include "IModelEventListener.hpp"
+#include "IOperatingElements.hpp"
 
 /**
  * @brief The ViewBase is the base for all implemented and to implemented views.
@@ -11,10 +11,11 @@
  *        ... (whatever is comming) and the default color settings.
  */
 class ViewBase : public virtual IView,
-                 public virtual IModelEventListener
+                 public virtual IModelEventListener,
+                 public virtual IKeyEventListener
 {
 public:
-    ViewBase(IModel *model, Adafruit_GFX *tft,
+    ViewBase(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
              uint16_t colorBackground,
              uint16_t colorFrames,
              uint16_t colorText);
@@ -22,6 +23,7 @@ public:
 
 protected:
     IModel *m_model;
+    IOperatingElements *m_operatingElements;
     Adafruit_GFX *m_tft;
 
     uint16_t const m_defaultColorBackground;
