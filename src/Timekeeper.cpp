@@ -1,7 +1,10 @@
 #include "Timekeeper.hpp"
 #include "IDataStorage.hpp"
 
-Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
+Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_lastQueriedTime(DateTime()),
+                                                    m_todaysSunrise(DateTime()),
+                                                    m_todaysSunset(DateTime()),
+                                                    m_dataStorage(dataStorage),
                                                     m_daylightSaving(false)
 {
     if (!m_myClock.begin())
@@ -27,7 +30,7 @@ DateTime &Timekeeper::getTodaysSunrise()
     // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
     // each call would need ~9000µ.
     DateTime today = m_lastQueriedTime;
-    if (today.day() != m_todaysSunrise.day())
+    if ((today.day() != m_todaysSunset.day()) || (today.year() != m_todaysSunset.year()))
     { // current sunrise not up to date -> update it
         int eventInMinutes = m_dusk2Dawn.sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
         m_todaysSunrise = today;
@@ -41,7 +44,7 @@ DateTime &Timekeeper::getTodaysSunset()
     // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
     // each call would need ~9000µ.
     DateTime today = m_lastQueriedTime;
-    if (today.day() != m_todaysSunset.day())
+    if ((today.day() != m_todaysSunset.day()) || (today.year() != m_todaysSunset.year()))
     { // current sunrise not up to date -> update it
         int eventInMinutes = m_dusk2Dawn.sunset(today.year(), today.month(), today.day(), m_daylightSaving);
         m_todaysSunset = today;
@@ -92,10 +95,3 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
     }
     date = date + timeOffset;
 }
-
-// void Timekeeper::printTimeToConsole(DateTime &date) const
-// {
-//     String timeBuffer(F("DD.MM.YYYY hh:mm:ss"));
-//     date.toString(timeBuffer.begin());
-//     Serial.println(timeBuffer);
-// }

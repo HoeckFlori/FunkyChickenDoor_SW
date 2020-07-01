@@ -52,4 +52,7 @@ public:
      * 
      */
     virtual void requestModeChange() = 0;
+
+
+    // go on here with requests for door activities
 };

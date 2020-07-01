@@ -3,8 +3,8 @@
 
 ManualView::ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,
-                                                 tft->newColor(/*R*/ 0x00, /*G*/ 0x00, /*B*/ 0x4D) /*background color*/,
-                                                 ST7735_RED /*color of frames*/,
+                                                 tft->newColor(/*R*/ 0x00, /*G*/ 0x33, /*B*/ 0xCC) /*background color*/,
+                                                 tft->newColor(/*R*/ 0xFF, /*G*/ 0x99, /*B*/ 0x00) /*color of frames*/,
                                                  ST7735_WHITE /*text color*/)
 {
     drawBaseLayout();

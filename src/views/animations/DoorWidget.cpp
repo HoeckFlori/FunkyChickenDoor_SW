@@ -55,7 +55,7 @@ void DoorWidget::passModelEventToWidget(IModelEventListener::Event event)
             {
             case IDoorSteering::DoorState::UNDEFINED:
                 stopAnimations();
-                drawError(); // may change this to an '?' state
+                //drawError(); // may change this to an '?' state
                 break;
             case IDoorSteering::DoorState::INITIALIZING:
                 startAnimationInitialization();
