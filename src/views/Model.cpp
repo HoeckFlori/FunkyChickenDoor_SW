@@ -87,3 +87,18 @@ void Model::requestModeChange()
     else
         m_opModeManager->changeMode(IOperationModeManager::OpMode::AUTOMATIC);
 }
+
+void Model::requestDoorOpen()
+{
+    m_doorSteering->openDoor();
+}
+
+void Model::requestDoorClose()
+{
+    m_doorSteering->closeDoor();
+}
+
+void Model::orderEmergencyStop()
+{
+    m_doorSteering->emergencyStop();
+}

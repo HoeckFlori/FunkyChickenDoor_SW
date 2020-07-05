@@ -17,6 +17,9 @@ public:
     ITimeKeeper *getTimeKeeper() const override;
     IDoorSteering::DoorState getDoorState() const override;
     void requestModeChange() override;
+    void requestDoorOpen() override;
+    void requestDoorClose() override;
+    void orderEmergencyStop() override;
 
 private:
     ITimeKeeper *m_timeKeeper;

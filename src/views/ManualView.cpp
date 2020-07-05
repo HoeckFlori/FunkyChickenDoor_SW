@@ -53,13 +53,16 @@ void ManualView::keyEventListener(IKeyEventListener::Event event)
     switch (event)
     {
     case IKeyEventListener::Event::BUTTON_BACK:
+        m_model->orderEmergencyStop();
         break;
     case IKeyEventListener::Event::BUTTON_ENTER:
         m_model->requestModeChange();
         break;
     case IKeyEventListener::Event::BUTTON_UP:
+        m_model->requestDoorOpen();
         break;
     case IKeyEventListener::Event::BUTTON_DOWN:
+        m_model->requestDoorClose();
         break;
     case IKeyEventListener::Event::BUTTON_SETTINGS:
         break;

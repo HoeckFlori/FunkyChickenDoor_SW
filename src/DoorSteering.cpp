@@ -45,6 +45,12 @@ String DoorSteering::getDoorStateHumanReadable() const
     }
 }
 
+void DoorSteering::emergencyStop()
+{
+    m_doorState = DoorState::ERROR;
+    // TODO(FHk)
+}
+
 void DoorSteering::initDoor()
 {
     m_doorState = DoorState::INITIALIZING;

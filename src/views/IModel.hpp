@@ -53,6 +53,18 @@ public:
      */
     virtual void requestModeChange() = 0;
 
+    /**
+     * @brief Request to open the door. (It is just a request, several other things (e.g. the mode, the current status ...) can deny this request)
+     */
+    virtual void requestDoorOpen() = 0;
 
-    // go on here with requests for door activities
+    /**
+     * @brief Request to close the door. (It is just a request, several other things (e.g. the mode, the current status ...) can deny this request)
+     */
+    virtual void requestDoorClose() = 0;
+
+    /**
+     * @brief Commands an emergency stop for all componenets that perform potentially dangerous interactions (e.g. door movements).
+     */
+    virtual void orderEmergencyStop() = 0;
 };

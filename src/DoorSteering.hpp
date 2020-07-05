@@ -12,6 +12,7 @@ public:
     void cycle() override;
     DoorState getDoorState() const override;
     String getDoorStateHumanReadable() const override;
+    void emergencyStop() override;
     void initDoor() override;
     void closeDoor() override;
     void openDoor() override;
