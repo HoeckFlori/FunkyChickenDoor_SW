@@ -48,4 +48,13 @@ protected:
      * @param color    Text color default ST7735_WHITE
      */
     void printTimeToScreen(int x0, int y0, int textSize, bool showSeconds, int hour, int minute, int second = 0);
+
+    // Following methods and attributes get used to print the current time to screen, without "flickering" the entire
+    // time string with each update. Updated is always just the changed number.
+    void printPartOfTimeToScreenHour(int x0, int y0, int textSize, int hour);
+    void printPartOfTimeToScreenMinute(int x0, int y0, int textSize, int minute);
+    void printPartOfTimeToScreenSecond(int x0, int y0, int textSize, int second);
+    int m_previousHourOfClock;
+    int m_previousMinuteOfClock;
+    int m_previousSecondOfClock;
 };
