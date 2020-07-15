@@ -4,7 +4,8 @@
 #include "IModel.hpp"
 #include "IOperatingElements.hpp"
 
-#include "TFT.h"
+// forward declaration
+class Adafruit_GFX;
 
 /**
  * @brief The ViewBase is the base for all implemented and to implemented views.

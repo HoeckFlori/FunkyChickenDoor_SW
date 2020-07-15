@@ -1,5 +1,6 @@
 #include "AutomaticView.hpp"
 #include "RTClib.h"
+#include "TFT.h"
 
 AutomaticView::AutomaticView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,

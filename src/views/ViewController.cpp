@@ -3,6 +3,7 @@
 #include "ManualView.hpp"
 #include "Model.hpp"
 #include "OperatingElements.hpp"
+#include "TFT.h"
 
 ViewController::ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
     : m_activeView(nullptr),

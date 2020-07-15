@@ -1,5 +1,6 @@
 #include "ManualView.hpp"
 #include "RTClib.h"
+#include "TFT.h"
 
 ManualView::ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,

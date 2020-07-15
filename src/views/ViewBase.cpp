@@ -1,4 +1,5 @@
 #include "ViewBase.hpp"
+#include "TFT.h"
 
 ViewBase::ViewBase(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
                    uint16_t colorBackground,

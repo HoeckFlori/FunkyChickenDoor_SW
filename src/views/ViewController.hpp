@@ -1,10 +1,5 @@
 #pragma once
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wcpp" // doesn't work to suppress the warning '.pio/libdeps/megaatmega2560/TFT_ID886/src/utility/Adafruit_GFX.h:60:3: warning: #warning "The SD library was not found. loadImage() and image() won't be supported." [-Wcpp]'
-#include <TFT.h>
-#pragma GCC diagnostic pop
-
 #include "../ITimeKeeper.hpp"
 #include "../IDoorSteering.hpp"
 #include "IViewController.hpp"
@@ -12,6 +7,9 @@
 #include "IModel.hpp"
 #include "IOperatingElements.hpp"
 #include "IOperationModeManager.hpp"
+
+// foward declaration
+class Adafruit_ST7735;
 
 class ViewController : public virtual IViewController
 {
