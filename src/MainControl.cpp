@@ -3,9 +3,9 @@
 #include "Timekeeper.hpp"
 #include "ConsoleAgent.hpp"
 #include "DataStorage.hpp"
-#include "views/ViewController.hpp"
 #include "DoorSteering.hpp"
 #include "OperationModeManager.hpp"
+#include "views/ViewController.hpp"
 
 MainControl::MainControl()
 {

@@ -26,6 +26,8 @@ private:
     static int getDateTime(CLIClient *dev, int argc, char **argv);
     static int setTime(CLIClient *dev, int argc, char **argv);
     static int setDaylightSaving(CLIClient *dev, int argc, char **argv);
+    static int enableNotOpenBefore(CLIClient *dev, int argc, char **argv);
+    static int disableNotOpenBefore(CLIClient *dev, int argc, char **argv);
     static int setPosition(CLIClient *dev, int argc, char **argv);
     static int initDoor(CLIClient *dev, int argc, char **argv);
     static int openDoor(CLIClient *dev, int argc, char **argv);

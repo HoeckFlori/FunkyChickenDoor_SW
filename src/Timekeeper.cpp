@@ -1,10 +1,12 @@
 #include "Timekeeper.hpp"
 #include "IDataStorage.hpp"
 
-Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_lastQueriedTime(DateTime()),
+Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
+                                                    m_lastQueriedTime(DateTime()),
                                                     m_todaysSunrise(DateTime()),
                                                     m_todaysSunset(DateTime()),
-                                                    m_dataStorage(dataStorage),
+                                                    m_todayOpeningTime(DateTime()),
+                                                    m_todayClosingTime(DateTime()),
                                                     m_daylightSaving(false)
 {
     if (!m_myClock.begin())
@@ -12,6 +14,7 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_lastQueriedTime(DateTime()
     if (m_dataStorage)
     {
         m_daylightSaving = m_dataStorage->getDayLightSavingSetting();
+        m_doNotOpenBeforeOption = m_dataStorage->getDoNotOpenBeforeOption();
     }
     else
     {
@@ -57,6 +60,47 @@ void Timekeeper::setTime(const DateTime &newTime)
 {
     m_myClock.adjust(newTime);
 }
+
+// START WORKING
+
+void Timekeeper::setDoNotOpenBefore(int hour, int minute)
+{
+    // add here the access to the currently not implemented not volantile storage for this information
+
+    m_doNotOpenBeforeOption._optionEnabled = true;
+    m_doNotOpenBeforeOption._hour = hour;
+    m_doNotOpenBeforeOption._minute = minute;
+
+    if (m_dataStorage)
+    {
+        m_dataStorage->setDoNotOpenBeforeOption(m_doNotOpenBeforeOption);
+    }
+}
+
+void Timekeeper::disableDoNotOpenBefore()
+{
+    // add here the access to the currently not implemented not volantile storage for this information
+    m_doNotOpenBeforeOption._optionEnabled = false;
+
+    if (m_dataStorage)
+    {
+        m_dataStorage->setDoNotOpenBeforeOption(m_doNotOpenBeforeOption);
+    }
+}
+
+DateTime &Timekeeper::getTodayOpeningTime()
+{
+    // TODO
+    return m_todayOpeningTime;
+}
+
+DateTime &Timekeeper::getTodayClosingTime()
+{
+    // TODO
+    return m_todayClosingTime;
+}
+
+// END WORKING
 
 void Timekeeper::setDaylightSaving(bool daylightSaving)
 {

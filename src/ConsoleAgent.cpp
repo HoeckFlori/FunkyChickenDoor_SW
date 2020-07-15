@@ -43,6 +43,8 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
+    CLI.addCommand("enableNotOpenBefore", enableNotOpenBefore);
+    CLI.addCommand("disableNotOpenBefore", disableNotOpenBefore);
     CLI.addCommand("setPosition", setPosition);
     CLI.addCommand("initDoor", initDoor);
     CLI.addCommand("openDoor", openDoor);
@@ -73,7 +75,9 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'changeOpMode Change the door OperationMode"));
     dev->println(F(" -> 'getTime'     Show actual system time"));
     dev->println(F(" -> 'setTime'     Set new time"));
-    dev->println(F(" -> 'setDaylightSaving' Active the dayligh option (summer time)"));
+    dev->println(F(" -> 'setDaylightSaving'    Active the dayligh option (summer time)"));
+    dev->println(F(" -> 'enableNotOpenBefore'  Enable the 'do not open before option x:xx o'clock' option"));
+    dev->println(F(" -> 'disableNotOpenBefore' Disable the 'do not open before ...' option"));
     dev->println(F(" -> 'setPosition' Set position of your chicken house"));
     dev->println(F(" -> 'initDoor'    Start door initialization process"));
     dev->println(F(" -> 'openDoor'    Open door manually  (changes also the operation mode)"));
@@ -220,6 +224,39 @@ int ConsoleAgent::setDaylightSaving(CLIClient *dev, int argc, char **argv)
     }
 }
 
+int ConsoleAgent::enableNotOpenBefore(CLIClient *dev, int argc, char **argv)
+{
+    if ((argc == 1) || (argc > 2))
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'enableNotOpenBefore 6:00'"));
+        return -1;
+    }
+
+    uint8_t hh(0);
+    uint8_t mm(0);
+
+    // extract time
+    String time(argv[1]);
+    hh = time.toInt();
+    int indexOfColon = time.indexOf(F(":"));
+    mm = time.substring(indexOfColon + 1).toInt();
+
+    m_mySelf->m_timeKeeper->setDoNotOpenBefore(hh, mm);
+    return 0;
+}
+int ConsoleAgent::disableNotOpenBefore(CLIClient *dev, int argc, char **argv)
+{
+    if (argc != 1)
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> error, too many arguments"));
+        return -1;
+    }
+    m_mySelf->m_timeKeeper->disableDoNotOpenBefore();
+    return 0;
+}
+
 int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
 {
     float latitude;
@@ -323,9 +360,24 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
         dev->print(m_mySelf->m_dataStorage->getPositionLatitude(), 5);
         dev->print(F(", "));
         dev->println(m_mySelf->m_dataStorage->getPositionLongitude(), 5);
+
         // show timezone
         dev->print(F("Timezone: "));
-        dev->println(m_mySelf->m_dataStorage->getTimeZone(), 1);
+        dev->println(m_mySelf->m_dataStorage->getTimeZone(), 0);
+
+        // show doNotOpenBefore
+        auto doNotOpenBefore = m_mySelf->m_dataStorage->getDoNotOpenBeforeOption();
+        dev->print(F("DoNotOpenBeforeOption: '"));
+        dev->print(doNotOpenBefore._optionEnabled ? F("enabled'") : F("off'"));
+        if (doNotOpenBefore._optionEnabled)
+        {
+            dev->print(F(" @ "));
+            dev->print(doNotOpenBefore._hour);
+            dev->print(F(":"));
+            dev->print(doNotOpenBefore._minute);
+            dev->print(F(" o'clock"));
+        }
+        dev->println(F(""));
     }
 
     // show door status

@@ -73,3 +73,15 @@ int DataStorage::getOperationMode() const
     retVal = EEPROM.get(_operationMode, retVal);
     return retVal;
 }
+
+void DataStorage::setDoNotOpenBeforeOption(const IDataStorage::doNotOpenBeforeOption &setting)
+{
+    EEPROM.put(_doNotOpenBeforeOption, setting);
+}
+
+IDataStorage::doNotOpenBeforeOption DataStorage::getDoNotOpenBeforeOption()
+{
+    IDataStorage::doNotOpenBeforeOption retVal;
+    retVal = EEPROM.get(_doNotOpenBeforeOption, retVal);
+    return retVal;
+}

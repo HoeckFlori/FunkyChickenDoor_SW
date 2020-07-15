@@ -1,9 +1,10 @@
 #pragma once
 
-#include <TFT.h>
 #include "IView.hpp"
 #include "IModel.hpp"
 #include "IOperatingElements.hpp"
+
+#include "TFT.h"
 
 /**
  * @brief The ViewBase is the base for all implemented and to implemented views.
