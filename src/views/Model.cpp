@@ -17,14 +17,24 @@ void Model::cycle()
         // the current time
         auto newTime = m_timeKeeper->getCurrentTime();
         if (m_timestamp != newTime)
-        { // time has changed
+        { // at least time has changed
+            // check if date has changed too
+            bool dateChange(false);
+            if (m_timestamp.day() != newTime.day())
+            {
+                dateChange = true;
+            }
+            // set new time
             m_timestamp = newTime;
             // inform listener, if available
             if (m_eventListener != nullptr)
             {
                 m_eventListener->modelListener(IModelEventListener::Event::TIME_UPDATE);
+                if (dateChange)
+                    m_eventListener->modelListener(IModelEventListener::Event::DATE_UPDATE);
             }
         }
+
         auto newSunrise = m_timeKeeper->getTodaysSunrise();
         auto newSunset = m_timeKeeper->getTodaysSunset();
         if ((newSunrise != m_sunrise) || (newSunset != m_sunset))

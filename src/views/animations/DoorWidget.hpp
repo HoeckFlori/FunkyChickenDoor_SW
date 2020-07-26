@@ -2,6 +2,7 @@
 
 #include "WidgetBase.hpp"
 #include "../../IDoorSteering.hpp"
+#include <TFT.h>
 
 /**
  * @brief The DoorWidget show the door with its different states

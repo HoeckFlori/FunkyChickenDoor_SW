@@ -36,6 +36,13 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
             printCurrentTimeToScreen(newTime.hour(), newTime.minute(), newTime.second());
         }
         break;
+    case IModelEventListener::Event::DATE_UPDATE:
+        if (auto timekeeperAccess = m_model->getTimeKeeper())
+        {
+            auto time = timekeeperAccess->getCurrentTime();
+            printCurrentDateToScreen(time.day(), time.month(), time.year());
+        }
+        break;
     case IModelEventListener::Event::SUNRISE_SUNSET_UPDATE:
         if (auto timekeeperAccess = m_model->getTimeKeeper())
         {
@@ -90,24 +97,24 @@ void AutomaticView::drawBaseLayout()
     m_tft->setTextSize(1);
 
     m_tft->setTextColor(ST7735_GREEN); // change default text color
-    m_tft->setCursor(25, 31);
+    m_tft->setCursor(5, 43);
     m_tft->print(F("AUTOMATIC"));
     m_tft->setTextColor(m_defaultColorText); // switch text color bach to default
 
-    m_tft->setCursor(5, 50);
+    m_tft->setCursor(5, 62);
     m_tft->print(F("Sunrise:"));
-    m_tft->setCursor(5, 65);
+    m_tft->setCursor(5, 77);
     m_tft->print(F("Sunset:"));
 }
 
 void AutomaticView::printSunriseToScreen(int hour, int minute)
 {
     m_tft->setTextColor(m_defaultColorText);
-    printTimeToScreen(/*x*/ 65, /*y*/ 50, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+    printTimeToScreen(/*x*/ 65, /*y*/ 62, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }
 
 void AutomaticView::printSunsetToScreen(int hour, int minute)
 {
     m_tft->setTextColor(m_defaultColorText);
-    printTimeToScreen(/*x*/ 65, /*y*/ 65, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+    printTimeToScreen(/*x*/ 65, /*y*/ 77, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }

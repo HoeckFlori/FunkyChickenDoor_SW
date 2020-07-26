@@ -1,4 +1,5 @@
 #include "OptionModeBaseLayout.hpp"
+#include "RTClib.h"
 
 OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
                                            uint16_t colorBackground,
@@ -28,14 +29,19 @@ void OptionModeBaseLayout::cycle()
 void OptionModeBaseLayout::drawBaseLayout()
 {
     // horizontal boarder left (upper one)
-    m_tft->fillRect(/*x*/ 0, 25, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
+    m_tft->fillRect(/*x*/ 0, /*y*/ 37, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
     // horizontal boarder left (lower one)
-    m_tft->fillRect(/*x*/ 0, 40, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
+    m_tft->fillRect(/*x*/ 0, /*y*/ 52, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
     //vertival boarder entire screen
     m_tft->fillRect(/*x*/ 105, /*y*/ 0, /*w*/ 4, /*h*/ m_tft->height(), m_defaultColorFrames);
 
     if (auto timekeeperAccess = m_model->getTimeKeeper())
     {
+        // print date for the first time
+        auto currentTime = timekeeperAccess->getCurrentTime();
+        printCurrentDateToScreen(currentTime.day(), currentTime.month(), currentTime.year());
+
+        // print summer/winter time information
         m_tft->setTextColor(m_defaultColorText);
         m_tft->setCursor(12, 119);
         m_tft->setTextSize(1);
@@ -53,12 +59,45 @@ void OptionModeBaseLayout::printCurrentTimeToScreen(int hour, int minute, int se
     printPartOfTimeToScreenSecond(/*x*/ 5, /*y*/ 5, /*textsize*/ 2, second);
 }
 
+void OptionModeBaseLayout::printCurrentDateToScreen(int day, int month, int year)
+{
+    printDateToScreen(/*x*/ 5, /*y*/ 25, /*textsize*/ 1, day, month, year);
+}
+
+void OptionModeBaseLayout::printDateToScreen(int x0, int y0, int textSize, int day, int month, int year)
+{
+    m_tft->setTextSize(textSize);
+    m_tft->setTextColor(m_defaultColorText);
+
+    // clear previous date
+    m_tft->fillRect(x0, y0,
+                    /*w*/ (textSize * (5 + 1) * 10), // dd.mm.yyy
+                    /*h*/ (textSize * 7),
+                    m_defaultColorBackground);
+
+    // print the day
+    m_tft->setCursor(x0, y0);
+    if (day < 10)
+        m_tft->print(F("0"));
+    m_tft->print(day);
+
+    // print the month
+    m_tft->print(F("."));
+    if (month < 10)
+        m_tft->print(F("0"));
+    m_tft->print(month);
+
+    // print the year
+    m_tft->print(F("."));
+    m_tft->print(year);
+}
+
 void OptionModeBaseLayout::printTimeToScreen(int x0, int y0, int textSize, bool showSeconds, int hour, int minute, int second)
 {
     m_tft->setTextSize(textSize);
     m_tft->setTextColor(m_defaultColorText);
 
-    // clear previous time (first simple version, improve it to just clear the to updating field)
+    // clear previous time (simple version)
     m_tft->fillRect(x0, y0,
                     /*w*/ (showSeconds ? (textSize * (5 + 1) * 8) : (textSize * (5 + 1) * 5)),
                     /*h*/ (textSize * 7),

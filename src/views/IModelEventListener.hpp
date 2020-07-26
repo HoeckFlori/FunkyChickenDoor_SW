@@ -8,6 +8,7 @@ public:
     enum class Event
     {
         TIME_UPDATE,
+        DATE_UPDATE,
         SUNRISE_SUNSET_UPDATE,
         MODE_CHANGED,
         DOOR_STATE_CHANGED,

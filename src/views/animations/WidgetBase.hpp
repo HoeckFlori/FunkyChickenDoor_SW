@@ -1,8 +1,10 @@
 #pragma once
 
-#include <TFT.h>
 #include "IWidget.hpp"
 #include "../IModel.hpp"
+
+// foward declaration
+class Adafruit_GFX;
 
 /**
  * @brief The WidgetBase is the base for Widget implementations. It holds

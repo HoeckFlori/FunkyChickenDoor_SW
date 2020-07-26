@@ -36,6 +36,27 @@ protected:
     void printCurrentTimeToScreen(int hour, int minute, int second);
 
     /**
+     * @brief Print the now actual date to the baselayout
+     * 
+     * @param day   Day
+     * @param month Month
+     * @param year  Year
+     */
+    void printCurrentDateToScreen(int day, int month, int year);
+
+    /**
+     * @brief Write the date in format dd:mm:YYYY to screen
+     * 
+     * @param x0       Initial position left
+     * @param y0       Initial position up
+     * @param textSize Text size can be 1-3. Basic size is 5x8. Each size is multiplied by it.
+     * @param day      Day
+     * @param month    Month
+     * @param year     Year
+     */
+    void printDateToScreen(int x0, int y0, int textSize, int day, int month, int year);
+
+    /**
      * @brief Write time in format hh::mm::ss to screen
      * 
      * @param x0       Initial position left
@@ -45,7 +66,6 @@ protected:
      * @param hour     Hour 0-24
      * @param minute   Minute 0-59
      * @param second   Second0-59
-     * @param color    Text color default ST7735_WHITE
      */
     void printTimeToScreen(int x0, int y0, int textSize, bool showSeconds, int hour, int minute, int second = 0);
 

@@ -1,4 +1,5 @@
 #include "WidgetBase.hpp"
+#include <TFT.h>
 
 WidgetBase::WidgetBase(IModel *model, Adafruit_GFX *tft,
                        uint16_t colorBackground,
