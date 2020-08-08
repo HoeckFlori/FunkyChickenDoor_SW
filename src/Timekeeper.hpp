@@ -39,7 +39,7 @@ private:
 
     /**
      * @brief Adds a offset in minutes to a given date
-     * 
+     *
      * @param date The input to manipulate.
      * @param minutes the Minutes to add
      * @param startOnMidnight Resets the hours, minutes, seconds of the handed TimeDate object (default true)

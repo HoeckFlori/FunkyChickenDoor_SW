@@ -11,10 +11,17 @@ AutomaticView::AutomaticView(IModel *model, IOperatingElements *operatingElement
     drawBaseLayout();
     if (auto timekeeperAccess = m_model->getTimeKeeper())
     {
+        // print sunrise and sunset info
         auto sunrise = timekeeperAccess->getTodaysSunrise();
         printSunriseToScreen(sunrise.hour(), sunrise.minute());
         auto sunset = timekeeperAccess->getTodaysSunset();
         printSunsetToScreen(sunset.hour(), sunset.minute());
+
+        // print the opening and closing time to the door widget
+        auto doNotOpenBefore = timekeeperAccess->getTodayOpeningTime();
+        printOpeningTime(doNotOpenBefore.hour(), doNotOpenBefore.minute());
+        auto todaysClosingTime = timekeeperAccess->getTodayClosingTime();
+        printClosingTime(todaysClosingTime.hour(), todaysClosingTime.minute());
     }
 }
 
@@ -50,6 +57,10 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
             printSunriseToScreen(sunrise.hour(), sunrise.minute());
             auto sunset = timekeeperAccess->getTodaysSunset();
             printSunsetToScreen(sunset.hour(), sunset.minute());
+            auto doNotOpenBefore = timekeeperAccess->getTodayOpeningTime();
+            printOpeningTime(doNotOpenBefore.hour(), doNotOpenBefore.minute());
+            auto todaysClosingTime = timekeeperAccess->getTodayClosingTime();
+            printClosingTime(todaysClosingTime.hour(), todaysClosingTime.minute());
         }
         break;
     case IModelEventListener::Event::MODE_CHANGED:
@@ -75,6 +86,7 @@ void AutomaticView::keyEventListener(IKeyEventListener::Event event)
     switch (event)
     {
     case IKeyEventListener::Event::BUTTON_BACK:
+        m_model->orderEmergencyStop();
         break;
     case IKeyEventListener::Event::BUTTON_ENTER:
         m_model->requestModeChange();
@@ -97,7 +109,7 @@ void AutomaticView::drawBaseLayout()
     m_tft->setTextSize(1);
 
     m_tft->setTextColor(ST7735_GREEN); // change default text color
-    m_tft->setCursor(5, 43);
+    m_tft->setCursor(25, 43);
     m_tft->print(F("AUTOMATIC"));
     m_tft->setTextColor(m_defaultColorText); // switch text color bach to default
 
@@ -117,4 +129,16 @@ void AutomaticView::printSunsetToScreen(int hour, int minute)
 {
     m_tft->setTextColor(m_defaultColorText);
     printTimeToScreen(/*x*/ 65, /*y*/ 77, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+}
+
+void AutomaticView::printOpeningTime(int hour, int minute)
+{
+    m_tft->setTextColor(m_defaultColorText);
+    printTimeToScreen(/*x*/ 120, /*y*/ 8, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+}
+
+void AutomaticView::printClosingTime(int hour, int minute)
+{
+    m_tft->setTextColor(m_defaultColorText);
+    printTimeToScreen(/*x*/ 120, /*y*/ 114, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }

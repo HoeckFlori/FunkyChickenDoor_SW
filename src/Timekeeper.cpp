@@ -61,12 +61,8 @@ void Timekeeper::setTime(const DateTime &newTime)
     m_myClock.adjust(newTime);
 }
 
-// START WORKING
-
 void Timekeeper::setDoNotOpenBefore(int hour, int minute)
 {
-    // add here the access to the currently not implemented not volantile storage for this information
-
     m_doNotOpenBeforeOption._optionEnabled = true;
     m_doNotOpenBeforeOption._hour = hour;
     m_doNotOpenBeforeOption._minute = minute;
@@ -79,9 +75,7 @@ void Timekeeper::setDoNotOpenBefore(int hour, int minute)
 
 void Timekeeper::disableDoNotOpenBefore()
 {
-    // add here the access to the currently not implemented not volantile storage for this information
     m_doNotOpenBeforeOption._optionEnabled = false;
-
     if (m_dataStorage)
     {
         m_dataStorage->setDoNotOpenBeforeOption(m_doNotOpenBeforeOption);
@@ -90,13 +84,35 @@ void Timekeeper::disableDoNotOpenBefore()
 
 DateTime &Timekeeper::getTodayOpeningTime()
 {
-    // TODO
+    if (m_doNotOpenBeforeOption._optionEnabled)
+    {
+        DateTime doNotOpenBeforeTemp(getTodaysSunrise().year(),
+                                     getTodaysSunrise().month(),
+                                     getTodaysSunrise().day(),
+                                     m_doNotOpenBeforeOption._hour,
+                                     m_doNotOpenBeforeOption._minute,
+                                     0);
+
+        if (m_todaysSunrise >= doNotOpenBeforeTemp)
+        { // the today sunrise is later the the 'not open before limitation'
+            m_todayOpeningTime = m_todaysSunrise;
+        }
+        else
+        { // the todays sunrise would be before the allowed opening time. Limit this.
+            m_todayOpeningTime = doNotOpenBeforeTemp;
+        }
+    }
+    else
+    { // opening time is the sunrise time, like the cock prefers
+        m_todayOpeningTime = m_todaysSunrise;
+    }
     return m_todayOpeningTime;
 }
 
 DateTime &Timekeeper::getTodayClosingTime()
 {
     // TODO
+    m_todayClosingTime = m_todaysSunset;
     return m_todayClosingTime;
 }
 
@@ -133,8 +149,7 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
     TimeSpan timeOffset(minutes * 60);
     if (startOnMidnight)
     {
-        DateTime newTime(date.year(), date.month(), date.day(),
-                         0, 0, 0);
+        DateTime newTime = DateTime(date.year(), date.month(), date.day(), 0, 0, 0 );
         date = newTime;
     }
     date = date + timeOffset;

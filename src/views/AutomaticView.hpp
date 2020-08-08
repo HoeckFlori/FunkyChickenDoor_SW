@@ -27,7 +27,7 @@ private:
     /**
      * @brief Print the todays sunrise to the screen
      * 
-     * @param hour   Hour 0-24
+     * @param hour   Hour 0-23
      * @param minute Minute 0-59
      */
     void printSunriseToScreen(int hour, int minute);
@@ -35,8 +35,24 @@ private:
     /**
      * @brief Print the todays sunset to the screen
      * 
-     * @param hour   Hour 0-24
+     * @param hour   Hour 0-23
      * @param minute Minute 0-59
      */
     void printSunsetToScreen(int hour, int minute);
+
+    /**
+     * @brief Print the today opening time to the screen
+     * 
+     * @param hour   Hour 0-23
+     * @param minute Minute 0-59
+     */
+    void printOpeningTime(int hour, int minute);
+
+    /**
+     * @brief Print the today closing time to the screen
+     * 
+     * @param hour   Hour 0-23
+     * @param minute Minute 0-59
+     */
+    void printClosingTime(int hour, int minute);
 };
