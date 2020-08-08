@@ -85,3 +85,16 @@ IDataStorage::doNotOpenBeforeOption DataStorage::getDoNotOpenBeforeOption()
     retVal = EEPROM.get(_doNotOpenBeforeOption, retVal);
     return retVal;
 }
+
+void DataStorage::setClosingDelayOption(const IDataStorage::closingDelayOption &setting)
+{
+    EEPROM.put(_closingDelayOption, setting);
+}
+
+IDataStorage::closingDelayOption DataStorage::getClosingDelayOption()
+{
+    IDataStorage::closingDelayOption retVal;
+    retVal = EEPROM.get(_closingDelayOption, retVal);
+    return retVal;
+}
+

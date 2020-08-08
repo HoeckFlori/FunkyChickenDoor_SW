@@ -17,6 +17,8 @@ public:
     void setTime(const DateTime &newTime) override;
     void setDoNotOpenBefore(int hour, int minute) override;
     void disableDoNotOpenBefore() override;
+    void setClosingDelay(uint16_t mm) override;
+    void disableClosingDelay() override;
     DateTime &getTodayOpeningTime() override;
     DateTime &getTodayClosingTime() override;
     void setDaylightSaving(bool daylightSaving) override;
@@ -35,6 +37,7 @@ private:
     DateTime m_todayOpeningTime;
     DateTime m_todayClosingTime;
     IDataStorage::doNotOpenBeforeOption m_doNotOpenBeforeOption;
+    IDataStorage::closingDelayOption m_closingDelayOption;
     bool m_daylightSaving;
 
     /**

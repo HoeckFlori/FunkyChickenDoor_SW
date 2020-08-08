@@ -45,6 +45,8 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("setDaylightSaving", setDaylightSaving);
     CLI.addCommand("enableNotOpenBefore", enableNotOpenBefore);
     CLI.addCommand("disableNotOpenBefore", disableNotOpenBefore);
+    CLI.addCommand("enableClosingDelay", enableClosingDelay);
+    CLI.addCommand("disableClosingDelay", disableClosingDelay);
     CLI.addCommand("setPosition", setPosition);
     CLI.addCommand("initDoor", initDoor);
     CLI.addCommand("openDoor", openDoor);
@@ -78,6 +80,8 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'setDaylightSaving'    Active the dayligh option (summer time)"));
     dev->println(F(" -> 'enableNotOpenBefore'  Enable the 'do not open before option x:xx o'clock' option"));
     dev->println(F(" -> 'disableNotOpenBefore' Disable the 'do not open before ...' option"));
+    dev->println(F(" -> 'enableClosingDelay'   Enable the 'closing delay in minutes after sunset' option"));
+    dev->println(F(" -> 'disableClosingDelay'  Disable the 'closing delay in minutes after sunset' option"));
     dev->println(F(" -> 'setPosition' Set position of your chicken house"));
     dev->println(F(" -> 'initDoor'    Start door initialization process"));
     dev->println(F(" -> 'openDoor'    Open door manually  (changes also the operation mode)"));
@@ -257,6 +261,37 @@ int ConsoleAgent::disableNotOpenBefore(CLIClient *dev, int argc, char **argv)
     return 0;
 }
 
+int ConsoleAgent::enableClosingDelay(CLIClient *dev, int argc, char **argv)
+{
+    if ((argc == 1) || (argc > 2))
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'enableClosingDelay 20 (min)'"));
+        return -1;
+    }
+
+    uint16_t mm(0);
+
+    // extract time
+    String time(argv[1]);
+    mm = time.toInt();
+
+    m_mySelf->m_timeKeeper->setClosingDelay(mm);
+    return 0;
+}
+
+int ConsoleAgent::disableClosingDelay(CLIClient *dev, int argc, char **argv)
+{
+    if (argc != 1)
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> error, too many arguments"));
+        return -1;
+    }
+    m_mySelf->m_timeKeeper->disableClosingDelay();
+    return 0;
+}
+
 int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
 {
     float latitude;
@@ -329,7 +364,7 @@ int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 {
     // show OperationMode status
-    dev->print(F("OperationMode: '"));
+    dev->print(F("OperationMode:     '"));
     dev->print(m_mySelf->m_operationMode->getOpModeHumanReadable());
     dev->println(F("'"));
 
@@ -356,13 +391,13 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
     if (m_mySelf->m_dataStorage)
     {
         // show position
-        dev->print(F("Position: "));
+        dev->print(F("Position:          "));
         dev->print(m_mySelf->m_dataStorage->getPositionLatitude(), 5);
         dev->print(F(", "));
         dev->println(m_mySelf->m_dataStorage->getPositionLongitude(), 5);
 
         // show timezone
-        dev->print(F("Timezone: "));
+        dev->print(F("Timezone:          "));
         dev->println(m_mySelf->m_dataStorage->getTimeZone(), 0);
 
         // show doNotOpenBefore
@@ -378,10 +413,21 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
             dev->print(F(" o'clock"));
         }
         dev->println(F(""));
+
+        // show closingDelay
+        auto closingDelay = m_mySelf->m_dataStorage->getClosingDelayOption();
+        dev->print(F("ClosingDelayOption:    '"));
+        dev->print(closingDelay._optionEnabled ? F("enabled' to ") : F("off'"));
+        if (closingDelay._optionEnabled)
+        {
+            dev->print(closingDelay._minutes);
+            dev->print(F(" minute(s) after sunset"));
+        }
+        dev->println(F(""));
     }
 
     // show door status
-    dev->print(F("Doorstatus: '"));
+    dev->print(F("Doorstatus:        '"));
     dev->print(m_mySelf->m_doorSteering->getDoorStateHumanReadable());
     dev->println(F("'"));
 

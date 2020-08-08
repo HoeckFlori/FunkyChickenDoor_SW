@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 // forward declaration
 class DateTime;
@@ -20,6 +21,8 @@ public:
     virtual void setTime(const DateTime &newTime) = 0;
     virtual void setDoNotOpenBefore(int hour, int minute) = 0;
     virtual void disableDoNotOpenBefore() = 0;
+    virtual void setClosingDelay(uint16_t mm) = 0;
+    virtual void disableClosingDelay() = 0;
     virtual DateTime &getTodayOpeningTime() = 0;
     virtual DateTime &getTodayClosingTime() = 0;
     virtual void setDaylightSaving(bool daylightSaving) = 0;

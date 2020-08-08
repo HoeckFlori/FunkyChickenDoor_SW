@@ -14,6 +14,13 @@ public:
         uint8_t _minute;
     };
 
+    struct closingDelayOption
+    {
+        closingDelayOption(bool enabled = false, uint16_t minutes = 0) : _optionEnabled(enabled), _minutes(minutes) {}
+        bool _optionEnabled;
+        uint16_t _minutes;
+    };
+
     virtual bool getDayLightSavingSetting() const = 0;
     virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
 
@@ -28,14 +35,17 @@ public:
     virtual void setDoNotOpenBeforeOption(const IDataStorage::doNotOpenBeforeOption &setting) = 0;
     virtual IDataStorage::doNotOpenBeforeOption getDoNotOpenBeforeOption() = 0;
 
+    virtual void setClosingDelayOption(const IDataStorage::closingDelayOption &setting) = 0;
+    virtual IDataStorage::closingDelayOption getClosingDelayOption() = 0;
+
     /*
     Settings we will need to persist
     [X] Daylight saving option, yes/no
     [X] Position
     [X] Operation mode
     [ ] Opening delay sunrise, +/- minutes
-    [ ] 'Do not open before' option, yes/no
-    [ ] 'Do not open before' time, Time
+    [x] 'Do not open before' option, yes/no
+    [x] 'Do not open before' time, Time
     [ ] Closing delay sunset,  +- minutes
     [ ] 'Open close timeout', seconds (maybe)
     */

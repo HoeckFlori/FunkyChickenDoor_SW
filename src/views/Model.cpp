@@ -37,10 +37,15 @@ void Model::cycle()
 
         auto newSunrise = m_timeKeeper->getTodaysSunrise();
         auto newSunset = m_timeKeeper->getTodaysSunset();
-        if ((newSunrise != m_sunrise) || (newSunset != m_sunset))
+        auto newOpeningTime = m_timeKeeper->getTodayOpeningTime();
+        auto newClosingTime = m_timeKeeper->getTodayClosingTime();
+        if ((newSunrise != m_sunrise) || (newSunset != m_sunset) || (newOpeningTime != m_openingTime) || (newClosingTime != m_closingTime))
         { // sunrise or sunset or both has changed
             m_sunrise = newSunrise;
             m_sunset = newSunset;
+            m_openingTime = newOpeningTime;
+            m_closingTime = newClosingTime;
+
             // inform listener, if available
             if (m_eventListener != nullptr)
             {

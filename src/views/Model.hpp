@@ -28,9 +28,11 @@ private:
 
     IModelEventListener *m_eventListener;
 
-    // // working variables
+    // working variables
     DateTime m_timestamp;
     DateTime m_sunrise;
     DateTime m_sunset;
+    DateTime m_openingTime;
+    DateTime m_closingTime;
     IDoorSteering::DoorState m_doorState;
 };

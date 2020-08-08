@@ -15,6 +15,7 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
     {
         m_daylightSaving = m_dataStorage->getDayLightSavingSetting();
         m_doNotOpenBeforeOption = m_dataStorage->getDoNotOpenBeforeOption();
+        m_closingDelayOption = m_dataStorage->getClosingDelayOption();
     }
     else
     {
@@ -82,6 +83,27 @@ void Timekeeper::disableDoNotOpenBefore()
     }
 }
 
+void Timekeeper::setClosingDelay(uint16_t mm)
+{
+    m_closingDelayOption._optionEnabled = true;
+    m_closingDelayOption._minutes = mm;
+
+    if (m_dataStorage)
+    {
+        m_dataStorage->setClosingDelayOption(m_closingDelayOption);
+    }
+}
+
+void Timekeeper::disableClosingDelay()
+{
+    m_closingDelayOption._optionEnabled = false;
+    if (m_dataStorage)
+    {
+        m_dataStorage->setClosingDelayOption(m_closingDelayOption);
+    }
+}
+
+
 DateTime &Timekeeper::getTodayOpeningTime()
 {
     if (m_doNotOpenBeforeOption._optionEnabled)
@@ -111,12 +133,13 @@ DateTime &Timekeeper::getTodayOpeningTime()
 
 DateTime &Timekeeper::getTodayClosingTime()
 {
-    // TODO
     m_todayClosingTime = m_todaysSunset;
+    if (m_closingDelayOption._optionEnabled)
+    {
+        addMinutesToDate(m_todayClosingTime, m_closingDelayOption._minutes, false);
+    }
     return m_todayClosingTime;
 }
-
-// END WORKING
 
 void Timekeeper::setDaylightSaving(bool daylightSaving)
 {
