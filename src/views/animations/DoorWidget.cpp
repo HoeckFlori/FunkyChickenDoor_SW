@@ -11,6 +11,7 @@ DoorWidget::DoorWidget(IModel *model, Adafruit_GFX *tft,
                  colorFrames,
                  colorText,
                  x0, y0),
+      m_doorflapPreviousPercentOpen(-1),
       m_animationClosingActive(false),
       m_animationOpeningActive(false),
       m_animationInitialization(false),
@@ -22,7 +23,7 @@ DoorWidget::DoorWidget(IModel *model, Adafruit_GFX *tft,
 void DoorWidget::setup()
 {
     // draw the frame of the complete 'door arrangement'
-    m_tft->fillRoundRect(m_x0, m_y0, m_outerWidth, m_outerHeight, /*radius*/ 4, m_defaultColorFrames);
+    m_tft->fillRoundRect(m_x0, m_y0, m_outerWidth, m_outerHeight, /*radius*/ 0, m_defaultColorFrames);
     drawClearInnerPartOfTheDoorAssembly();
 }
 
@@ -98,33 +99,70 @@ void DoorWidget::drawClearInnerPartOfTheDoorAssembly()
 
 void DoorWidget::drawDoorflap(uint8_t percentOpen)
 {
-    auto minY = m_y0 + m_outerFrameThickness;
-    auto maxY = m_y0 + m_outerHeight - m_outerFrameThickness - m_doorflapHeight;
-    auto yRange = maxY - minY;
-
     // check and correct upper limit if needed
     percentOpen = percentOpen > 100 ? 100 : percentOpen;
 
-    auto yOffset = yRange * (100 - percentOpen) / 100;
+    auto yOffset = m_doorflapYRange * (100 - percentOpen) / 100;
 
-    drawClearInnerPartOfTheDoorAssembly();
 
-    auto color_greyOuterFrame = m_tft->newColor(0xA0, 0xA0, 0xA0);
-    auto color_greyInlet = m_tft->newColor(0xE0, 0xE0, 0xE0);
-    // draw outer frame
-    m_tft->fillRoundRect(m_x0 + m_outerFrameThickness,
-                         m_y0 + yOffset + m_outerFrameThickness,
-                         m_doorflapWidth,
-                         m_doorflapWidth,
-                         /*radius*/ 1,
-                         color_greyOuterFrame);
-    // draw inlet
-    m_tft->fillRoundRect(m_x0 + m_outerFrameThickness + 2,
-                         m_y0 + yOffset + m_outerFrameThickness + 2,
-                         m_doorflapWidth - 4,
-                         m_doorflapWidth - 4,
-                         /*radius*/ 1,
-                         color_greyInlet);
+    if (m_doorflapPreviousPercentOpen < 0)
+    { // draw complete door
+        drawClearInnerPartOfTheDoorAssembly();
+        m_tft->fillRoundRect(m_doorflapX0,
+                             m_doorflapY0 + yOffset, // !
+                             m_doorflapWidth,
+                             m_doorflapHeight,
+                             /*radius*/ 0,
+                             m_doorflapColor);
+    }
+    else
+    {
+        // calculate previous offset
+        auto yOffsetPrevious = m_doorflapYRange * (100 - m_doorflapPreviousPercentOpen) / 100;
+        
+        // draw new additional part of the door
+        if (yOffset < yOffsetPrevious)
+        { // new part above
+            m_tft->fillRoundRect(m_doorflapX0,
+                                 m_doorflapY0 + yOffset, // !
+                                 m_doorflapWidth,
+                                 yOffsetPrevious - yOffset,
+                                 /*radius*/ 0,
+                                 m_doorflapColor);
+        }
+        else
+        { // new part below
+            m_tft->fillRoundRect(m_doorflapX0,
+                                 m_doorflapY0 + yOffsetPrevious + m_doorflapHeight, // !
+                                 m_doorflapWidth,
+                                 yOffset - yOffsetPrevious,
+                                 /*radius*/ 0,
+                                 m_doorflapColor);
+        }
+
+        // delete now not longer need part of the door
+        if (yOffset < yOffsetPrevious)
+        { // new part above -> delete the part below
+            m_tft->fillRoundRect(m_doorflapX0,
+                                 m_doorflapY0 + yOffset + m_doorflapHeight, // !
+                                 m_doorflapWidth,
+                                 yOffsetPrevious - yOffset,
+                                 /*radius*/ 0,
+                                 m_defaultColorBackground);
+        }
+        else
+        { // new part below -> delete the part above
+            m_tft->fillRoundRect(m_doorflapX0,
+                                 m_doorflapY0 + yOffsetPrevious, // !
+                                 m_doorflapWidth,
+                                 yOffset - yOffsetPrevious,
+                                 /*radius*/ 0,
+                                 m_defaultColorBackground);
+        }
+    }
+
+    // save opening state for next frame to speed up the animation time
+    m_doorflapPreviousPercentOpen = percentOpen;
 }
 
 void DoorWidget::drawError()
@@ -154,6 +192,7 @@ void DoorWidget::startAnimationOpening()
     m_animationOpeningActive = true; // (!)
     m_animationClosingActive = false;
     m_animationInitialization = false;
+    m_doorflapPreviousPercentOpen = -1;
     drawClearInnerPartOfTheDoorAssembly();
     m_lastAnimationTimestamp = millis();
 }
@@ -163,6 +202,7 @@ void DoorWidget::startAnimationClosing()
     m_animationOpeningActive = false;
     m_animationClosingActive = true; // (!)
     m_animationInitialization = false;
+    m_doorflapPreviousPercentOpen = -1;
     drawClearInnerPartOfTheDoorAssembly();
     m_lastAnimationTimestamp = millis();
 }
@@ -185,6 +225,7 @@ void DoorWidget::stopAnimations()
     m_animationClosingActive = false;
     m_animationOpeningActive = false;
     m_animationInitialization = false;
+    m_doorflapPreviousPercentOpen = -1;
     m_animationCounterRunner = 0;
 }
 

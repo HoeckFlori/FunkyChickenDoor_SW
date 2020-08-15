@@ -25,12 +25,21 @@ public:
     void passModelEventToWidget(IModelEventListener::Event event) override;
 
 private:
+    // Widget size itsefl
     const int16_t m_outerWidth = 42;
     const int16_t m_outerHeight = 88;
     const int16_t m_outerFrameThickness = 2;
+
+    // doorflap constants
     const int16_t m_doorflapWidth = m_outerWidth - 2 * m_outerFrameThickness;
     const int16_t m_doorflapHeight = m_doorflapWidth; // we have a square flap
+    const int16_t m_doorflapX0 = m_x0 + m_outerFrameThickness;
+    const int16_t m_doorflapY0 = m_y0 + m_outerFrameThickness;
+    const int16_t m_doorflapYRange = m_outerHeight - (2 * m_outerFrameThickness) - m_doorflapHeight;
+    const uint16_t m_doorflapColor = m_tft->newColor(0xE0, 0xE0, 0xE0);
+    int m_doorflapPreviousPercentOpen; // the previously known opening (used for faster animations)
 
+    // helper information
     const int16_t m_xCenter = m_x0 + m_outerWidth / 2;
     const int16_t m_yCenter = m_y0 + m_outerHeight / 2;
 
@@ -58,8 +67,8 @@ private:
     bool m_animationOpeningActive;
     bool m_animationInitialization;
     int16_t m_animationCounterRunner;
-    const int16_t m_animationCounterMax = 8;
-    const int16_t m_animationTimeStepsInMs = 200;
+    const int16_t m_animationCounterMax = 30;
+    const int16_t m_animationTimeStepsInMs = 50;
     unsigned long m_lastAnimationTimestamp;
 
     /**
