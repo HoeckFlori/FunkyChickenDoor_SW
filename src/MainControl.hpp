@@ -7,6 +7,7 @@
 #include "IDoorSteering.hpp"
 // #include "ISleepingGuard.hpp"
 #include "IOperationModeManager.hpp"
+#include "IEnergySavingMaster.hpp"
 
 class MainControl
 {
@@ -27,4 +28,5 @@ private:
     IDataStorage *m_dataStorage;
     IViewController *m_viewController;
     IOperationModeManager *m_operationMode;
+    IEnergySavingMaster *m_energySavingMaster;
 };

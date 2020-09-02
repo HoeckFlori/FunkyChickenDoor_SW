@@ -5,7 +5,7 @@
 #include "OperatingElements.hpp"
 #include "TFT.h"
 
-ViewController::ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering)
+ViewController::ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IEnergySavingMaster *energySavingMaster)
     : m_activeView(nullptr),
       m_operationModeManager(operationModeManager) /*,
       m_lastKnownOperationMode(IOperationModeManager::OpMode::UNDEFINED) */
@@ -19,8 +19,14 @@ ViewController::ViewController(IOperationModeManager *operationModeManager, ITim
                                 9 /* RST (Reset pin)*/);
     m_tft->initR(INITR_BLACKTAB); // Init ST7735S chip, black tab (You will need to do this in every sketch)
     m_tft->setRotation(3);        // rotate screen to use it in "wide mode"
+    
+    m_backlightControl = new BacklightControl(4);
+    m_backlightControl->setDefaultIlluminance(100 /* % */);
+    m_backlightControl->setDimmedIlluminance(  25 /* % */);
 
-    m_operatingElements = new OperatingElements();
+    energySavingMaster->registerClient(m_backlightControl); // register the BacklightController as client to the EnergySavingMaster to get informed about SystemState changes
+
+    m_operatingElements = new OperatingElements(energySavingMaster);
 
     // set initial view
     setViewForOpMode(m_lastKnownOperationMode);

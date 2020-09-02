@@ -46,18 +46,7 @@ public:
     [ ] Opening delay sunrise, +/- minutes
     [x] 'Do not open before' option, yes/no
     [x] 'Do not open before' time, Time
-    [ ] Closing delay sunset,  +- minutes
+    [X] Closing delay sunset,  +- minutes
     [ ] 'Open close timeout', seconds (maybe)
     */
-
-    /*
-   proposals for the CLI:
-    
-    setDoNotOpenBefore(06:00)
-    disableDoNotOpenBefore()
-
-
-    setClosingDelay(int minutes)
-    setOpeningDelay(int minutes)
-   */
 };

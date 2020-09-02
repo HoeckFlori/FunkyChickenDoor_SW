@@ -17,6 +17,7 @@ public:
 
     /**
      * @brief Register listener for user-triggered key events.
+     *        (a previously registered listener is deleted!)
      * 
      * @param listener The listener
      */

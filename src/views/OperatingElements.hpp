@@ -2,13 +2,15 @@
 
 #include <JC_Button.h>
 #include "IOperatingElements.hpp"
+#include "../IEnergySavingMaster.hpp"
 
 class OperatingElements : public virtual IOperatingElements
 {
 public:
-    OperatingElements();
+    OperatingElements(IEnergySavingPreventor *energySavingPreventor);
     ~OperatingElements() = default;
 
+    // IOperatingElements
     void cycle() override;
     void registerKeyEventListener(IKeyEventListener *listener) override;
     void removeKeyEventListener() override;
@@ -21,5 +23,6 @@ private:
     Button m_upButton;
     Button m_downButton;
 
-    IKeyEventListener *m_listener;
+    IKeyEventListener *m_keyEventListener;
+    IEnergySavingPreventor *m_energySavingPreventor;
 };

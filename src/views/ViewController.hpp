@@ -7,6 +7,8 @@
 #include "IModel.hpp"
 #include "IOperatingElements.hpp"
 #include "IOperationModeManager.hpp"
+#include "BacklightControl.hpp"
+#include "../IEnergySavingMaster.hpp"
 
 // foward declaration
 class Adafruit_ST7735;
@@ -14,7 +16,7 @@ class Adafruit_ST7735;
 class ViewController : public virtual IViewController
 {
 public:
-    ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering);
+    ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IEnergySavingMaster *energySavingMaster);
     ~ViewController() = default;
 
     // IViewController
@@ -25,14 +27,10 @@ public:
 private:
     IModel *m_model;
     Adafruit_ST7735 *m_tft;
+    BacklightControl *m_backlightControl;
+
     IView *m_activeView;
     IOperatingElements *m_operatingElements;
     IOperationModeManager *m_operationModeManager;
     IOperationModeManager::OpMode m_lastKnownOperationMode;
-
-    // //scribling:
-    // void requestViewRenewal(); // callback which can get called from the active view in case of OperationMode change, redrawing everything, ...
-    // //Achtung, wenn wir die View damit direkt abschießen haben wir ein unbestimmtes verhalten, da sich die view selbst einen Kopfschuß geben würde
-
-    // bool m_requestViewRenewal;
 };
