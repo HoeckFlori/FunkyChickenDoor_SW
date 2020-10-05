@@ -1,7 +1,8 @@
 #include "OperationModeManager.hpp"
 
-OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess)
-    : m_dataStorage(dataStorageAccess)
+OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess, IDoorSteering *doorSteering)
+    : m_dataStorage(dataStorageAccess),
+      m_doorSteering(doorSteering)
 {
     // Restore last known OperationMode
     m_mode = static_cast<OpMode>(m_dataStorage->getOperationMode());
@@ -10,6 +11,24 @@ OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess)
     if (m_mode == OpMode::UNDEFINED)
     {
         changeMode(OpMode::MANUAL);
+    }
+}
+
+void OperationModeManager::cycle()
+{
+    switch (m_mode)
+    {
+    case OpMode::AUTOMATIC:
+        /* code */
+        break;
+
+    case OpMode::MANUAL:
+        /* code */
+        break;
+    
+    case OpMode::UNDEFINED:
+        /* code */
+        break;
     }
 }
 

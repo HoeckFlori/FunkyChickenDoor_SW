@@ -20,6 +20,11 @@ public:
     };
 
     /**
+     * @brief The cycle for this module
+     */
+    virtual void cycle() = 0;
+
+    /**
      * @brief Get the actual system wide set OperationMode
      * 
      * @return OperationMode The current Mode
