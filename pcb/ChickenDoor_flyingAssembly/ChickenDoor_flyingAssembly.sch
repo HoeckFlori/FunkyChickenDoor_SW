@@ -375,18 +375,18 @@ SW_DownButton
 Wire Wire Line
 	4250 4100 5150 4100
 Wire Wire Line
+	4250 4200 5150 4200
+Wire Wire Line
 	4250 4300 5150 4300
 Wire Wire Line
-	4250 4500 5150 4500
-Wire Wire Line
-	4250 4700 5150 4700
+	4250 4400 5150 4400
 Text Label 5150 4100 2    50   ~ 0
 SW_BackButton
-Text Label 5150 4300 2    50   ~ 0
+Text Label 5150 4200 2    50   ~ 0
 SW_EnterButton
-Text Label 5150 4500 2    50   ~ 0
+Text Label 5150 4300 2    50   ~ 0
 SW_UpButton
-Text Label 5150 4700 2    50   ~ 0
+Text Label 5150 4400 2    50   ~ 0
 SW_DownButton
 $Comp
 L Relay:FINDER-32.21-x000 K?
@@ -668,20 +668,16 @@ Door flap switch UP position
 Text Notes 3400 12850 0    50   ~ 10
 Door flap switch DOWN position
 Wire Wire Line
-	4250 5100 5200 5100
-Wire Wire Line
-	4250 5200 5200 5200
-Text Label 5200 5100 2    50   ~ 0
-DoorPositionUp
-Text Label 5200 5200 2    50   ~ 0
+	4250 4600 5150 4600
+Text Label 5150 4600 2    50   ~ 0
 DoorPositionDown
 Wire Wire Line
-	4250 5000 5150 5000
+	4250 3400 5150 3400
 Wire Wire Line
-	4250 4900 5150 4900
-Text Label 5150 5000 2    50   ~ 0
+	4250 3300 5150 3300
+Text Label 5150 3400 2    50   ~ 0
 Motor_Up
-Text Label 5150 4900 2    50   ~ 0
+Text Label 5150 3300 2    50   ~ 0
 Motor_Down
 Wire Wire Line
 	5950 9250 6650 9250
@@ -777,4 +773,8 @@ Wire Wire Line
 Wire Wire Line
 	9200 12500 9200 11550
 Connection ~ 8600 12500
+Text Label 5150 4500 2    50   ~ 0
+DoorPositionUp
+Wire Wire Line
+	4250 4500 5150 4500
 $EndSCHEMATC

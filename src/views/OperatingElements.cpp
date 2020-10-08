@@ -2,9 +2,9 @@
 
 OperatingElements::OperatingElements(IEnergySavingPreventor *energySavingPreventor)
     : m_backButton(22 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
-      m_enterButton(24 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
-      m_upButton(26 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
-      m_downButton(28 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
+      m_enterButton(23 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
+      m_upButton(24 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
+      m_downButton(25 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
       m_energySavingPreventor(energySavingPreventor)
 {
     m_backButton.begin();
