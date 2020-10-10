@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name arduino)(type Legacy)(uri "/home/florian/Dokumente/Projekte Privat/2020_Huehnerstall/Klappe/Software/ChickenDoor/pcb/extLibs/arduino-kicad-library/arduino.lib")(options "")(descr ""))
-  (lib (name SparkFun-Displays)(type Legacy)(uri "/home/florian/Dokumente/Projekte Privat/2020_Huehnerstall/Klappe/Software/ChickenDoor/pcb/extLibs/SparkFun-KiCad-Libraries/Libraries/SparkFun-Displays.lib")(options "")(descr ""))
-)
