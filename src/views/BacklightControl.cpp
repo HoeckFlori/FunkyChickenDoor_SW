@@ -2,10 +2,10 @@
 #include "Arduino.h"
 
 
-BacklightControl::BacklightControl(int outputPin)
+BacklightControl::BacklightControl(int outputPin, uint8_t initialDefaultIlluminance, uint8_t initialDimmedIlluminance)
  : c_tftDimmingControlPin(outputPin),
-   m_defaultIlluminance(100),
-   m_dimmedIlluminance(50)
+   m_defaultIlluminance(initialDefaultIlluminance),
+   m_dimmedIlluminance(initialDimmedIlluminance)
 {
     pinMode(c_tftDimmingControlPin, OUTPUT);
     activateDefaultIlluminance();
@@ -23,12 +23,12 @@ void BacklightControl::setDimmedIlluminance(uint8_t percent)
 
 void BacklightControl::activateDefaultIlluminance()
 {
-    analogWrite(c_tftDimmingControlPin, int16_t(m_defaultIlluminance) * 255 / 100); // analogWrite values from 0 to 255
+    analogWrite(c_tftDimmingControlPin, int16_t(100-m_defaultIlluminance) * 255 / 100); // analogWrite values from 0 to 255
 }
 
 void BacklightControl::activateDimmedIlluminance()
 {
-    analogWrite(c_tftDimmingControlPin, int16_t(m_dimmedIlluminance) * 255 / 100); // analogWrite values from 0 to 255
+    analogWrite(c_tftDimmingControlPin, int16_t(100-m_dimmedIlluminance) * 255 / 100); // analogWrite values from 0 to 255
 }
 
 void BacklightControl::deactivateBacklight()

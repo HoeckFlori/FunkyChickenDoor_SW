@@ -142,20 +142,20 @@ void DoorSteering::openDoor()
 
 void DoorSteering::stopMotorActions()
 {
-    digitalWrite(c_motorUpPin, HIGH);
-    digitalWrite(c_motorDownPin, HIGH);
+    digitalWrite(c_motorUpPin, LOW);
+    digitalWrite(c_motorDownPin, LOW);
 }
 
 void DoorSteering::activateMotorUp()
 {
-    digitalWrite(c_motorUpPin, LOW);
-    digitalWrite(c_motorDownPin, HIGH);
+    digitalWrite(c_motorUpPin, HIGH);
+    digitalWrite(c_motorDownPin, LOW);
 }
 
 void DoorSteering::activateMotorDown()
 {
-    digitalWrite(c_motorUpPin, HIGH);
-    digitalWrite(c_motorDownPin, LOW);
+    digitalWrite(c_motorUpPin, LOW);
+    digitalWrite(c_motorDownPin, HIGH);
 }
 
 

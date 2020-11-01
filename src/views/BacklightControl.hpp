@@ -6,7 +6,7 @@
 class BacklightControl : public virtual IEnergySavingClient
 {
     public:
-        BacklightControl(int outputPin);
+        BacklightControl(int outputPin, uint8_t initialDefaultIlluminance, uint8_t initialDimmedIlluminance);
         virtual ~BacklightControl() = default;
 
         void setDefaultIlluminance(uint8_t percent);

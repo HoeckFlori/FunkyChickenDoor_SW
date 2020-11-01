@@ -18,11 +18,9 @@ ViewController::ViewController(IOperationModeManager *operationModeManager, ITim
                                 8 /* A0  (TFT SPI data or command selector pin) */,
                                 9 /* RST (Reset pin)*/);
     m_tft->initR(INITR_BLACKTAB); // Init ST7735S chip, black tab (You will need to do this in every sketch)
-    m_tft->setRotation(3);        // rotate screen to use it in "wide mode"
+    m_tft->setRotation(1);        // Rotate screen to use it in "wide mode". write '3' here when your display is upside down
     
-    m_backlightControl = new BacklightControl(4);
-    m_backlightControl->setDefaultIlluminance(100 /* % */);
-    m_backlightControl->setDimmedIlluminance(  25 /* % */);
+    m_backlightControl = new BacklightControl(4, 100 /* % default illmuninance */, 25/* % dimmed illmuninance */);
 
     energySavingMaster->registerClient(m_backlightControl); // register the BacklightController as client to the EnergySavingMaster to get informed about SystemState changes
 
