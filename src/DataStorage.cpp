@@ -98,3 +98,14 @@ IDataStorage::closingDelayOption DataStorage::getClosingDelayOption()
     return retVal;
 }
 
+void DataStorage::setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting)
+{
+    EEPROM.put(_artificialMorningLightOption, setting);
+}
+
+IDataStorage::artificialMorningLightOption DataStorage::getArtificialMorningLightOption()
+{
+    IDataStorage::artificialMorningLightOption retVal;
+    retVal = EEPROM.get(_artificialMorningLightOption, retVal);
+    return retVal;
+}

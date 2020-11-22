@@ -30,6 +30,8 @@ private:
     static int disableNotOpenBefore(CLIClient *dev, int argc, char **argv);
     static int enableClosingDelay(CLIClient *dev, int argc, char **argv);
     static int disableClosingDelay(CLIClient *dev, int argc, char **argv);
+    static int enableArtificalMorningLight(CLIClient *dev, int argc, char **argv);
+    static int disableArtificalMorningLight(CLIClient *dev, int argc, char **argv);
     static int setPosition(CLIClient *dev, int argc, char **argv);
     static int initDoor(CLIClient *dev, int argc, char **argv);
     static int openDoor(CLIClient *dev, int argc, char **argv);

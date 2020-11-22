@@ -24,6 +24,9 @@ public:
     void setClosingDelayOption(const IDataStorage::closingDelayOption &setting) override;
     IDataStorage::closingDelayOption getClosingDelayOption() override;
 
+    void setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting) override;
+    IDataStorage::artificialMorningLightOption getArtificialMorningLightOption() override;
+
 private:
     // memory mapping
     const int _formatInfo = 0;
@@ -34,4 +37,5 @@ private:
     const int _operationMode = _timeZone + sizeof(float);
     const int _doNotOpenBeforeOption = _operationMode + sizeof(int);
     const int _closingDelayOption = _doNotOpenBeforeOption + sizeof(IDataStorage::doNotOpenBeforeOption);
+    const int _artificialMorningLightOption = _closingDelayOption + sizeof(IDataStorage::closingDelayOption);
 };

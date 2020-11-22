@@ -13,9 +13,12 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
         Serial.println(F("Could not contact RTC"));
     if (m_dataStorage)
     {
+        // todo(FHk) init the m_dusk2Dawn machine, this is still missing,22.11.2020
+
         m_daylightSaving = m_dataStorage->getDayLightSavingSetting();
         m_doNotOpenBeforeOption = m_dataStorage->getDoNotOpenBeforeOption();
         m_closingDelayOption = m_dataStorage->getClosingDelayOption();
+        m_artificialMorningLightOption = m_dataStorage->getArtificialMorningLightOption();
     }
     else
     {
@@ -103,6 +106,27 @@ void Timekeeper::disableClosingDelay()
     }
 }
 
+
+void Timekeeper::setArtificialMorningLight(int hour, int minute)
+{
+    m_artificialMorningLightOption._optionEnabled = true;
+    m_artificialMorningLightOption._hour = hour;
+    m_artificialMorningLightOption._minute = minute;
+    
+    if (m_dataStorage)
+    {
+        m_dataStorage->setArtificialMorningLightOption(m_artificialMorningLightOption);
+    }
+};
+
+void Timekeeper::disableArtificialMorningLight()
+{
+    m_closingDelayOption._optionEnabled = false;
+    if (m_dataStorage)
+    {
+        m_dataStorage->setArtificialMorningLightOption(m_artificialMorningLightOption);
+    }
+};
 
 DateTime &Timekeeper::getTodayOpeningTime()
 {

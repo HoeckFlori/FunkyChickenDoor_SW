@@ -47,6 +47,8 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("disableNotOpenBefore", disableNotOpenBefore);
     CLI.addCommand("enableClosingDelay", enableClosingDelay);
     CLI.addCommand("disableClosingDelay", disableClosingDelay);
+    CLI.addCommand("enableMorningLight", enableArtificalMorningLight);
+    CLI.addCommand("disableMorningLight", disableArtificalMorningLight);
     CLI.addCommand("setPosition", setPosition);
     CLI.addCommand("initDoor", initDoor);
     CLI.addCommand("openDoor", openDoor);
@@ -82,11 +84,13 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'disableNotOpenBefore' Disable the 'do not open before ...' option"));
     dev->println(F(" -> 'enableClosingDelay'   Enable the 'closing delay in minutes after sunset' option"));
     dev->println(F(" -> 'disableClosingDelay'  Disable the 'closing delay in minutes after sunset' option"));
-    dev->println(F(" -> 'setPosition' Set position of your chicken house"));
-    dev->println(F(" -> 'initDoor'    Start door initialization process"));
-    dev->println(F(" -> 'openDoor'    Open door manually  (changes also the operation mode)"));
-    dev->println(F(" -> 'closeDoor'   Close door manually  -\"-\""));
-    dev->println(F(" -> 'showInfo'    Show all relevant information (dynamic/static) of the system"));
+    dev->println(F(" -> 'enableMorningLight'   Enable the 'artifical morning light' option for the wintertime"));
+    dev->println(F(" -> 'disableMorningLight'  Disable the 'artifical morning light' option"));
+    dev->println(F(" -> 'setPosition'          Set position of your chicken house"));
+    dev->println(F(" -> 'initDoor'             Start door initialization process"));
+    dev->println(F(" -> 'openDoor'             Open door manually  (changes also the operation mode)"));
+    dev->println(F(" -> 'closeDoor'            Close door manually  -\"-\""));
+    dev->println(F(" -> 'showInfo'             Show all relevant information (dynamic/static) of the system"));
     return 0; // no error
 }
 
@@ -105,7 +109,8 @@ int ConsoleAgent::reset(CLIClient *dev, int argc, char **argv)
     wdt_disable();
     wdt_enable(WDTO_15MS);
     while (1)
-    {
+    { 
+        // PNR
     }
     return 0;
 }
@@ -258,6 +263,7 @@ int ConsoleAgent::disableNotOpenBefore(CLIClient *dev, int argc, char **argv)
         return -1;
     }
     m_mySelf->m_timeKeeper->disableDoNotOpenBefore();
+    dev->println(F("-> 'NotOpenBefore' option turned off"));
     return 0;
 }
 
@@ -289,6 +295,42 @@ int ConsoleAgent::disableClosingDelay(CLIClient *dev, int argc, char **argv)
         return -1;
     }
     m_mySelf->m_timeKeeper->disableClosingDelay();
+        dev->println(F("-> 'ClosingDelay' option turned off"));
+    return 0;
+}
+
+int ConsoleAgent::enableArtificalMorningLight(CLIClient *dev, int argc, char **argv)
+{
+    if ((argc == 1) || (argc > 2))
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'enableMorningLight 6:20'"));
+        return -1;
+    }
+
+    uint8_t hh(0);
+    uint8_t mm(0);
+
+    // extract time
+    String time(argv[1]);
+    hh = time.toInt();
+    int indexOfColon = time.indexOf(F(":"));
+    mm = time.substring(indexOfColon + 1).toInt();
+
+    m_mySelf->m_timeKeeper->setArtificialMorningLight(hh, mm);
+    
+    dev->print(F("-> Light turns on at "));
+    dev->print(hh);
+    dev->print(":");
+    dev->print(mm);
+    dev->print(F(" o'clock, when the sun has not yet risen."));
+    return 0;
+}
+
+int ConsoleAgent::disableArtificalMorningLight(CLIClient *dev, int argc, char **argv)
+{
+    m_mySelf->m_timeKeeper->disableArtificialMorningLight();
+    dev->println(F("-> 'ArtificalMorningLight' option turned off"));
     return 0;
 }
 
@@ -402,13 +444,15 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 
         // show doNotOpenBefore
         auto doNotOpenBefore = m_mySelf->m_dataStorage->getDoNotOpenBeforeOption();
-        dev->print(F("DoNotOpenBeforeOption: '"));
+        dev->print(F("DoNotOpenBeforeOption:  '"));
         dev->print(doNotOpenBefore._optionEnabled ? F("enabled'") : F("off'"));
         if (doNotOpenBefore._optionEnabled)
         {
             dev->print(F(" @ "));
             dev->print(doNotOpenBefore._hour);
             dev->print(F(":"));
+            if(doNotOpenBefore._minute < 10)
+                dev->print(F("0"));
             dev->print(doNotOpenBefore._minute);
             dev->print(F(" o'clock"));
         }
@@ -416,12 +460,27 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 
         // show closingDelay
         auto closingDelay = m_mySelf->m_dataStorage->getClosingDelayOption();
-        dev->print(F("ClosingDelayOption:    '"));
+        dev->print(F("ClosingDelayOption:     '"));
         dev->print(closingDelay._optionEnabled ? F("enabled' to ") : F("off'"));
         if (closingDelay._optionEnabled)
         {
             dev->print(closingDelay._minutes);
             dev->print(F(" minute(s) after sunset"));
+        }
+        dev->println(F(""));
+
+        // show artificialMorningLight
+        auto artificialMorningLight = m_mySelf->m_dataStorage->getArtificialMorningLightOption();
+        dev->print(F("ArtificialMorningLight: '"));
+        dev->print(artificialMorningLight._optionEnabled ? F("enabled' to ") : F("off'"));
+        if (artificialMorningLight._optionEnabled)
+        {
+            dev->print(artificialMorningLight._hour);
+            dev->print(F(":"));
+            if(artificialMorningLight._minute < 10)
+                dev->print(F("0"));
+            dev->print(artificialMorningLight._minute);
+            dev->print(F(" o'clock"));
         }
         dev->println(F(""));
     }

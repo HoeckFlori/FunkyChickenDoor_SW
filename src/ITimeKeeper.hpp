@@ -23,6 +23,8 @@ public:
     virtual void disableDoNotOpenBefore() = 0;
     virtual void setClosingDelay(uint16_t mm) = 0;
     virtual void disableClosingDelay() = 0;
+    virtual void setArtificialMorningLight(int hour, int minute) = 0;
+    virtual void disableArtificialMorningLight() = 0;
     virtual DateTime &getTodayOpeningTime() = 0;
     virtual DateTime &getTodayClosingTime() = 0;
     virtual void setDaylightSaving(bool daylightSaving) = 0;

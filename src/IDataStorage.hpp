@@ -21,6 +21,14 @@ public:
         uint16_t _minutes;
     };
 
+    struct artificialMorningLightOption
+    {
+        artificialMorningLightOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0) : _optionEnabled(enabled), _hour(hour), _minute(minute) {}
+        bool _optionEnabled;
+        uint8_t _hour;
+        uint8_t _minute;
+    };
+
     virtual bool getDayLightSavingSetting() const = 0;
     virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
 
@@ -38,6 +46,9 @@ public:
     virtual void setClosingDelayOption(const IDataStorage::closingDelayOption &setting) = 0;
     virtual IDataStorage::closingDelayOption getClosingDelayOption() = 0;
 
+    virtual void setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting) = 0;
+    virtual IDataStorage::artificialMorningLightOption getArtificialMorningLightOption() = 0;
+
     /*
     Settings we will need to persist
     [X] Daylight saving option, yes/no
@@ -48,5 +59,6 @@ public:
     [x] 'Do not open before' time, Time
     [X] Closing delay sunset,  +- minutes
     [ ] 'Open close timeout', seconds (maybe)
+    [ ]  artificialMorningLightOption
     */
 };
