@@ -15,17 +15,27 @@ public:
     DateTime &getTodaysSunrise() override;
     DateTime &getTodaysSunset() override;
     void setTime(const DateTime &newTime) override;
+    void setDaylightSaving(bool daylightSaving) override;
+    bool getDaylightSaving() const override;
+    void setPositionAndTimezone(float latitude, float longitude, float timezone) override;    
+
+
     void setDoNotOpenBefore(int hour, int minute) override;
     void disableDoNotOpenBefore() override;
     void setClosingDelay(uint16_t mm) override;
     void disableClosingDelay() override;
-    void setArtificialMorningLight(int hour, int minute) override;
-    void disableArtificialMorningLight() override;
     DateTime &getTodayOpeningTime() override;
     DateTime &getTodayClosingTime() override;
-    void setDaylightSaving(bool daylightSaving) override;
-    bool getDaylightSaving() const override;
-    void setPositionAndTimezone(float latitude, float longitude, float timezone) override;
+    bool getAutomaticDoorState() override;
+
+
+    void setArtificialMorningLight(int hour, int minute) override;
+    void disableArtificialMorningLight() override;
+    bool getArtificialLightState() override;
+
+
+    void cycle() override;
+    void registerEventListener(ITimeKeeperListener *listener) override;
 
 private:
     RTC_DS3231 m_myClock = RTC_DS3231();
@@ -43,6 +53,23 @@ private:
     IDataStorage::artificialMorningLightOption m_artificialMorningLightOption;
     bool m_daylightSaving;
 
+    struct todaysEventRegister
+    {
+        todaysEventRegister()
+            : firedDoorOpening(false),
+              firedDoorClosing(false),
+              firedArtificialLightOn(false),
+              firedArtificialLightOff(false)
+            {}
+        bool firedDoorOpening;
+        bool firedDoorClosing;
+        bool firedArtificialLightOn;
+        bool firedArtificialLightOff;
+    } m_eventHistory;
+
+    static const int c_listenerArraySize = 10;
+    ITimeKeeperListener *m_listenerPtr[c_listenerArraySize]; // The max amount of possible listener is defined here! We do not have a std:vector. What a pitty, we have to do it old school
+
     /**
      * @brief Adds a offset in minutes to a given date
      *
@@ -51,4 +78,11 @@ private:
      * @param startOnMidnight Resets the hours, minutes, seconds of the handed TimeDate object (default true)
      */
     void addMinutesToDate(DateTime &date, int32_t minutes, bool startOnMidnight = true);
+
+    /**
+     * @brief Inform all registrated listener about a event
+     * 
+     * @param eventToSignalize The event of interest
+     */
+    void fireAllListener(ITimeKeeperListener::Event eventToSignalize);
 };

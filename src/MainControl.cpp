@@ -31,4 +31,5 @@ void MainControl::cycle()
     m_door->cycle();
     m_energySavingMaster->cycle();
     m_operationMode->cycle();
+    m_timeKeeper->cycle();
 }

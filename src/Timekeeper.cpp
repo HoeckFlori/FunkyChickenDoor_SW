@@ -9,6 +9,13 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
                                                     m_todayClosingTime(DateTime()),
                                                     m_daylightSaving(false)
 {
+    // clear listener array
+    for(int i = 0; i < c_listenerArraySize; i++)
+    {
+        m_listenerPtr[i] = NULL;
+    }
+    
+    // start RTC
     if (!m_myClock.begin())
         Serial.println(F("Could not contact RTC"));
     if (m_dataStorage)
@@ -28,7 +35,6 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
 
 DateTime &Timekeeper::getCurrentTime()
 {
-    m_lastQueriedTime = m_myClock.now();
     return m_lastQueriedTime;
 }
 
@@ -128,6 +134,12 @@ void Timekeeper::disableArtificialMorningLight()
     }
 };
 
+bool Timekeeper::getArtificialLightState()
+{
+    //TODO (FHk)
+}
+
+
 DateTime &Timekeeper::getTodayOpeningTime()
 {
     if (m_doNotOpenBeforeOption._optionEnabled)
@@ -165,6 +177,19 @@ DateTime &Timekeeper::getTodayClosingTime()
     return m_todayClosingTime;
 }
 
+bool Timekeeper::getAutomaticDoorState()
+{
+    if (    (m_lastQueriedTime >= getTodayOpeningTime())
+         && (m_lastQueriedTime <= getTodayClosingTime()) )
+    { // shall be open
+        return true;
+    }
+    else
+    { // shall be closed
+        return false;
+    }
+}
+
 void Timekeeper::setDaylightSaving(bool daylightSaving)
 {
     m_daylightSaving = daylightSaving;
@@ -191,6 +216,58 @@ void Timekeeper::setPositionAndTimezone(float latitude, float longitude, float t
     }
 }
 
+void Timekeeper::cycle()
+{
+    // Query time from RTC
+    m_lastQueriedTime = m_myClock.now();
+
+
+    // Door activities
+    if ( getAutomaticDoorState() )
+    { // shall be open
+        m_eventHistory.firedDoorClosing = false;
+        if (!m_eventHistory.firedDoorOpening)
+        {
+            m_eventHistory.firedDoorOpening = true;
+            fireAllListener(ITimeKeeperListener::Event::openDoor);
+        }
+    }
+    else
+    { // shall be closed
+        m_eventHistory.firedDoorOpening = false;
+        if (!m_eventHistory.firedDoorClosing)
+        {
+            m_eventHistory.firedDoorClosing = true;
+            fireAllListener(ITimeKeeperListener::Event::closeDoor);
+        }
+    }
+    
+
+
+    // do not forget the Artificial Morning light!
+
+}
+
+void Timekeeper::registerEventListener(ITimeKeeperListener *listener)
+{
+    // find empty position
+    bool notPlaceForNewListener(true);
+    for(int i(0); i < c_listenerArraySize; i++)
+    {
+        auto listener = m_listenerPtr[i];
+        if(listener == NULL)
+        {
+            // place new pointer
+            m_listenerPtr[i] = listener;
+        }
+    }
+    if (notPlaceForNewListener)
+    {   
+        // errorhandling if predefined pointer array is full
+        Serial.println("ERROR: No place for a additional TimeKeeper listener!");
+    }
+}
+
 void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnMidnight)
 {
     TimeSpan timeOffset(minutes * 60);
@@ -200,4 +277,16 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
         date = newTime;
     }
     date = date + timeOffset;
+}
+
+void Timekeeper::fireAllListener(ITimeKeeperListener::Event eventToSignalize)
+{
+    // Fire all existing listeners
+    for(int i(0); i < c_listenerArraySize; i++)
+    {
+        if (auto listener = m_listenerPtr[i])
+        {
+            listener->eventTimeKeeperListener(eventToSignalize);
+        }
+    }
 }

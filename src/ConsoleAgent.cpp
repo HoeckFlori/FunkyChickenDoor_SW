@@ -472,7 +472,7 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
         // show artificialMorningLight
         auto artificialMorningLight = m_mySelf->m_dataStorage->getArtificialMorningLightOption();
         dev->print(F("ArtificialMorningLight: '"));
-        dev->print(artificialMorningLight._optionEnabled ? F("enabled' to ") : F("off'"));
+        dev->print(artificialMorningLight._optionEnabled ? F("enabled' on from ") : F("off'"));
         if (artificialMorningLight._optionEnabled)
         {
             dev->print(artificialMorningLight._hour);
@@ -480,7 +480,7 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
             if(artificialMorningLight._minute < 10)
                 dev->print(F("0"));
             dev->print(artificialMorningLight._minute);
-            dev->print(F(" o'clock"));
+            dev->print(F(" o'clock to sunrise"));
         }
         dev->println(F(""));
     }
