@@ -136,7 +136,28 @@ void Timekeeper::disableArtificialMorningLight()
 
 bool Timekeeper::getArtificialLightState()
 {
-    //TODO (FHk)
+    // precheck settings, nothing to do if the option is disabled
+    if (m_artificialMorningLightOption._optionEnabled == false)
+        return false;
+
+    // check light state
+
+    DateTime artificialLightOnTime(m_lastQueriedTime.year(),
+                                   m_lastQueriedTime.month(),
+                                   m_lastQueriedTime.day(),
+                                   m_artificialMorningLightOption._hour,
+                                   m_artificialMorningLightOption._minute,
+                                   0);
+
+    if (    (m_lastQueriedTime >= artificialLightOnTime)
+         && (m_lastQueriedTime <= getTodaysSunrise()) )
+    { // shall be On
+        return true;
+    }
+    else
+    { // shall be Off
+        return false;
+    }
 }
 
 
@@ -169,7 +190,7 @@ DateTime &Timekeeper::getTodayOpeningTime()
 
 DateTime &Timekeeper::getTodayClosingTime()
 {
-    m_todayClosingTime = m_todaysSunset;
+    m_todayClosingTime = getTodaysSunset();
     if (m_closingDelayOption._optionEnabled)
     {
         addMinutesToDate(m_todayClosingTime, m_closingDelayOption._minutes, false);
@@ -242,10 +263,25 @@ void Timekeeper::cycle()
         }
     }
     
-
-
-    // do not forget the Artificial Morning light!
-
+    // Artificial Morning Light activities
+    if ( getArtificialLightState() )
+    { // shall be on
+        m_eventHistory.firedArtificialLightOff = false;
+        if(!m_eventHistory.firedArtificialLightOn)
+        {
+            m_eventHistory.firedArtificialLightOn = true;
+            fireAllListener(ITimeKeeperListener::Event::turnOnArtificialMorningLight);
+        }
+    }
+    else
+    { // shall be off
+        m_eventHistory.firedArtificialLightOn = false;
+        if(!m_eventHistory.firedArtificialLightOff)
+        {
+            m_eventHistory.firedArtificialLightOff = true;
+            fireAllListener(ITimeKeeperListener::Event::turnOffArtificialMorningLight);
+        }
+    }
 }
 
 void Timekeeper::registerEventListener(ITimeKeeperListener *listener)
@@ -254,11 +290,12 @@ void Timekeeper::registerEventListener(ITimeKeeperListener *listener)
     bool notPlaceForNewListener(true);
     for(int i(0); i < c_listenerArraySize; i++)
     {
-        auto listener = m_listenerPtr[i];
-        if(listener == NULL)
+        if(m_listenerPtr[i] == NULL)
         {
-            // place new pointer
+            // found empty place for new pointer
             m_listenerPtr[i] = listener;
+            notPlaceForNewListener = false;
+            break;
         }
     }
     if (notPlaceForNewListener)
@@ -284,7 +321,8 @@ void Timekeeper::fireAllListener(ITimeKeeperListener::Event eventToSignalize)
     // Fire all existing listeners
     for(int i(0); i < c_listenerArraySize; i++)
     {
-        if (auto listener = m_listenerPtr[i])
+        auto listener = m_listenerPtr[i];
+        if (listener != NULL)
         {
             listener->eventTimeKeeperListener(eventToSignalize);
         }

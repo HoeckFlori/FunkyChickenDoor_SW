@@ -8,6 +8,7 @@
 // #include "ISleepingGuard.hpp"
 #include "IOperationModeManager.hpp"
 #include "IEnergySavingMaster.hpp"
+#include "ILightSteering.hpp"
 
 class MainControl
 {
@@ -24,6 +25,7 @@ private:
     IConsoleAgent *m_consoleAgent;
     IDoorSteering *m_door;
     // ISleepingGuard *m_sleepingGuard;
+    ILightSteering *m_lighting;
     ITimeKeeper *m_timeKeeper;
     IDataStorage *m_dataStorage;
     IViewController *m_viewController;

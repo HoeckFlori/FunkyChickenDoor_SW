@@ -122,21 +122,35 @@ void DoorSteering::initDoor()
 
 void DoorSteering::closeDoor()
 {
-    if (!doorIsCurrentlyMoving())
-    {
+//    if (!doorIsCurrentlyMoving())
+//    {
         m_doorState = DoorState::CLOSING;
         startTimeoutHandler();
         activateMotorDown();
-    }
+//    }
 }
 
 void DoorSteering::openDoor()
 {
-    if (!doorIsCurrentlyMoving())
-    {
+//    if (!doorIsCurrentlyMoving())
+//    {
         m_doorState = DoorState::OPENING;
         startTimeoutHandler();
         activateMotorUp();
+//    }
+}
+
+void DoorSteering::eventTimeKeeperListener(ITimeKeeperListener::Event event)
+{
+    if(event == ITimeKeeperListener::Event::openDoor)
+    {
+        stopMotorActions();
+        openDoor();
+    }
+    else if(event == ITimeKeeperListener::Event::closeDoor)
+    {
+        stopMotorActions();
+        closeDoor();
     }
 }
 
