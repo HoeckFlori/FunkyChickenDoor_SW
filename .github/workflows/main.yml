@@ -29,3 +29,7 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+
+    # Clang-Format check
+    - name: Run a one-line script
+      run: clang-format -n -style=file -fallback-style=LLVM src/DataStorage.cpp

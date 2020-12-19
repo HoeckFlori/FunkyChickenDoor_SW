@@ -7,7 +7,7 @@
 DataStorage::DataStorage()
 {
     // check if EEPROM is "formated", else do so (important for first run)
-    if (EEPROM.read(_formatInfo) != 0xAA)
+    if (   EEPROM.read(_formatInfo) != 0xAA)
     {
         Serial.println(F("EEPROM is not formated! Formating ..."));
 
@@ -28,6 +28,9 @@ bool DataStorage::getDayLightSavingSetting() const
 {
     return bool(EEPROM.read(_daylightSaving));
 }
+
+
+
 
 void DataStorage::setDayLightSavingSetting(bool daylightsaving)
 {
