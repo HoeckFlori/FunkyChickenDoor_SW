@@ -32,4 +32,4 @@ jobs:
 
     # Clang-Format check
     - name: Run clang-format check
-      run: clang-format -n --Werror -style=file -fallback-style=LLVM src/*
+      run: clang-format -n --Werror -style=file -fallback-style=LLVM src/*.*
