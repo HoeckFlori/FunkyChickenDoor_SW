@@ -1,8 +1,8 @@
 #include "ConsoleAgent.hpp"
+#include "RTClib.h"
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
-#include "RTClib.h"
 
 // helper to check the available RAM
 extern unsigned int __bss_end;
@@ -22,12 +22,13 @@ uint16_t getFreeSram()
 // the ConsoleAgent gets handled in a similar form like a singleton to access the members from the static command methods
 ConsoleAgent *ConsoleAgent::m_mySelf = 0;
 
-ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering, IOperationModeManager *operationModeManager, ILightSteering *lightSteering)
-    : m_timeKeeper(timeKeeper),
-      m_dataStorage(dataStorage),
-      m_doorSteering(doorSteering),
-      m_operationMode(operationModeManager),
-      m_lightSteering(lightSteering)
+ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering,
+                           IOperationModeManager *operationModeManager, ILightSteering *lightSteering)
+    : m_timeKeeper(timeKeeper)
+    , m_dataStorage(dataStorage)
+    , m_doorSteering(doorSteering)
+    , m_operationMode(operationModeManager)
+    , m_lightSteering(lightSteering)
 {
     m_mySelf = this;
 
@@ -36,7 +37,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addClient(Serial);
 
     // register commands
-    //CLI.addCommand("help", (*function)(help(CLIClient * dev, int argc, char **argv)));
+    // CLI.addCommand("help", (*function)(help(CLIClient * dev, int argc, char **argv)));
     CLI.addCommand("help", help);
     CLI.addCommand("memory", showMemory);
     CLI.addCommand("reset", reset);
@@ -114,7 +115,7 @@ int ConsoleAgent::reset(CLIClient *dev, int argc, char **argv)
     wdt_disable();
     wdt_enable(WDTO_15MS);
     while (1)
-    { 
+    {
         // PNR
     }
     return 0;
@@ -300,7 +301,7 @@ int ConsoleAgent::disableClosingDelay(CLIClient *dev, int argc, char **argv)
         return -1;
     }
     m_mySelf->m_timeKeeper->disableClosingDelay();
-        dev->println(F("-> 'ClosingDelay' option turned off"));
+    dev->println(F("-> 'ClosingDelay' option turned off"));
     return 0;
 }
 
@@ -323,7 +324,7 @@ int ConsoleAgent::enableArtificalMorningLight(CLIClient *dev, int argc, char **a
     mm = time.substring(indexOfColon + 1).toInt();
 
     m_mySelf->m_timeKeeper->setArtificialMorningLight(hh, mm);
-    
+
     dev->print(F("-> Light turns on at "));
     dev->print(hh);
     dev->print(":");
@@ -408,20 +409,17 @@ int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
     return 0;
 }
 
-
 int ConsoleAgent::turnLightOn(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F("-> Light ON"));
     m_mySelf->m_lightSteering->switchLightOn();
 }
 
-
 int ConsoleAgent::turnLightOff(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F("-> Light OFF"));
     m_mySelf->m_lightSteering->switchLightOff();
 }
-
 
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 {
@@ -471,7 +469,7 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
             dev->print(F(" @ "));
             dev->print(doNotOpenBefore._hour);
             dev->print(F(":"));
-            if(doNotOpenBefore._minute < 10)
+            if (doNotOpenBefore._minute < 10)
                 dev->print(F("0"));
             dev->print(doNotOpenBefore._minute);
             dev->print(F(" o'clock"));
@@ -497,7 +495,7 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
         {
             dev->print(artificialMorningLight._hour);
             dev->print(F(":"));
-            if(artificialMorningLight._minute < 10)
+            if (artificialMorningLight._minute < 10)
                 dev->print(F("0"));
             dev->print(artificialMorningLight._minute);
             dev->print(F(" o'clock to sunrise"));
@@ -512,7 +510,7 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 
     // show light status
     dev->print(F("Lightstatus        '"));
-    if( m_mySelf->m_lightSteering->getLightStatus() )
+    if (m_mySelf->m_lightSteering->getLightStatus())
         dev->println(F("ON'"));
     else
         dev->println(F("OFF'"));

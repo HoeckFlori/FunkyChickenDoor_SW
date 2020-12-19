@@ -2,7 +2,7 @@
 
 class IConsoleAgent
 {
-public:
+  public:
     virtual ~IConsoleAgent() = default;
 
     virtual void cycle() = 0;

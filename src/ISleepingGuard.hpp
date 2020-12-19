@@ -2,7 +2,7 @@
 
 class ISleepingGuard
 {
-public:
+  public:
     virtual ~ISleepingGuard() = default;
 
     enum class WakeupReason

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ITimeKeeper.hpp"
-#include "IDataStorage.hpp"
-#include "RTClib.h"
 #include "Dusk2Dawn.h"
+#include "IDataStorage.hpp"
+#include "ITimeKeeper.hpp"
+#include "RTClib.h"
 
 class Timekeeper : public virtual ITimeKeeper
 {
-public:
+  public:
     explicit Timekeeper(IDataStorage *dataStorage);
 
     // ITimeKeeper
@@ -17,8 +17,7 @@ public:
     void setTime(const DateTime &newTime) override;
     void setDaylightSaving(bool daylightSaving) override;
     bool getDaylightSaving() const override;
-    void setPositionAndTimezone(float latitude, float longitude, float timezone) override;    
-
+    void setPositionAndTimezone(float latitude, float longitude, float timezone) override;
 
     void setDoNotOpenBefore(int hour, int minute) override;
     void disableDoNotOpenBefore() override;
@@ -28,16 +27,14 @@ public:
     DateTime &getTodayClosingTime() override;
     bool getAutomaticDoorState() override;
 
-
     void setArtificialMorningLight(int hour, int minute) override;
     void disableArtificialMorningLight() override;
     bool getArtificialLightState() override;
 
-
     void cycle() override;
     void registerEventListener(ITimeKeeperListener *listener) override;
 
-private:
+  private:
     RTC_DS3231 m_myClock = RTC_DS3231();
     Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8144, 12.6352, +1); // todo(FHk) remove this, when the DataStorage is available and initialize it in the ctor
 
@@ -56,11 +53,12 @@ private:
     struct todaysEventRegister
     {
         todaysEventRegister()
-            : firedDoorOpening(false),
-              firedDoorClosing(false),
-              firedArtificialLightOn(false),
-              firedArtificialLightOff(false)
-            {}
+            : firedDoorOpening(false)
+            , firedDoorClosing(false)
+            , firedArtificialLightOn(false)
+            , firedArtificialLightOff(false)
+        {
+        }
         bool firedDoorOpening;
         bool firedDoorClosing;
         bool firedArtificialLightOn;
@@ -68,7 +66,8 @@ private:
     } m_eventHistory;
 
     static const int c_listenerArraySize = 10;
-    ITimeKeeperListener *m_listenerPtr[c_listenerArraySize]; // The max amount of possible listener is defined here! We do not have a std:vector. What a pitty, we have to do it old school
+    ITimeKeeperListener *m_listenerPtr[c_listenerArraySize]; // The max amount of possible listener is defined here! We do not have a std:vector. What
+                                                             // a pitty, we have to do it old school
 
     /**
      * @brief Adds a offset in minutes to a given date
@@ -81,7 +80,7 @@ private:
 
     /**
      * @brief Inform all registrated listener about a event
-     * 
+     *
      * @param eventToSignalize The event of interest
      */
     void fireAllListener(ITimeKeeperListener::Event eventToSignalize);

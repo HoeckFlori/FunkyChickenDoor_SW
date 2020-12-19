@@ -3,12 +3,17 @@
 
 class IDataStorage
 {
-public:
+  public:
     virtual ~IDataStorage() = default;
 
     struct doNotOpenBeforeOption
     {
-        doNotOpenBeforeOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0) : _optionEnabled(enabled), _hour(hour), _minute(minute) {}
+        doNotOpenBeforeOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0)
+            : _optionEnabled(enabled)
+            , _hour(hour)
+            , _minute(minute)
+        {
+        }
         bool _optionEnabled;
         uint8_t _hour;
         uint8_t _minute;
@@ -16,14 +21,23 @@ public:
 
     struct closingDelayOption
     {
-        closingDelayOption(bool enabled = false, uint16_t minutes = 0) : _optionEnabled(enabled), _minutes(minutes) {}
+        closingDelayOption(bool enabled = false, uint16_t minutes = 0)
+            : _optionEnabled(enabled)
+            , _minutes(minutes)
+        {
+        }
         bool _optionEnabled;
         uint16_t _minutes;
     };
 
     struct artificialMorningLightOption
     {
-        artificialMorningLightOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0) : _optionEnabled(enabled), _hour(hour), _minute(minute) {}
+        artificialMorningLightOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0)
+            : _optionEnabled(enabled)
+            , _hour(hour)
+            , _minute(minute)
+        {
+        }
         bool _optionEnabled;
         uint8_t _hour;
         uint8_t _minute;

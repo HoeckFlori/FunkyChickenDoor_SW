@@ -2,8 +2,8 @@
 #include "Arduino.h"
 
 LightSteering::LightSteering(int lightPin)
- : c_lightPin(lightPin),
-   m_lightStatus(false)
+    : c_lightPin(lightPin)
+    , m_lightStatus(false)
 {
     pinMode(lightPin, OUTPUT);
     digitalWrite(c_lightPin, LOW);
@@ -28,11 +28,11 @@ bool LightSteering::getLightStatus() const
 
 void LightSteering::eventTimeKeeperListener(ITimeKeeperListener::Event event)
 {
-    if(event == ITimeKeeperListener::Event::turnOnArtificialMorningLight)
+    if (event == ITimeKeeperListener::Event::turnOnArtificialMorningLight)
     {
         switchLightOn();
     }
-    else if(event == ITimeKeeperListener::Event::turnOffArtificialMorningLight)
+    else if (event == ITimeKeeperListener::Event::turnOffArtificialMorningLight)
     {
         switchLightOff();
     }

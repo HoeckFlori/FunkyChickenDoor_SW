@@ -3,7 +3,7 @@
 
 class IDoorSteering
 {
-public:
+  public:
     virtual ~IDoorSteering() = default;
 
     enum class DoorState

@@ -2,12 +2,12 @@
 #include "Arduino.h"
 
 DoorSteering::DoorSteering(int motorUpPin, int motorDownPin, int doorUpPin, int doorDownPin)
-    : m_doorSwitchStatus(SwitchStatus::UNDEFINED),
-      m_doorState(DoorState::UNDEFINED),
-      c_motorUpPin(motorUpPin),
-      c_motorDownPin(motorDownPin),
-      m_doorSwitchUp(doorUpPin /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/),
-      m_doorSwitchDown(doorDownPin /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    : m_doorSwitchStatus(SwitchStatus::UNDEFINED)
+    , m_doorState(DoorState::UNDEFINED)
+    , c_motorUpPin(motorUpPin)
+    , c_motorDownPin(motorDownPin)
+    , m_doorSwitchUp(doorUpPin /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    , m_doorSwitchDown(doorDownPin /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
 {
     m_doorSwitchUp.begin();
     m_doorSwitchDown.begin();
@@ -22,17 +22,15 @@ void DoorSteering::cycle()
 {
     readDoorSwitchStatus();
 
-
-    if( doorIsCurrentlyMoving() )
+    if (doorIsCurrentlyMoving())
     {
         // something is going on -> check timeout
-        if( timeOutOccureed() )
+        if (timeOutOccureed())
         {
             emergencyStop();
         }
     }
 
-    
     switch (m_doorState)
     {
     case DoorState::UNDEFINED:
@@ -64,7 +62,7 @@ void DoorSteering::cycle()
     case DoorState::ERROR:
         /* code */
         break;
-    
+
     default:
         break;
     }
@@ -122,32 +120,32 @@ void DoorSteering::initDoor()
 
 void DoorSteering::closeDoor()
 {
-//    if (!doorIsCurrentlyMoving())
-//    {
-        m_doorState = DoorState::CLOSING;
-        startTimeoutHandler();
-        activateMotorDown();
-//    }
+    //    if (!doorIsCurrentlyMoving())
+    //    {
+    m_doorState = DoorState::CLOSING;
+    startTimeoutHandler();
+    activateMotorDown();
+    //    }
 }
 
 void DoorSteering::openDoor()
 {
-//    if (!doorIsCurrentlyMoving())
-//    {
-        m_doorState = DoorState::OPENING;
-        startTimeoutHandler();
-        activateMotorUp();
-//    }
+    //    if (!doorIsCurrentlyMoving())
+    //    {
+    m_doorState = DoorState::OPENING;
+    startTimeoutHandler();
+    activateMotorUp();
+    //    }
 }
 
 void DoorSteering::eventTimeKeeperListener(ITimeKeeperListener::Event event)
 {
-    if(event == ITimeKeeperListener::Event::openDoor)
+    if (event == ITimeKeeperListener::Event::openDoor)
     {
         stopMotorActions();
         openDoor();
     }
-    else if(event == ITimeKeeperListener::Event::closeDoor)
+    else if (event == ITimeKeeperListener::Event::closeDoor)
     {
         stopMotorActions();
         closeDoor();
@@ -172,11 +170,10 @@ void DoorSteering::activateMotorDown()
     digitalWrite(c_motorDownPin, HIGH);
 }
 
-
 void DoorSteering::readDoorSwitchStatus()
 {
     auto up = m_doorSwitchUp.read();
-    auto down = m_doorSwitchDown.read(); 
+    auto down = m_doorSwitchDown.read();
 
     SwitchStatus retVal = SwitchStatus::UNDEFINED;
 
@@ -184,7 +181,7 @@ void DoorSteering::readDoorSwitchStatus()
     {
         retVal = SwitchStatus::OPEN;
     }
-    else if(!up && down)
+    else if (!up && down)
     {
         retVal = SwitchStatus::CLOSED;
     }
@@ -194,9 +191,7 @@ void DoorSteering::readDoorSwitchStatus()
 
 bool DoorSteering::doorIsCurrentlyMoving()
 {
-    if(    (m_doorState == DoorState::CLOSING)
-        || (m_doorState == DoorState::OPENING)
-        || (m_doorState == DoorState::INITIALIZING) )
+    if ((m_doorState == DoorState::CLOSING) || (m_doorState == DoorState::OPENING) || (m_doorState == DoorState::INITIALIZING))
     {
         return true;
     }
@@ -205,7 +200,6 @@ bool DoorSteering::doorIsCurrentlyMoving()
         return false;
     }
 }
-
 
 void DoorSteering::startTimeoutHandler()
 {

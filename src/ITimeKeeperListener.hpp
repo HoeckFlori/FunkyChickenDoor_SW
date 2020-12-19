@@ -5,15 +5,15 @@
  *        TimeKeeper instance in the system. To use it, you have to derive
  *        from ITimeKeeperListener and register the instance of your class
  *        to the TimeKeeper instance.
-  */
+ */
 class ITimeKeeperListener
 {
-public:
+  public:
     virtual ~ITimeKeeperListener() = default;
 
     /**
      * @brief The possible events that can be sent.
-     * 
+     *
      */
     enum class Event
     {
@@ -25,7 +25,7 @@ public:
 
     /**
      * @brief The 'callback' method, that can be registered to the TimeKeeper.
-     * 
+     *
      * @param event  The information about events from the TimeKeeper
      */
     virtual void eventTimeKeeperListener(ITimeKeeperListener::Event event) = 0;

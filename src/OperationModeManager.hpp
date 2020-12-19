@@ -1,12 +1,12 @@
 #pragma once
 
-#include "IOperationModeManager.hpp"
 #include "IDataStorage.hpp"
 #include "IDoorSteering.hpp"
+#include "IOperationModeManager.hpp"
 
 class OperationModeManager : public virtual IOperationModeManager
 {
-public:
+  public:
     OperationModeManager(IDataStorage *dataStorageAccess, IDoorSteering *doorSteering);
     virtual ~OperationModeManager() = default;
 
@@ -16,7 +16,7 @@ public:
     void changeMode(OpMode newMode) override;
     String getOpModeHumanReadable() const override;
 
-private:
+  private:
     IDataStorage *m_dataStorage;
     IDoorSteering *m_doorSteering;
     OpMode m_mode;

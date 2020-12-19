@@ -1,13 +1,12 @@
 #pragma once
 
-#include <JC_Button.h>
 #include "IDoorSteering.hpp"
 #include "ITimeKeeperListener.hpp"
+#include <JC_Button.h>
 
-class DoorSteering : public virtual IDoorSteering,
-                     public virtual ITimeKeeperListener
+class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperListener
 {
-public:
+  public:
     DoorSteering(int motorUpPin, int motorDownPin, int doorUpPin, int doorDownPin);
     ~DoorSteering() = default;
 
@@ -23,7 +22,7 @@ public:
     // ITimeKeeperListener
     void eventTimeKeeperListener(ITimeKeeperListener::Event event) override;
 
-private:
+  private:
     const int m_defaultDebounceTime = 5; // ms
 
     enum SwitchStatus

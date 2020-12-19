@@ -1,18 +1,18 @@
 #pragma once
 
 #include "IConsoleAgent.hpp"
-#include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
-#include "views/IViewController.hpp"
 #include "IDoorSteering.hpp"
+#include "ITimeKeeper.hpp"
+#include "views/IViewController.hpp"
 // #include "ISleepingGuard.hpp"
-#include "IOperationModeManager.hpp"
 #include "IEnergySavingMaster.hpp"
 #include "ILightSteering.hpp"
+#include "IOperationModeManager.hpp"
 
 class MainControl
 {
-public:
+  public:
     explicit MainControl();
     ~MainControl() = default;
 
@@ -21,7 +21,7 @@ public:
 
     void cycle();
 
-private:
+  private:
     IConsoleAgent *m_consoleAgent;
     IDoorSteering *m_door;
     // ISleepingGuard *m_sleepingGuard;

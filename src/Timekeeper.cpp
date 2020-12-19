@@ -1,20 +1,21 @@
 #include "Timekeeper.hpp"
 #include "IDataStorage.hpp"
 
-Timekeeper::Timekeeper(IDataStorage *dataStorage) : m_dataStorage(dataStorage),
-                                                    m_lastQueriedTime(DateTime()),
-                                                    m_todaysSunrise(DateTime()),
-                                                    m_todaysSunset(DateTime()),
-                                                    m_todayOpeningTime(DateTime()),
-                                                    m_todayClosingTime(DateTime()),
-                                                    m_daylightSaving(false)
+Timekeeper::Timekeeper(IDataStorage *dataStorage)
+    : m_dataStorage(dataStorage)
+    , m_lastQueriedTime(DateTime())
+    , m_todaysSunrise(DateTime())
+    , m_todaysSunset(DateTime())
+    , m_todayOpeningTime(DateTime())
+    , m_todayClosingTime(DateTime())
+    , m_daylightSaving(false)
 {
     // clear listener array
-    for(int i = 0; i < c_listenerArraySize; i++)
+    for (int i = 0; i < c_listenerArraySize; i++)
     {
         m_listenerPtr[i] = NULL;
     }
-    
+
     // start RTC
     if (!m_myClock.begin())
         Serial.println(F("Could not contact RTC"));
@@ -112,13 +113,12 @@ void Timekeeper::disableClosingDelay()
     }
 }
 
-
 void Timekeeper::setArtificialMorningLight(int hour, int minute)
 {
     m_artificialMorningLightOption._optionEnabled = true;
     m_artificialMorningLightOption._hour = hour;
     m_artificialMorningLightOption._minute = minute;
-    
+
     if (m_dataStorage)
     {
         m_dataStorage->setArtificialMorningLightOption(m_artificialMorningLightOption);
@@ -142,15 +142,10 @@ bool Timekeeper::getArtificialLightState()
 
     // check light state
 
-    DateTime artificialLightOnTime(m_lastQueriedTime.year(),
-                                   m_lastQueriedTime.month(),
-                                   m_lastQueriedTime.day(),
-                                   m_artificialMorningLightOption._hour,
-                                   m_artificialMorningLightOption._minute,
-                                   0);
+    DateTime artificialLightOnTime(m_lastQueriedTime.year(), m_lastQueriedTime.month(), m_lastQueriedTime.day(), m_artificialMorningLightOption._hour,
+                                   m_artificialMorningLightOption._minute, 0);
 
-    if (    (m_lastQueriedTime >= artificialLightOnTime)
-         && (m_lastQueriedTime <= getTodaysSunrise()) )
+    if ((m_lastQueriedTime >= artificialLightOnTime) && (m_lastQueriedTime <= getTodaysSunrise()))
     { // shall be On
         return true;
     }
@@ -160,17 +155,12 @@ bool Timekeeper::getArtificialLightState()
     }
 }
 
-
 DateTime &Timekeeper::getTodayOpeningTime()
 {
     if (m_doNotOpenBeforeOption._optionEnabled)
     {
-        DateTime doNotOpenBeforeTemp(getTodaysSunrise().year(),
-                                     getTodaysSunrise().month(),
-                                     getTodaysSunrise().day(),
-                                     m_doNotOpenBeforeOption._hour,
-                                     m_doNotOpenBeforeOption._minute,
-                                     0);
+        DateTime doNotOpenBeforeTemp(getTodaysSunrise().year(), getTodaysSunrise().month(), getTodaysSunrise().day(), m_doNotOpenBeforeOption._hour,
+                                     m_doNotOpenBeforeOption._minute, 0);
 
         if (m_todaysSunrise >= doNotOpenBeforeTemp)
         { // the today sunrise is later the the 'not open before limitation'
@@ -200,8 +190,7 @@ DateTime &Timekeeper::getTodayClosingTime()
 
 bool Timekeeper::getAutomaticDoorState()
 {
-    if (    (m_lastQueriedTime >= getTodayOpeningTime())
-         && (m_lastQueriedTime <= getTodayClosingTime()) )
+    if ((m_lastQueriedTime >= getTodayOpeningTime()) && (m_lastQueriedTime <= getTodayClosingTime()))
     { // shall be open
         return true;
     }
@@ -242,9 +231,8 @@ void Timekeeper::cycle()
     // Query time from RTC
     m_lastQueriedTime = m_myClock.now();
 
-
     // Door activities
-    if ( getAutomaticDoorState() )
+    if (getAutomaticDoorState())
     { // shall be open
         m_eventHistory.firedDoorClosing = false;
         if (!m_eventHistory.firedDoorOpening)
@@ -262,12 +250,12 @@ void Timekeeper::cycle()
             fireAllListener(ITimeKeeperListener::Event::closeDoor);
         }
     }
-    
+
     // Artificial Morning Light activities
-    if ( getArtificialLightState() )
+    if (getArtificialLightState())
     { // shall be on
         m_eventHistory.firedArtificialLightOff = false;
-        if(!m_eventHistory.firedArtificialLightOn)
+        if (!m_eventHistory.firedArtificialLightOn)
         {
             m_eventHistory.firedArtificialLightOn = true;
             fireAllListener(ITimeKeeperListener::Event::turnOnArtificialMorningLight);
@@ -276,7 +264,7 @@ void Timekeeper::cycle()
     else
     { // shall be off
         m_eventHistory.firedArtificialLightOn = false;
-        if(!m_eventHistory.firedArtificialLightOff)
+        if (!m_eventHistory.firedArtificialLightOff)
         {
             m_eventHistory.firedArtificialLightOff = true;
             fireAllListener(ITimeKeeperListener::Event::turnOffArtificialMorningLight);
@@ -288,9 +276,9 @@ void Timekeeper::registerEventListener(ITimeKeeperListener *listener)
 {
     // find empty position
     bool notPlaceForNewListener(true);
-    for(int i(0); i < c_listenerArraySize; i++)
+    for (int i(0); i < c_listenerArraySize; i++)
     {
-        if(m_listenerPtr[i] == NULL)
+        if (m_listenerPtr[i] == NULL)
         {
             // found empty place for new pointer
             m_listenerPtr[i] = listener;
@@ -299,7 +287,7 @@ void Timekeeper::registerEventListener(ITimeKeeperListener *listener)
         }
     }
     if (notPlaceForNewListener)
-    {   
+    {
         // errorhandling if predefined pointer array is full
         Serial.println("ERROR: No place for a additional TimeKeeper listener!");
     }
@@ -310,7 +298,7 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
     TimeSpan timeOffset(minutes * 60);
     if (startOnMidnight)
     {
-        DateTime newTime = DateTime(date.year(), date.month(), date.day(), 0, 0, 0 );
+        DateTime newTime = DateTime(date.year(), date.month(), date.day(), 0, 0, 0);
         date = newTime;
     }
     date = date + timeOffset;
@@ -319,7 +307,7 @@ void Timekeeper::addMinutesToDate(DateTime &date, int32_t minutes, bool startOnM
 void Timekeeper::fireAllListener(ITimeKeeperListener::Event eventToSignalize)
 {
     // Fire all existing listeners
-    for(int i(0); i < c_listenerArraySize; i++)
+    for (int i(0); i < c_listenerArraySize; i++)
     {
         auto listener = m_listenerPtr[i];
         if (listener != NULL)

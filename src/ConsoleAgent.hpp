@@ -1,12 +1,11 @@
 #pragma once
-#include <CLI.h> // https://github.com/MajenkoLibraries/CLI
 #include "IConsoleAgent.hpp"
-#include "ITimeKeeper.hpp"
 #include "IDataStorage.hpp"
 #include "IDoorSteering.hpp"
-#include "IOperationModeManager.hpp"
 #include "ILightSteering.hpp"
-
+#include "IOperationModeManager.hpp"
+#include "ITimeKeeper.hpp"
+#include <CLI.h> // https://github.com/MajenkoLibraries/CLI
 
 /**
  * @brief The ConsoleAgent is the class for the command line interface handling, therefore another form of UI.
@@ -15,11 +14,12 @@
  */
 class ConsoleAgent : public virtual IConsoleAgent
 {
-public:
-    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering, IOperationModeManager *operationModeManager, ILightSteering *lightSteering);
+  public:
+    explicit ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, IDoorSteering *doorSteering,
+                          IOperationModeManager *operationModeManager, ILightSteering *lightSteering);
     void cycle() override;
 
-private:
+  private:
     static ConsoleAgent *m_mySelf;
 
     void printHelpScreen();

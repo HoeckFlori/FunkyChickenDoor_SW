@@ -4,7 +4,7 @@
 
 class DataStorage : public virtual IDataStorage
 {
-public:
+  public:
     explicit DataStorage();
     virtual ~DataStorage() = default;
 
@@ -27,7 +27,7 @@ public:
     void setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting) override;
     IDataStorage::artificialMorningLightOption getArtificialMorningLightOption() override;
 
-private:
+  private:
     // memory mapping
     const int _formatInfo = 0;
     const int _daylightSaving = 1;
