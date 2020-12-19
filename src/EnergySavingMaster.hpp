@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IEnergySavingMaster.hpp"
+#include <stdint.h>
 
 class EnergySavingMaster : public virtual IEnergySavingMaster
 {

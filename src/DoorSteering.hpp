@@ -43,8 +43,8 @@ class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperLis
     void stopMotorActions();
     void activateMotorUp();
     void activateMotorDown();
-    void readDoorSwitchStatus();
 
+    void readDoorSwitchStatus();
     bool doorIsCurrentlyMoving();
 
     // TODO
