@@ -40,7 +40,6 @@ void DoorWidget::passModelEventToWidget(IModelEventListener::Event event)
     switch (event)
     {
     case IModelEventListener::Event::DOOR_STATE_CHANGED:
-        // todo, here we work
         if (m_model)
         {
             auto doorState = m_model->getDoorState();

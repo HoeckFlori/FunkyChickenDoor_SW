@@ -1,21 +1,15 @@
 #include "OptionModeBaseLayout.hpp"
 #include "RTClib.h"
 
-OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
-                                           uint16_t colorBackground,
-                                           uint16_t colorFrames,
-                                           uint16_t colorText)
-    : ViewBase::ViewBase(model, operatingElements, tft, colorBackground, colorFrames, colorText),
-      m_previousHourOfClock(-1),
-      m_previousMinuteOfClock(-1),
-      m_previousSecondOfClock(-1)
+OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft, uint16_t colorBackground,
+                                           uint16_t colorFrames, uint16_t colorText)
+    : ViewBase::ViewBase(model, operatingElements, tft, colorBackground, colorFrames, colorText)
+    , m_previousHourOfClock(-1)
+    , m_previousMinuteOfClock(-1)
+    , m_previousSecondOfClock(-1)
 {
-    m_doorWidget = new DoorWidget(m_model, m_tft,
-                                  m_defaultColorBackground,
-                                  m_defaultColorFrames,
-                                  m_defaultColorText,
+    m_doorWidget = new DoorWidget(m_model, m_tft, m_defaultColorBackground, m_defaultColorFrames, m_defaultColorText,
                                   /*x0*/ 114, /*y0*/ 20);
-    m_doorWidget->passModelEventToWidget(IModelEventListener::Event::DOOR_STATE_CHANGED); // for setup in the view
 }
 
 void OptionModeBaseLayout::cycle()
@@ -32,7 +26,7 @@ void OptionModeBaseLayout::drawBaseLayout()
     m_tft->fillRect(/*x*/ 0, /*y*/ 37, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
     // horizontal boarder left (lower one)
     m_tft->fillRect(/*x*/ 0, /*y*/ 52, /*w*/ 105, /*h*/ 3, m_defaultColorFrames);
-    //vertival boarder entire screen
+    // vertival boarder entire screen
     m_tft->fillRect(/*x*/ 105, /*y*/ 0, /*w*/ 4, /*h*/ m_tft->height(), m_defaultColorFrames);
 
     if (auto timekeeperAccess = m_model->getTimeKeeper())
@@ -49,7 +43,10 @@ void OptionModeBaseLayout::drawBaseLayout()
     }
 
     if (m_doorWidget)
+    {
         m_doorWidget->setup();
+        m_doorWidget->passModelEventToWidget(IModelEventListener::Event::DOOR_STATE_CHANGED); // for setup in the view
+    }
 }
 
 void OptionModeBaseLayout::printCurrentTimeToScreen(int hour, int minute, int second)
@@ -72,8 +69,7 @@ void OptionModeBaseLayout::printDateToScreen(int x0, int y0, int textSize, int d
     // clear previous date
     m_tft->fillRect(x0, y0,
                     /*w*/ (textSize * (5 + 1) * 10), // dd.mm.yyy
-                    /*h*/ (textSize * 7),
-                    m_defaultColorBackground);
+                    /*h*/ (textSize * 7), m_defaultColorBackground);
 
     // print the day
     m_tft->setCursor(x0, y0);
@@ -100,8 +96,7 @@ void OptionModeBaseLayout::printTimeToScreen(int x0, int y0, int textSize, bool 
     // clear previous time (simple version)
     m_tft->fillRect(x0, y0,
                     /*w*/ (showSeconds ? (textSize * (5 + 1) * 8) : (textSize * (5 + 1) * 5)),
-                    /*h*/ (textSize * 7),
-                    m_defaultColorBackground);
+                    /*h*/ (textSize * 7), m_defaultColorBackground);
 
     // print the hour
     m_tft->setCursor(x0, y0);
