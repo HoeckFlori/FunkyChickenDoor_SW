@@ -109,3 +109,15 @@ IDataStorage::artificialMorningLightOption DataStorage::getArtificialMorningLigh
     retVal = EEPROM.get(_artificialMorningLightOption, retVal);
     return retVal;
 }
+
+void DataStorage::setDoorMovingTimeout(uint16_t timeoutSec)
+{
+    EEPROM.put(_doorMovingTimeout, timeoutSec);
+}
+
+uint16_t DataStorage::getDoorMovingTimeout()
+{
+    uint16_t retVal(0);
+    retVal = EEPROM.get(_doorMovingTimeout, retVal);
+    return retVal;
+}

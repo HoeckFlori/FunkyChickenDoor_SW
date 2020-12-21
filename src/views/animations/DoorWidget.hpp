@@ -1,7 +1,7 @@
 #pragma once
 
-#include "WidgetBase.hpp"
 #include "../../IDoorSteering.hpp"
+#include "WidgetBase.hpp"
 #include <TFT.h>
 
 /**
@@ -9,12 +9,8 @@
  */
 class DoorWidget : public WidgetBase
 {
-public:
-    DoorWidget(IModel *model, Adafruit_GFX *tft,
-               uint16_t colorBackground,
-               uint16_t colorFrames,
-               uint16_t colorText,
-               int16_t x0, int16_t y0);
+  public:
+    DoorWidget(IModel *model, Adafruit_GFX *tft, uint16_t colorBackground, uint16_t colorFrames, uint16_t colorText, int16_t x0, int16_t y0);
     ~DoorWidget() = default;
 
     // IWidget
@@ -24,7 +20,7 @@ public:
     void cycle() override;
     void passModelEventToWidget(IModelEventListener::Event event) override;
 
-private:
+  private:
     // Widget size itsefl
     const int16_t m_outerWidth = 42;
     const int16_t m_outerHeight = 88;
@@ -52,7 +48,7 @@ private:
     /**
      * @brief Draw the doorflap (the board which is moving up and down to seal the chicken coop)
      *        into the inner frame.
-     * 
+     *
      * @param percentOpen The opening degree in percent. 0%(closed), 100%(open)
      */
     void drawDoorflap(uint8_t percentOpen);
@@ -60,8 +56,11 @@ private:
     /**
      * @brief Draw the error screen of the widget. An exclamation mark in a warning sign
      *        in the middle of the widget.
+     *
+     * @param withArrowUp   Draws an additional arrow UPWARDS to show the direction of movement when the error occured.
+     * @param withArrowDown Draws an additional arrow DOWNWARDS to show the direction of movement when the error occured.
      */
-    void drawError();
+    void drawError(bool withArrowUp = false, bool withArrowDown = false);
 
     bool m_animationClosingActive;
     bool m_animationOpeningActive;
@@ -100,13 +99,13 @@ private:
 
     /**
      * @brief The "cycle method" for the initialization;
-     * 
+     *
      */
     void initializationCycle();
 
     /**
      * @brief Helper method to draw/delete a "Sector" from the Initialization animation
-     * 
+     *
      * @param sector The sector to draw/delete (0-3)
      * @param clearSector If true, the sector gets deleted/overwritten with the default background color.
      */

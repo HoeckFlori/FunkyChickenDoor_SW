@@ -63,6 +63,9 @@ class IDataStorage
     virtual void setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting) = 0;
     virtual IDataStorage::artificialMorningLightOption getArtificialMorningLightOption() = 0;
 
+    virtual void setDoorMovingTimeout(uint16_t timeoutSec) = 0;
+    virtual uint16_t getDoorMovingTimeout() = 0;
+
     /*
     Settings we will need to persist
     [X] Daylight saving option, yes/no
@@ -72,7 +75,7 @@ class IDataStorage
     [x] 'Do not open before' option, yes/no
     [x] 'Do not open before' time, Time
     [X] Closing delay sunset,  +- minutes
-    [ ] 'Open close timeout', seconds (maybe)
-    [ ]  artificialMorningLightOption
+    [X] 'Open close timeout', seconds (maybe)
+    [X]  artificialMorningLightOption
     */
 };

@@ -52,9 +52,9 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("enableMorningLight", enableArtificalMorningLight);
     CLI.addCommand("disableMorningLight", disableArtificalMorningLight);
     CLI.addCommand("setPosition", setPosition);
-    CLI.addCommand("initDoor", initDoor);
     CLI.addCommand("openDoor", openDoor);
     CLI.addCommand("closeDoor", closeDoor);
+    CLI.addCommand("setDoorTimeout", setDoorTimeout);
     CLI.addCommand("turnLightOn", turnLightOn);
     CLI.addCommand("turnLightOff", turnLightOff);
     CLI.addCommand("showInfo", showInfo);
@@ -91,9 +91,9 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'enableMorningLight'   Enable the 'artifical morning light' option for the wintertime"));
     dev->println(F(" -> 'disableMorningLight'  Disable the 'artifical morning light' option"));
     dev->println(F(" -> 'setPosition'          Set geographical position of your chicken house"));
-    dev->println(F(" -> 'initDoor'             Start door initialization process"));
     dev->println(F(" -> 'openDoor'             Open door manually  (changes also the operation mode)"));
     dev->println(F(" -> 'closeDoor'            Close door manually (-\"-)"));
+    dev->println(F(" -> 'setDoorTimeout'       Set the timeout for the door movement in seconds (-\"-)"));
     dev->println(F(" -> 'turnLightOn'          Switch on the (artificial/indoor) light manually"));
     dev->println(F(" -> 'turnLightOff'         Switch off ...      (-\"-)"));
     dev->println(F(" -> 'showInfo'             Show all relevant information (dynamic/static) of the system"));
@@ -382,15 +382,6 @@ int ConsoleAgent::setPosition(CLIClient *dev, int argc, char **argv)
     }
 }
 
-int ConsoleAgent::initDoor(CLIClient *dev, int argc, char **argv)
-{
-    if (!(m_mySelf->m_doorSteering))
-        return -1; // error
-
-    m_mySelf->m_doorSteering->initDoor();
-    return 0;
-}
-
 int ConsoleAgent::openDoor(CLIClient *dev, int argc, char **argv)
 {
     if (!(m_mySelf->m_doorSteering))
@@ -409,16 +400,42 @@ int ConsoleAgent::closeDoor(CLIClient *dev, int argc, char **argv)
     return 0;
 }
 
+int ConsoleAgent::setDoorTimeout(CLIClient *dev, int argc, char **argv)
+{
+    if (!(m_mySelf->m_doorSteering))
+        return -1; // error
+
+    if ((argc == 1) || (argc > 2))
+    {
+        // argument is not valid, show error message and skip command
+        dev->println(F("-> Usage: 'setDoorTimeout 30 (sec)'"));
+        return -1;
+    }
+
+    // extract time
+    uint16_t seconds(0);
+    String time(argv[1]);
+    seconds = time.toInt();
+
+    m_mySelf->m_doorSteering->setTimeoutForDoorMoving(seconds);
+    dev->print(F("-> Set the timeout for the door moving action to "));
+    dev->print(seconds);
+    dev->println(F(" sec"));
+    return 0;
+}
+
 int ConsoleAgent::turnLightOn(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F("-> Light ON"));
     m_mySelf->m_lightSteering->switchLightOn();
+    return 0;
 }
 
 int ConsoleAgent::turnLightOff(CLIClient *dev, int argc, char **argv)
 {
     dev->println(F("-> Light OFF"));
     m_mySelf->m_lightSteering->switchLightOff();
+    return 0;
 }
 
 int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
@@ -507,6 +524,9 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
     dev->print(F("Doorstatus:        '"));
     dev->print(m_mySelf->m_doorSteering->getDoorStateHumanReadable());
     dev->println(F("'"));
+    dev->print(F("DoorTimeout:       '"));
+    dev->print(m_mySelf->m_doorSteering->getTimeoutForDoorMoving());
+    dev->println(F(" sec'"));
 
     // show light status
     dev->print(F("Lightstatus        '"));

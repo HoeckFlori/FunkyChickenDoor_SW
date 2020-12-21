@@ -11,10 +11,12 @@ class DataStorage : public virtual IDataStorage
     // IDataStorage
     bool getDayLightSavingSetting() const override;
     void setDayLightSavingSetting(bool daylightsaving) override;
+
     void setPosition(float latitude, float longitude, float timezone) override;
     float getPositionLatitude() const override;
     float getPositionLongitude() const override;
     float getTimeZone() const override;
+
     void setOperationMode(int opMode) override;
     int getOperationMode() const override;
 
@@ -27,6 +29,9 @@ class DataStorage : public virtual IDataStorage
     void setArtificialMorningLightOption(const IDataStorage::artificialMorningLightOption &setting) override;
     IDataStorage::artificialMorningLightOption getArtificialMorningLightOption() override;
 
+    void setDoorMovingTimeout(uint16_t timeoutSec) override;
+    uint16_t getDoorMovingTimeout() override;
+
   private:
     // memory mapping
     const int _formatInfo = 0;
@@ -38,4 +43,5 @@ class DataStorage : public virtual IDataStorage
     const int _doNotOpenBeforeOption = _operationMode + sizeof(int);
     const int _closingDelayOption = _doNotOpenBeforeOption + sizeof(IDataStorage::doNotOpenBeforeOption);
     const int _artificialMorningLightOption = _closingDelayOption + sizeof(IDataStorage::closingDelayOption);
+    const int _doorMovingTimeout = _artificialMorningLightOption + sizeof(IDataStorage::artificialMorningLightOption);
 };

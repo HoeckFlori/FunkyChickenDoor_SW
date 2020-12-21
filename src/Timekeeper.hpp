@@ -2,13 +2,14 @@
 
 #include "Dusk2Dawn.h"
 #include "IDataStorage.hpp"
+#include "IOperationModeManager.hpp"
 #include "ITimeKeeper.hpp"
 #include "RTClib.h"
 
 class Timekeeper : public virtual ITimeKeeper
 {
   public:
-    explicit Timekeeper(IDataStorage *dataStorage);
+    explicit Timekeeper(IDataStorage *dataStorage, IOperationModeManager *operationModeManager);
 
     // ITimeKeeper
     DateTime &getCurrentTime() override;
@@ -39,6 +40,7 @@ class Timekeeper : public virtual ITimeKeeper
     Dusk2Dawn m_dusk2Dawn = Dusk2Dawn(47.8144, 12.6352, +1); // todo(FHk) remove this, when the DataStorage is available and initialize it in the ctor
 
     IDataStorage *m_dataStorage;
+    IOperationModeManager *m_operationModeManager;
 
     DateTime m_lastQueriedTime;
     DateTime m_todaysSunrise;

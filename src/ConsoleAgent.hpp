@@ -40,9 +40,9 @@ class ConsoleAgent : public virtual IConsoleAgent
     static int enableArtificalMorningLight(CLIClient *dev, int argc, char **argv);
     static int disableArtificalMorningLight(CLIClient *dev, int argc, char **argv);
     static int setPosition(CLIClient *dev, int argc, char **argv);
-    static int initDoor(CLIClient *dev, int argc, char **argv);
     static int openDoor(CLIClient *dev, int argc, char **argv);
     static int closeDoor(CLIClient *dev, int argc, char **argv);
+    static int setDoorTimeout(CLIClient *dev, int argc, char **argv);
     static int turnLightOn(CLIClient *dev, int argc, char **argv);
     static int turnLightOff(CLIClient *dev, int argc, char **argv);
     static int showInfo(CLIClient *dev, int argc, char **argv);

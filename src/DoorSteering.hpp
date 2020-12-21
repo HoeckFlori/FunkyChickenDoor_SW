@@ -4,10 +4,13 @@
 #include "ITimeKeeperListener.hpp"
 #include <JC_Button.h>
 
+// forward declarations
+class IDataStorage;
+
 class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperListener
 {
   public:
-    DoorSteering(int motorUpPin, int motorDownPin, int doorUpPin, int doorDownPin);
+    DoorSteering(IDataStorage *dataStorage, int motorUpPin, int motorDownPin, int doorUpPin, int doorDownPin);
     ~DoorSteering() = default;
 
     // IDoorSteering
@@ -15,15 +18,19 @@ class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperLis
     DoorState getDoorState() const override;
     String getDoorStateHumanReadable() const override;
     void emergencyStop() override;
-    void initDoor() override;
     void closeDoor() override;
     void openDoor() override;
+    uint16_t getTimeoutForDoorMoving() override;
+    void setTimeoutForDoorMoving(uint16_t seconds) override;
 
     // ITimeKeeperListener
     void eventTimeKeeperListener(ITimeKeeperListener::Event event) override;
 
   private:
-    const int m_defaultDebounceTime = 5; // ms
+    const int c_defaultDebounceTime = 5;            // ms
+    const uint16_t c_defaultTimeoutDoorMoving = 30; // sec
+    const uint16_t c_timeoutMinimum = 1;            // sec
+    const uint16_t c_timeoutMaximum = 600;          // sec
 
     enum SwitchStatus
     {
@@ -33,12 +40,15 @@ class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperLis
     };
 
     SwitchStatus m_doorSwitchStatus;
-
+    IDataStorage *m_dataStorage;
     DoorState m_doorState;
     const int c_motorUpPin;
     const int c_motorDownPin;
     Button m_doorSwitchUp;
     Button m_doorSwitchDown;
+    uint16_t m_timeout_sec;
+    bool m_timeoutHandlerActive;
+    unsigned long m_lastTimeoutStartTimestamp_msec;
 
     void stopMotorActions();
     void activateMotorUp();
@@ -47,7 +57,7 @@ class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperLis
     void readDoorSwitchStatus();
     bool doorIsCurrentlyMoving();
 
-    // TODO
     void startTimeoutHandler();
+    void stopTimeoutHandler();
     bool timeOutOccureed();
 };

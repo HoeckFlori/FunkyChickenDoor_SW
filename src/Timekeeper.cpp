@@ -1,8 +1,9 @@
 #include "Timekeeper.hpp"
 #include "IDataStorage.hpp"
 
-Timekeeper::Timekeeper(IDataStorage *dataStorage)
+Timekeeper::Timekeeper(IDataStorage *dataStorage, IOperationModeManager *operationModeManager)
     : m_dataStorage(dataStorage)
+    , m_operationModeManager(operationModeManager)
     , m_lastQueriedTime(DateTime())
     , m_todaysSunrise(DateTime())
     , m_todaysSunset(DateTime())
@@ -231,43 +232,47 @@ void Timekeeper::cycle()
     // Query time from RTC
     m_lastQueriedTime = m_myClock.now();
 
-    // Door activities
-    if (getAutomaticDoorState())
-    { // shall be open
-        m_eventHistory.firedDoorClosing = false;
-        if (!m_eventHistory.firedDoorOpening)
-        {
-            m_eventHistory.firedDoorOpening = true;
-            fireAllListener(ITimeKeeperListener::Event::openDoor);
+    // do all the automatic stuff, if the OpMode allows it
+    if (m_operationModeManager->getMode() == IOperationModeManager::OpMode::AUTOMATIC)
+    {
+        // Door activities
+        if (getAutomaticDoorState())
+        { // shall be open
+            m_eventHistory.firedDoorClosing = false;
+            if (!m_eventHistory.firedDoorOpening)
+            {
+                m_eventHistory.firedDoorOpening = true;
+                fireAllListener(ITimeKeeperListener::Event::openDoor);
+            }
         }
-    }
-    else
-    { // shall be closed
-        m_eventHistory.firedDoorOpening = false;
-        if (!m_eventHistory.firedDoorClosing)
-        {
-            m_eventHistory.firedDoorClosing = true;
-            fireAllListener(ITimeKeeperListener::Event::closeDoor);
+        else
+        { // shall be closed
+            m_eventHistory.firedDoorOpening = false;
+            if (!m_eventHistory.firedDoorClosing)
+            {
+                m_eventHistory.firedDoorClosing = true;
+                fireAllListener(ITimeKeeperListener::Event::closeDoor);
+            }
         }
-    }
 
-    // Artificial Morning Light activities
-    if (getArtificialLightState())
-    { // shall be on
-        m_eventHistory.firedArtificialLightOff = false;
-        if (!m_eventHistory.firedArtificialLightOn)
-        {
-            m_eventHistory.firedArtificialLightOn = true;
-            fireAllListener(ITimeKeeperListener::Event::turnOnArtificialMorningLight);
+        // Artificial Morning Light activities
+        if (getArtificialLightState())
+        { // shall be on
+            m_eventHistory.firedArtificialLightOff = false;
+            if (!m_eventHistory.firedArtificialLightOn)
+            {
+                m_eventHistory.firedArtificialLightOn = true;
+                fireAllListener(ITimeKeeperListener::Event::turnOnArtificialMorningLight);
+            }
         }
-    }
-    else
-    { // shall be off
-        m_eventHistory.firedArtificialLightOn = false;
-        if (!m_eventHistory.firedArtificialLightOff)
-        {
-            m_eventHistory.firedArtificialLightOff = true;
-            fireAllListener(ITimeKeeperListener::Event::turnOffArtificialMorningLight);
+        else
+        { // shall be off
+            m_eventHistory.firedArtificialLightOn = false;
+            if (!m_eventHistory.firedArtificialLightOff)
+            {
+                m_eventHistory.firedArtificialLightOff = true;
+                fireAllListener(ITimeKeeperListener::Event::turnOffArtificialMorningLight);
+            }
         }
     }
 }
