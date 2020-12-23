@@ -6,6 +6,19 @@ class IDataStorage
   public:
     virtual ~IDataStorage() = default;
 
+    struct positionOption
+    {
+        positionOption(float latitude = 0, float longitude = 0, float timeZone = 0)
+            : _positionLatitude(latitude)
+            , _positionLongitude(longitude)
+            , _timeZone(timeZone)
+        {
+        }
+        float _positionLatitude;
+        float _positionLongitude;
+        float _timeZone;
+    };
+
     struct doNotOpenBeforeOption
     {
         doNotOpenBeforeOption(bool enabled = false, uint8_t hour = 0, uint8_t minute = 0)
@@ -43,13 +56,18 @@ class IDataStorage
         uint8_t _minute;
     };
 
-    virtual bool getDayLightSavingSetting() const = 0;
-    virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
+    /**
+     * @brief Format/reset complete memory (each cell).
+     *        A system reset afterwards is recommended! Otherwise, undefined behaviour may occur.
+     *
+     */
+    virtual void formatMemory() = 0;
 
-    virtual void setPosition(float latitude, float longitude, float timezone) = 0;
-    virtual float getPositionLatitude() const = 0;
-    virtual float getPositionLongitude() const = 0;
-    virtual float getTimeZone() const = 0;
+    virtual void setDayLightSavingSetting(bool daylightsaving) = 0;
+    virtual bool getDayLightSavingSetting() const = 0;
+
+    virtual void setPosition(const IDataStorage::positionOption &position) = 0;
+    virtual IDataStorage::positionOption getPosition() const = 0;
 
     virtual void setOperationMode(int opMode) = 0;
     virtual int getOperationMode() const = 0;

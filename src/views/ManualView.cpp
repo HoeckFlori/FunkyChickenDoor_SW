@@ -5,8 +5,7 @@
 ManualView::ManualView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
     : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,
                                                  tft->newColor(/*R*/ 0x00, /*G*/ 0x33, /*B*/ 0xCC) /*background color*/,
-                                                 tft->newColor(/*R*/ 0xFF, /*G*/ 0x99, /*B*/ 0x00) /*color of frames*/,
-                                                 ST7735_WHITE /*text color*/)
+                                                 tft->newColor(/*R*/ 0xFF, /*G*/ 0x99, /*B*/ 0x00) /*color of frames*/, ST7735_WHITE /*text color*/)
 {
     drawBaseLayout();
 }
@@ -32,8 +31,8 @@ void ManualView::modelListener(IModelEventListener::Event event)
     case IModelEventListener::Event::DATE_UPDATE:
         if (auto timekeeperAccess = m_model->getTimeKeeper())
         {
-            auto newTime = timekeeperAccess->getCurrentTime();
-            printCurrentTimeToScreen(newTime.hour(), newTime.minute(), newTime.second());
+            auto time = timekeeperAccess->getCurrentTime();
+            printCurrentDateToScreen(time.day(), time.month(), time.year());
         }
         break;
     case IModelEventListener::Event::SUNRISE_SUNSET_UPDATE:

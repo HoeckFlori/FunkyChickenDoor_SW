@@ -41,6 +41,7 @@ ConsoleAgent::ConsoleAgent(ITimeKeeper *timeKeeper, IDataStorage *dataStorage, I
     CLI.addCommand("help", help);
     CLI.addCommand("memory", showMemory);
     CLI.addCommand("reset", reset);
+    CLI.addCommand("factoryReset", factoryReset);
     CLI.addCommand("changeOpMode", changeOpMode);
     CLI.addCommand("getTime", getDateTime);
     CLI.addCommand("setTime", setTime);
@@ -80,10 +81,11 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'help'                 Show this help context"));
     dev->println(F(" -> 'memory'               Show available RAM in bytes"));
     dev->println(F(" -> 'reset'                Initiate a softreset"));
+    dev->println(F(" -> 'factoryReset'         Do a factory reset. Attention, all settings get lost!"));
     dev->println(F(" -> 'changeOpMode          Change the door OperationMode"));
     dev->println(F(" -> 'getTime'              Show actual system time"));
     dev->println(F(" -> 'setTime'              Set new time"));
-    dev->println(F(" -> 'setDaylightSaving'    Active the dayligh option (summer time)"));
+    dev->println(F(" -> 'setDaylightSaving'    Active the daylight option (summer time)"));
     dev->println(F(" -> 'enableNotOpenBefore'  Enable the 'do not open before option x:xx o'clock' option"));
     dev->println(F(" -> 'disableNotOpenBefore' Disable the 'do not open before ...' option"));
     dev->println(F(" -> 'enableClosingDelay'   Enable the 'closing delay in minutes after sunset' option"));
@@ -119,6 +121,37 @@ int ConsoleAgent::reset(CLIClient *dev, int argc, char **argv)
         // PNR
     }
     return 0;
+}
+
+int ConsoleAgent::factoryReset(CLIClient *dev, int argc, char **argv)
+{
+    if (argc < 2)
+    {
+        // The command alone is not valid. Show hint to prevent missuse.
+        dev->println(F("-> Are you really sure to reset the device? Type 'factoryReset now' to be sure."));
+        return 0;
+    }
+
+    String input(argv[1]);
+    if (input.equals(F("now")))
+    {
+        dev->println(F("Memory gets erased ..."));
+        m_mySelf->m_dataStorage->formatMemory();
+        dev->println(F("... reset gets done ..."));
+        // fake watchdog failure to generate a reset
+        wdt_disable();
+        wdt_enable(WDTO_15MS);
+        while (1)
+        {
+            // PNR
+        }
+        return 0;
+    }
+    else
+    {
+        dev->println(F("Input command unknown!"));
+        return -1;
+    }
 }
 
 int ConsoleAgent::changeOpMode(CLIClient *dev, int argc, char **argv)
@@ -282,13 +315,17 @@ int ConsoleAgent::enableClosingDelay(CLIClient *dev, int argc, char **argv)
         return -1;
     }
 
-    uint16_t mm(0);
-
     // extract time
+    uint16_t mm(0);
     String time(argv[1]);
     mm = time.toInt();
 
     m_mySelf->m_timeKeeper->setClosingDelay(mm);
+
+    dev->print(F(" -> ClosingDelayOption enabled and set to '"));
+    dev->print(mm);
+    dev->print(F(" minute(s)' after sunset"));
+
     return 0;
 }
 
@@ -467,15 +504,14 @@ int ConsoleAgent::showInfo(CLIClient *dev, int argc, char **argv)
 
     if (m_mySelf->m_dataStorage)
     {
-        // show position
+        // show position and timezone
+        auto position = m_mySelf->m_dataStorage->getPosition();
         dev->print(F("Position:          "));
-        dev->print(m_mySelf->m_dataStorage->getPositionLatitude(), 5);
+        dev->print(position._positionLatitude, 5);
         dev->print(F(", "));
-        dev->println(m_mySelf->m_dataStorage->getPositionLongitude(), 5);
-
-        // show timezone
+        dev->println(position._positionLongitude, 5);
         dev->print(F("Timezone:          "));
-        dev->println(m_mySelf->m_dataStorage->getTimeZone(), 0);
+        dev->println(position._timeZone, 0);
 
         // show doNotOpenBefore
         auto doNotOpenBefore = m_mySelf->m_dataStorage->getDoNotOpenBeforeOption();

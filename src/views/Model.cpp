@@ -1,9 +1,9 @@
 #include "Model.hpp"
 
 Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager)
-    : m_timeKeeper(timekeeper),
-      m_doorSteering(doorSteering),
-      m_opModeManager(opModeManager)
+    : m_timeKeeper(timekeeper)
+    , m_doorSteering(doorSteering)
+    , m_opModeManager(opModeManager)
 {
 }
 
@@ -20,7 +20,7 @@ void Model::cycle()
         { // at least time has changed
             // check if date has changed too
             bool dateChange(false);
-            if (m_timestamp.day() != newTime.day())
+            if ((m_timestamp.day() != newTime.day()) || (m_timestamp.year() != newTime.year()))
             {
                 dateChange = true;
             }
@@ -69,7 +69,7 @@ void Model::cycle()
         }
     }
 
-    //add event for mode change here
+    // add event for mode change here
 }
 
 void Model::registerModelEventListener(IModelEventListener *listener)

@@ -29,6 +29,7 @@ class ConsoleAgent : public virtual IConsoleAgent
     static int help(CLIClient *dev, int argc, char **argv);
     static int showMemory(CLIClient *dev, int argc, char **argv);
     static int reset(CLIClient *dev, int argc, char **argv);
+    static int factoryReset(CLIClient *dev, int argc, char **argv);
     static int changeOpMode(CLIClient *dev, int argc, char **argv);
     static int getDateTime(CLIClient *dev, int argc, char **argv);
     static int setTime(CLIClient *dev, int argc, char **argv);

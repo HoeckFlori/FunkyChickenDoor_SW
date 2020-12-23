@@ -20,9 +20,12 @@ Timekeeper::Timekeeper(IDataStorage *dataStorage, IOperationModeManager *operati
     // start RTC
     if (!m_myClock.begin())
         Serial.println(F("Could not contact RTC"));
+
+    // setup internals with informations from the non-volatile memory
     if (m_dataStorage)
     {
-        // todo(FHk) init the m_dusk2Dawn machine, this is still missing,22.11.2020
+        auto position = m_dataStorage->getPosition();
+        m_dusk2Dawn = new Dusk2Dawn(position._positionLatitude, position._positionLongitude, position._timeZone);
 
         m_daylightSaving = m_dataStorage->getDayLightSavingSetting();
         m_doNotOpenBeforeOption = m_dataStorage->getDoNotOpenBeforeOption();
@@ -45,9 +48,14 @@ DateTime &Timekeeper::getTodaysSunrise()
     // The here shown solution takes ~1050µ if no new sunrise has to be calculated. The calculation which
     // each call would need ~9000µ.
     DateTime today = m_lastQueriedTime;
-    if ((today.day() != m_todaysSunset.day()) || (today.year() != m_todaysSunset.year()))
+    if ((today.day() != m_todaysSunrise.day()) || (today.year() != m_todaysSunrise.year()))
     { // current sunrise not up to date -> update it
-        int eventInMinutes = m_dusk2Dawn.sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
+        int eventInMinutes = m_dusk2Dawn->sunrise(today.year(), today.month(), today.day(), m_daylightSaving);
+        if (eventInMinutes < 0)
+        {
+            Serial.println("No sunrise expected!");
+        }
+
         m_todaysSunrise = today;
         addMinutesToDate(m_todaysSunrise, eventInMinutes);
     }
@@ -61,7 +69,7 @@ DateTime &Timekeeper::getTodaysSunset()
     DateTime today = m_lastQueriedTime;
     if ((today.day() != m_todaysSunset.day()) || (today.year() != m_todaysSunset.year()))
     { // current sunrise not up to date -> update it
-        int eventInMinutes = m_dusk2Dawn.sunset(today.year(), today.month(), today.day(), m_daylightSaving);
+        int eventInMinutes = m_dusk2Dawn->sunset(today.year(), today.month(), today.day(), m_daylightSaving);
         m_todaysSunset = today;
         addMinutesToDate(m_todaysSunset, eventInMinutes);
     }
@@ -218,13 +226,21 @@ bool Timekeeper::getDaylightSaving() const
 void Timekeeper::setPositionAndTimezone(float latitude, float longitude, float timezone)
 {
     // build new Dusk2Dawn engine
-    m_dusk2Dawn = Dusk2Dawn(latitude, longitude, timezone);
+    delete m_dusk2Dawn;
+    m_dusk2Dawn = new Dusk2Dawn(latitude, longitude, timezone);
 
     // store new position information in the DataStorage
     if (m_dataStorage)
     {
-        m_dataStorage->setPosition(latitude, longitude, timezone);
+        IDataStorage::positionOption position(latitude, longitude, timezone);
+        m_dataStorage->setPosition(position);
     }
+
+    // force to update sunrise/sunset
+    m_todaysSunrise = DateTime(2000, 1, 1);
+    getTodaysSunrise();
+    m_todaysSunset = DateTime(2000, 1, 1);
+    getTodaysSunset();
 }
 
 void Timekeeper::cycle()
