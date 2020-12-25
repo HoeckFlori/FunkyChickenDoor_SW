@@ -5,6 +5,7 @@ OperatingElements::OperatingElements(IEnergySavingPreventor *energySavingPrevent
     , m_enterButton(23 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
     , m_upButton(24 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
     , m_downButton(25 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    , m_keyEventListener(nullptr)
     , m_energySavingPreventor(energySavingPreventor)
 {
     m_backButton.begin();

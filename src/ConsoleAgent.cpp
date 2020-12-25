@@ -1,23 +1,9 @@
 #include "ConsoleAgent.hpp"
+#include "FreeMemory.hpp"
 #include "RTClib.h"
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
-
-// helper to check the available RAM
-extern unsigned int __bss_end;
-extern unsigned int __heap_start;
-extern void *__brkval;
-uint16_t getFreeSram()
-{
-    uint8_t newVariable;
-    // heap is empty, use bss as start memory address
-    if ((uint16_t)__brkval == 0)
-        return (((uint16_t)&newVariable) - ((uint16_t)&__bss_end));
-    // use heap end as the start of the memory address
-    else
-        return (((uint16_t)&newVariable) - ((uint16_t)__brkval));
-};
 
 // the ConsoleAgent gets handled in a similar form like a singleton to access the members from the static command methods
 ConsoleAgent *ConsoleAgent::m_mySelf = 0;
@@ -104,9 +90,8 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::showMemory(CLIClient *dev, int argc, char **argv)
 {
-    dev->print(F("Available RAM: "));
-    dev->print(getFreeSram());
-    dev->println(F(" bytes"));
+    GetMemoryInformation();
+    GetFreeMemory(true /*withExploitation*/);
     return 0;
 }
 

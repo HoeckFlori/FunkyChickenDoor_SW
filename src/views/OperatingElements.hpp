@@ -1,13 +1,13 @@
 #pragma once
 
-#include <JC_Button.h>
-#include "IOperatingElements.hpp"
 #include "../IEnergySavingMaster.hpp"
+#include "IOperatingElements.hpp"
+#include <JC_Button.h>
 
 class OperatingElements : public virtual IOperatingElements
 {
-public:
-    OperatingElements(IEnergySavingPreventor *energySavingPreventor);
+  public:
+    explicit OperatingElements(IEnergySavingPreventor *energySavingPreventor);
     ~OperatingElements() = default;
 
     // IOperatingElements
@@ -15,7 +15,7 @@ public:
     void registerKeyEventListener(IKeyEventListener *listener) override;
     void removeKeyEventListener() override;
 
-private:
+  private:
     const int m_defaultDebounceTime = 40; // ms
 
     Button m_backButton;

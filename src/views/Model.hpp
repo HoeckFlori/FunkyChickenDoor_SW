@@ -1,12 +1,12 @@
 #pragma once
 
 #include "IModel.hpp"
-#include "RTClib.h"
 #include "IOperationModeManager.hpp"
+#include "RTClib.h"
 
 class Model : public virtual IModel
 {
-public:
+  public:
     Model(ITimeKeeper *timeKeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager);
     ~Model() = default;
 
@@ -21,11 +21,10 @@ public:
     void requestDoorClose() override;
     void orderEmergencyStop() override;
 
-private:
+  private:
     ITimeKeeper *m_timeKeeper;
     IDoorSteering *m_doorSteering;
     IOperationModeManager *m_opModeManager;
-
     IModelEventListener *m_eventListener;
 
     // working variables

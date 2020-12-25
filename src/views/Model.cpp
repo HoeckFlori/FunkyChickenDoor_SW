@@ -4,6 +4,8 @@ Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationMod
     : m_timeKeeper(timekeeper)
     , m_doorSteering(doorSteering)
     , m_opModeManager(opModeManager)
+    , m_eventListener(nullptr)
+    , m_doorState(IDoorSteering::DoorState::UNDEFINED)
 {
 }
 
