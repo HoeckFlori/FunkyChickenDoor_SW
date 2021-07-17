@@ -1,11 +1,12 @@
 #include "MultiFunctionalBar.hpp"
+#include <TFT.h>
 
 MultiFunctionalBar::MultiFunctionalBar(IModel *model, Adafruit_GFX *tft, uint16_t colorBackground, uint16_t colorFrames, uint16_t colorText,
                                        int16_t x0, int16_t y0)
     : WidgetBase(model, tft, colorBackground, colorFrames, colorText, x0, y0)
     , m_buttonModeChange(NULL)
-    , m_buttonEmergencyOff(NULL)
     , m_buttonUpDown(NULL)
+    , m_buttonEmergencyOff(NULL)
     , m_buttonLightBulb(NULL)
 {
 }
@@ -50,8 +51,6 @@ void MultiFunctionalBar::passModelEventToWidget(IModelEventListener::Event event
         m_buttonEmergencyOff->passModelEventToWidget(event);
     if (m_buttonLightBulb)
         m_buttonLightBulb->passModelEventToWidget(event);
-
-    // todo(FHk) add other buttons also
 }
 
 void MultiFunctionalBar::drawBaseGrid()

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../WidgetBase.hpp"
-#include <TFT.h>
 
 #include "ButtonEmergencyOff.hpp"
 #include "ButtonLightBulb.hpp"
