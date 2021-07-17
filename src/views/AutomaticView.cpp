@@ -3,9 +3,7 @@
 #include "TFT.h"
 
 AutomaticView::AutomaticView(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft)
-    : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft,
-                                                 ST7735_BLACK /*background color*/,
-                                                 ST7735_RED /*color of frames*/,
+    : OptionModeBaseLayout::OptionModeBaseLayout(model, operatingElements, tft, ST7735_BLACK /*background color*/, ST7735_RED /*color of frames*/,
                                                  ST7735_WHITE /*text color*/)
 {
     drawBaseLayout();
@@ -79,6 +77,8 @@ void AutomaticView::modelListener(IModelEventListener::Event event)
     // pass event to widget(s)
     if (m_doorWidget)
         m_doorWidget->passModelEventToWidget(event);
+    if (m_multiFunctionalBar)
+        m_multiFunctionalBar->passModelEventToWidget(event);
 }
 
 void AutomaticView::keyEventListener(IKeyEventListener::Event event)
@@ -140,5 +140,6 @@ void AutomaticView::printOpeningTime(int hour, int minute)
 void AutomaticView::printClosingTime(int hour, int minute)
 {
     m_tft->setTextColor(m_defaultColorText);
-    printTimeToScreen(/*x*/ 120, /*y*/ 114, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+    // printTimeToScreen(/*x*/ 120, /*y*/ 114, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
+    printTimeToScreen(/*x*/ 120, /*y*/ 94, /*textsize*/ 1, /*showSeconds*/ false, hour, minute);
 }

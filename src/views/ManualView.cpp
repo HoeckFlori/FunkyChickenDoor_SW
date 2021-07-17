@@ -53,6 +53,8 @@ void ManualView::modelListener(IModelEventListener::Event event)
     // pass event to widget(s)
     if (m_doorWidget)
         m_doorWidget->passModelEventToWidget(event);
+    if (m_multiFunctionalBar)
+        m_multiFunctionalBar->passModelEventToWidget(event);
 }
 
 void ManualView::keyEventListener(IKeyEventListener::Event event)

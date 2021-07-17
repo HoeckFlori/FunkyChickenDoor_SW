@@ -2,7 +2,7 @@
 
 class IModelEventListener
 {
-public:
+  public:
     virtual ~IModelEventListener() = default;
 
     enum class Event
@@ -13,12 +13,13 @@ public:
         MODE_CHANGED,
         DOOR_STATE_CHANGED,
         NEW_ERROR_AVAILABLE,
+        LIGHT_STATE_CHANGED,
         RELOAD_EVERYTHING
     };
 
     /**
      * @brief The 'callback' method, that can be registred to the model.
-     * 
+     *
      * @param event The information about events from the Model.
      */
     virtual void modelListener(IModelEventListener::Event event) = 0;

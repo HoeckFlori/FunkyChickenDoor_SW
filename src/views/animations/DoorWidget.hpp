@@ -21,9 +21,9 @@ class DoorWidget : public WidgetBase
     void passModelEventToWidget(IModelEventListener::Event event) override;
 
   private:
-    // Widget size itsefl
+    // Widget size itself
     const int16_t m_outerWidth = 42;
-    const int16_t m_outerHeight = 88;
+    const int16_t m_outerHeight = 68; // origin 88
     const int16_t m_outerFrameThickness = 2;
 
     // doorflap constants

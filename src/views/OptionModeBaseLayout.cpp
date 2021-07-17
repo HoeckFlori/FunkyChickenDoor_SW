@@ -10,6 +10,8 @@ OptionModeBaseLayout::OptionModeBaseLayout(IModel *model, IOperatingElements *op
 {
     m_doorWidget = new DoorWidget(m_model, m_tft, m_defaultColorBackground, m_defaultColorFrames, m_defaultColorText,
                                   /*x0*/ 114, /*y0*/ 20);
+    m_multiFunctionalBar =
+        new MultiFunctionalBar(m_model, m_tft, m_defaultColorBackground, m_defaultColorFrames, m_defaultColorText, /*x0*/ 0, /*y0*/ 108);
 }
 
 void OptionModeBaseLayout::cycle()
@@ -17,6 +19,10 @@ void OptionModeBaseLayout::cycle()
     if (m_doorWidget)
     {
         m_doorWidget->cycle();
+    }
+    if (m_multiFunctionalBar)
+    {
+        m_multiFunctionalBar->cycle();
     }
 }
 
@@ -37,7 +43,7 @@ void OptionModeBaseLayout::drawBaseLayout()
 
         // print summer/winter time information
         m_tft->setTextColor(m_defaultColorText);
-        m_tft->setCursor(12, 119);
+        m_tft->setCursor(12, 92);
         m_tft->setTextSize(1);
         timekeeperAccess->getDaylightSaving() ? m_tft->print(F("<Summer time>")) : m_tft->print(F("<Winter time>"));
     }
@@ -46,6 +52,10 @@ void OptionModeBaseLayout::drawBaseLayout()
     {
         m_doorWidget->setup();
         m_doorWidget->passModelEventToWidget(IModelEventListener::Event::DOOR_STATE_CHANGED); // for setup in the view
+    }
+    if (m_multiFunctionalBar)
+    {
+        m_multiFunctionalBar->setup();
     }
 }
 

@@ -9,6 +9,7 @@
 #include "IOperationModeManager.hpp"
 #include "BacklightControl.hpp"
 #include "../IEnergySavingMaster.hpp"
+#include "../ILightSteering.hpp"
 
 // foward declaration
 class Adafruit_ST7735;
@@ -16,7 +17,7 @@ class Adafruit_ST7735;
 class ViewController : public virtual IViewController
 {
 public:
-    ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IEnergySavingMaster *energySavingMaster);
+    ViewController(IOperationModeManager *operationModeManager, ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IEnergySavingMaster *energySavingMaster, ILightSteering *lightSteering);
     ~ViewController() = default;
 
     // IViewController

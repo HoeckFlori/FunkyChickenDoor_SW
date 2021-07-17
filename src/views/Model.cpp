@@ -1,11 +1,13 @@
 #include "Model.hpp"
 
-Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager)
+Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationModeManager *opModeManager, ILightSteering *lightSteering)
     : m_timeKeeper(timekeeper)
     , m_doorSteering(doorSteering)
     , m_opModeManager(opModeManager)
+    , m_lightSteering(lightSteering)
     , m_eventListener(nullptr)
     , m_doorState(IDoorSteering::DoorState::UNDEFINED)
+    , m_lightState(false)
 {
 }
 
@@ -71,6 +73,21 @@ void Model::cycle()
         }
     }
 
+    // --- fo light steering stuff ---
+    if (m_lightSteering)
+    {
+        bool lightState = m_lightSteering->getLightStatus();
+        if (m_lightState != lightState)
+        {
+            m_lightState = lightState;
+            // inform listener, if available
+            if (m_eventListener != nullptr)
+            {
+                m_eventListener->modelListener(IModelEventListener::Event::LIGHT_STATE_CHANGED);
+            }
+        }
+    }
+
     // add event for mode change here
 }
 
@@ -105,6 +122,11 @@ void Model::requestModeChange()
         m_opModeManager->changeMode(IOperationModeManager::OpMode::AUTOMATIC);
 }
 
+IOperationModeManager::OpMode Model::getMode() const
+{
+    return m_opModeManager->getMode();
+}
+
 void Model::requestDoorOpen()
 {
     m_doorSteering->openDoor();
@@ -118,4 +140,9 @@ void Model::requestDoorClose()
 void Model::orderEmergencyStop()
 {
     m_doorSteering->emergencyStop();
+}
+
+bool Model::getLightState() const
+{
+    return m_lightSteering->getLightStatus();
 }

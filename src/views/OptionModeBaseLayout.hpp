@@ -2,6 +2,7 @@
 
 #include "ViewBase.hpp"
 #include "animations/DoorWidget.hpp"
+#include "animations/multiFunctionalBar/MultiFunctionalBar.hpp"
 
 /**
  * @brief The OptionModeBaseLayout forms the basis layout for all implemented modes
@@ -11,24 +12,23 @@
  */
 class OptionModeBaseLayout : public ViewBase
 {
-public:
-    OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft,
-                         uint16_t colorBackground,
-                         uint16_t colorFrames,
+  public:
+    OptionModeBaseLayout(IModel *model, IOperatingElements *operatingElements, Adafruit_GFX *tft, uint16_t colorBackground, uint16_t colorFrames,
                          uint16_t colorText);
     virtual ~OptionModeBaseLayout() = default;
 
     // IView
     void cycle() override;
 
-protected:
-    DoorWidget *m_doorWidget; // The door state animation which is part of each functional view
+  protected:
+    DoorWidget *m_doorWidget;                 // The door state animation which is part of each functional view
+    MultiFunctionalBar *m_multiFunctionalBar; // The info and control bar on the lower side of the view
 
     void drawBaseLayout() override;
 
     /**
      * @brief Print the now actual time to the baselayout
-     * 
+     *
      * @param hour   Hour 0-24
      * @param minute Minute 0-59
      * @param second Second 0-59
@@ -37,7 +37,7 @@ protected:
 
     /**
      * @brief Print the now actual date to the baselayout
-     * 
+     *
      * @param day   Day
      * @param month Month
      * @param year  Year
@@ -46,7 +46,7 @@ protected:
 
     /**
      * @brief Write the date in format dd:mm:YYYY to screen
-     * 
+     *
      * @param x0       Initial position left
      * @param y0       Initial position up
      * @param textSize Text size can be 1-3. Basic size is 5x8. Each size is multiplied by it.
@@ -58,7 +58,7 @@ protected:
 
     /**
      * @brief Write time in format hh::mm::ss to screen
-     * 
+     *
      * @param x0       Initial position left
      * @param y0       Initial position up
      * @param textSize Text size can be 1-3. Basic size is 5x8. Each size is multiplied by it.

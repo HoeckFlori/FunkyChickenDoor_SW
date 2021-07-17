@@ -27,7 +27,7 @@ MainControl::MainControl()
     m_timeKeeper->registerEventListener(plainDoor);
     m_timeKeeper->registerEventListener(plainLightSteering);
     m_consoleAgent = new ConsoleAgent(m_timeKeeper, m_dataStorage, m_door, m_operationMode, m_lighting);
-    m_viewController = new ViewController(m_operationMode, m_timeKeeper, m_door, m_energySavingMaster);
+    m_viewController = new ViewController(m_operationMode, m_timeKeeper, m_door, m_energySavingMaster, m_lighting);
 }
 
 void MainControl::cycle()
