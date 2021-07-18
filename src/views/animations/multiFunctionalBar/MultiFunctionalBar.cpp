@@ -131,7 +131,10 @@ void MultiFunctionalBar::buildBarAccordingMode()
                                                       WidgetBase::m_y0 + m_outerFrameThickness, m_gapSizeX, m_gapSizeY);
 
             // Button B
-            // LIGHTBULB INFO
+            delete m_buttonLightBulb;
+            m_buttonLightBulb = new ButtonLightBulb(WidgetBase::m_model, WidgetBase::m_tft, WidgetBase::m_defaultColorBackground,
+                                                    WidgetBase::m_defaultColorFrames, WidgetBase::m_defaultColorText, getX0ForButton(2),
+                                                    WidgetBase::m_y0 + m_outerFrameThickness, m_gapSizeX, m_gapSizeY);
 
             // Button C
             // -nothing-

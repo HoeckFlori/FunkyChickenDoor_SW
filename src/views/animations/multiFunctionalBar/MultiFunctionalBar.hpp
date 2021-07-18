@@ -5,7 +5,6 @@
 #include "ButtonEmergencyOff.hpp"
 #include "ButtonLightBulb.hpp"
 #include "ButtonModeChange.hpp"
-#include "ButtonReturn.hpp"
 #include "ButtonUpDown.hpp"
 
 class MultiFunctionalBar : public WidgetBase

@@ -136,7 +136,7 @@ void Timekeeper::setArtificialMorningLight(int hour, int minute)
 
 void Timekeeper::disableArtificialMorningLight()
 {
-    m_closingDelayOption._optionEnabled = false;
+    m_artificialMorningLightOption._optionEnabled = false;
     if (m_dataStorage)
     {
         m_dataStorage->setArtificialMorningLightOption(m_artificialMorningLightOption);
@@ -162,6 +162,11 @@ bool Timekeeper::getArtificialLightState()
     { // shall be Off
         return false;
     }
+}
+
+bool Timekeeper::getArtificialLightOptionEnabled() const
+{
+    return m_artificialMorningLightOption._optionEnabled;
 }
 
 DateTime &Timekeeper::getTodayOpeningTime()

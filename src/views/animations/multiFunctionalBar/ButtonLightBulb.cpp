@@ -67,6 +67,14 @@ void ButtonLightBulb::drawBulb(bool lightOn, int x0, int y0)
                       /* r  */ 5, m_defaultColorText);
 }
 
+void ButtonLightBulb::drawInActive()
+{
+    clearButtonArea();
+    m_tft->setTextSize(1);
+    m_tft->setCursor(m_x0 + (m_buttonSizeX / 2) - 3, m_y0 + 5);
+    m_tft->print(F("-"));
+}
+
 void ButtonLightBulb::lightStateHandling()
 {
     if (m_model)
@@ -75,9 +83,15 @@ void ButtonLightBulb::lightStateHandling()
         {
         case IOperationModeManager::OpMode::AUTOMATIC:
             clearButtonArea();
-
+            if (m_model->getArtificialLightOptionEnabled() == true)
+            {
+                drawBulb(m_model->getLightState(), 0, 0);
+            }
+            else
+            {
+                drawInActive();
+            }
             break;
-
         case IOperationModeManager::OpMode::MANUAL:
             clearButtonArea();
             drawBulb(m_model->getLightState(), (m_buttonSizeX / 2) - 7, 0);

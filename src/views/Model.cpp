@@ -146,3 +146,8 @@ bool Model::getLightState() const
 {
     return m_lightSteering->getLightStatus();
 }
+
+bool Model::getArtificialLightOptionEnabled() const
+{
+    return m_timeKeeper->getArtificialLightOptionEnabled();
+}

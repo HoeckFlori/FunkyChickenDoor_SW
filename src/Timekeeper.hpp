@@ -31,6 +31,7 @@ class Timekeeper : public virtual ITimeKeeper
     void setArtificialMorningLight(int hour, int minute) override;
     void disableArtificialMorningLight() override;
     bool getArtificialLightState() override;
+    bool getArtificialLightOptionEnabled() const override;
 
     void cycle() override;
     void registerEventListener(ITimeKeeperListener *listener) override;

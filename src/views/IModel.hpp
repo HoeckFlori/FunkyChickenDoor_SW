@@ -83,4 +83,12 @@ class IModel
      * @return false Light is off
      */
     virtual bool getLightState() const = 0;
+
+    /**
+     * @brief Query if the 'Artificial Light' functionality is activated or disabled
+     *
+     * @return true  Artificial Light functionality activated
+     * @return false Artificial Light functionality not active
+     */
+    virtual bool getArtificialLightOptionEnabled() const;
 };

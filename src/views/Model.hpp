@@ -23,6 +23,7 @@ class Model : public virtual IModel
     void requestDoorClose() override;
     void orderEmergencyStop() override;
     bool getLightState() const override;
+    bool getArtificialLightOptionEnabled() const override;
 
   private:
     ITimeKeeper *m_timeKeeper;

@@ -146,6 +146,14 @@ class ITimeKeeper
      */
     virtual bool getArtificialLightState() = 0;
 
+    /**
+     * @brief Query if the 'Artificial Light' functionality is activated or disabled
+     *
+     * @return true  Artificial Light functionality activated
+     * @return false Artificial Light functionality not active
+     */
+    virtual bool getArtificialLightOptionEnabled() const;
+
     // --- 'dynamic' stuff
 
     /**

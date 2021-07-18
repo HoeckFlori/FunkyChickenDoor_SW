@@ -23,5 +23,6 @@ class ButtonLightBulb : public ButtonBase, public WidgetBase
 
   private:
     void drawBulb(bool lightOn, int x0, int y0);
+    void drawInActive();
     void lightStateHandling();
 };
