@@ -137,6 +137,11 @@ void Model::requestDoorClose()
     m_doorSteering->closeDoor();
 }
 
+void Model::requestDoorToggling()
+{
+    m_doorSteering->doorToggling();
+}
+
 void Model::orderEmergencyStop()
 {
     m_doorSteering->emergencyStop();
@@ -150,4 +155,16 @@ bool Model::getLightState() const
 bool Model::getArtificialLightOptionEnabled() const
 {
     return m_timeKeeper->getArtificialLightOptionEnabled();
+}
+
+void Model::requestLightToggling()
+{
+    if (m_lightSteering->getLightStatus())
+    {
+        m_lightSteering->switchLightOff();
+    }
+    else
+    {
+        m_lightSteering->switchLightOn();
+    }
 }

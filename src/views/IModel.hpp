@@ -72,6 +72,17 @@ class IModel
     virtual void requestDoorClose() = 0;
 
     /**
+     * @brief Request a door state toggling
+     *
+     * e.G.
+     * downMoving->pause->upMoving
+     * upMoving->pause->downMoving
+     * upState->downMoving
+     * downState->upMoving
+     */
+    virtual void requestDoorToggling() = 0;
+
+    /**
      * @brief Commands an emergency stop for all componenets that perform potentially dangerous interactions (e.g. door movements).
      */
     virtual void orderEmergencyStop() = 0;
@@ -91,4 +102,10 @@ class IModel
      * @return false Artificial Light functionality not active
      */
     virtual bool getArtificialLightOptionEnabled() const;
+
+    /**
+     * @brief Request a light toggling
+     * 
+     */
+    virtual void requestLightToggling() = 0;
 };

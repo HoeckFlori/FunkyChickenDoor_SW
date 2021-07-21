@@ -18,8 +18,10 @@ class DoorSteering : public virtual IDoorSteering, public virtual ITimeKeeperLis
     DoorState getDoorState() const override;
     String getDoorStateHumanReadable() const override;
     void emergencyStop() override;
+    void stopMotor() override;
     void closeDoor() override;
     void openDoor() override;
+    void doorToggling() override;
     uint16_t getTimeoutForDoorMoving() override;
     void setTimeoutForDoorMoving(uint16_t seconds) override;
 

@@ -55,10 +55,10 @@ void ButtonUpDown::doorStateHandling()
         drawUp();
         break;
     case IDoorSteering::DoorState::OPENING:
-        drawDown();
+        drawPause();
         break;
     case IDoorSteering::DoorState::CLOSING:
-        drawUp();
+        drawPause();
         break;
     case IDoorSteering::DoorState::ERROR:
         drawUp();
@@ -99,5 +99,24 @@ void ButtonUpDown::drawDown()
                          m_x0 + (m_buttonSizeX / 2) + 5, m_y0 + 4,
                          m_x0 + (m_buttonSizeX / 2) - 5, m_y0 + 4,
                          m_defaultColorText);
+    // clang-format on
+}
+
+void ButtonUpDown::drawPause()
+{
+    clearButtonArea();
+
+    // clang-format off
+    m_tft->fillRect( m_x0 + (m_buttonSizeX / 2) - 6,
+                     m_y0 + 3,
+                     4,
+                     12,
+                     m_defaultColorText);
+
+    m_tft->fillRect( m_x0 + (m_buttonSizeX / 2) + 2,
+                     m_y0 + 3,
+                     4,
+                     12,
+                     m_defaultColorText);
     // clang-format on
 }

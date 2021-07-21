@@ -23,4 +23,5 @@ class ButtonUpDown : public ButtonBase, public WidgetBase
     void drawInActive();
     void drawUp();
     void drawDown();
+    void drawPause();
 };

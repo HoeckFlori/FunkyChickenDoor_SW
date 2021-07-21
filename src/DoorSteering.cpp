@@ -158,6 +158,12 @@ void DoorSteering::emergencyStop()
     stopMotorActions();
 }
 
+void DoorSteering::stopMotor()
+{
+    m_doorState = DoorState::UNDEFINED;
+    stopMotorActions();
+}
+
 void DoorSteering::closeDoor()
 {
     m_doorState = DoorState::CLOSING;
@@ -170,6 +176,45 @@ void DoorSteering::openDoor()
     m_doorState = DoorState::OPENING;
     startTimeoutHandler();
     activateMotorUp();
+}
+
+void DoorSteering::doorToggling()
+{
+    /*
+     * downMoving->pause
+     * pause->upMoving
+     * upMoving->pause
+     * upState->downMoving
+     * downState->upMoving
+     */
+
+    switch (m_doorState)
+    {
+    case DoorState::UNDEFINED:
+        openDoor();
+        break;
+    case DoorState::ERROR:
+        openDoor();
+        break;
+    case DoorState::OPEN:
+        closeDoor();
+        break;
+    case DoorState::CLOSED:
+        openDoor();
+        break;
+    case DoorState::OPENING:
+        stopMotor();
+        break;
+    case DoorState::CLOSING:
+        stopMotor();
+        break;
+    case DoorState::ERROR_OPENING:
+        closeDoor();
+        break;
+    case DoorState::ERROR_CLOSING:
+        openDoor();
+        break;
+    }
 }
 
 uint16_t DoorSteering::getTimeoutForDoorMoving()

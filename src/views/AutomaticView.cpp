@@ -85,17 +85,15 @@ void AutomaticView::keyEventListener(IKeyEventListener::Event event)
 {
     switch (event)
     {
-    case IKeyEventListener::Event::BUTTON_BACK:
-        m_model->orderEmergencyStop();
-        break;
-    case IKeyEventListener::Event::BUTTON_ENTER:
+    case IKeyEventListener::Event::BUTTON_1:
         m_model->requestModeChange();
         break;
-    case IKeyEventListener::Event::BUTTON_UP:
+    case IKeyEventListener::Event::BUTTON_2:
         break;
-    case IKeyEventListener::Event::BUTTON_DOWN:
+    case IKeyEventListener::Event::BUTTON_3:
         break;
-    case IKeyEventListener::Event::BUTTON_SETTINGS:
+    case IKeyEventListener::Event::BUTTON_4:
+        m_model->orderEmergencyStop();
         break;
     }
 }

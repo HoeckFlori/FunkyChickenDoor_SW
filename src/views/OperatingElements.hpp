@@ -18,10 +18,11 @@ class OperatingElements : public virtual IOperatingElements
   private:
     const int m_defaultDebounceTime = 40; // ms
 
-    Button m_backButton;
-    Button m_enterButton;
-    Button m_upButton;
-    Button m_downButton;
+    // buttons, below the display, numbered from left to right
+    Button m_button1;
+    Button m_button2;
+    Button m_button3;
+    Button m_button4;
 
     IKeyEventListener *m_keyEventListener;
     IEnergySavingPreventor *m_energySavingPreventor;

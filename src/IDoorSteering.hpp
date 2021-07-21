@@ -45,6 +45,12 @@ class IDoorSteering
     virtual void emergencyStop() = 0;
 
     /**
+     * @brief Stop the motor whereever it is still moving around. Results in an undefined state of the door.
+     *
+     */
+    virtual void stopMotor() = 0;
+
+    /**
      * @brief Start door closing process
      *
      */
@@ -55,6 +61,17 @@ class IDoorSteering
      *
      */
     virtual void openDoor() = 0;
+
+    /**
+     * @brief Request a door state toggling
+     *
+     * downMoving->pause
+     * pause->upMoving
+     * upMoving->pause
+     * upState->downMoving
+     * downState->upMoving
+     */
+    virtual void doorToggling() = 0;
 
     /**
      * @brief Get the used timeout for door movements in seconds.

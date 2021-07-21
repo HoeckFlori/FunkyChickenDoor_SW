@@ -21,9 +21,11 @@ class Model : public virtual IModel
     IOperationModeManager::OpMode getMode() const override;
     void requestDoorOpen() override;
     void requestDoorClose() override;
+    void requestDoorToggling() override;
     void orderEmergencyStop() override;
     bool getLightState() const override;
     bool getArtificialLightOptionEnabled() const override;
+    void requestLightToggling() override;
 
   private:
     ITimeKeeper *m_timeKeeper;

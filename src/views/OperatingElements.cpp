@@ -1,29 +1,29 @@
 #include "OperatingElements.hpp"
 
 OperatingElements::OperatingElements(IEnergySavingPreventor *energySavingPreventor)
-    : m_backButton(22 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
-    , m_enterButton(23 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
-    , m_upButton(24 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
-    , m_downButton(25 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    : m_button1(22 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    , m_button2(23 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    , m_button3(24 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
+    , m_button4(25 /*pin*/, m_defaultDebounceTime, true /* puEnable*/, true /*invert*/)
     , m_keyEventListener(nullptr)
     , m_energySavingPreventor(energySavingPreventor)
 {
-    m_backButton.begin();
-    m_enterButton.begin();
-    m_upButton.begin();
-    m_downButton.begin();
+    m_button1.begin();
+    m_button2.begin();
+    m_button3.begin();
+    m_button4.begin();
 }
 
 void OperatingElements::cycle()
 {
-    // --- BUTTON_BACK -------------------------
-    m_backButton.read();
-    if (m_backButton.wasPressed())
+    // --- BUTTON_1 -------------------------
+    m_button1.read();
+    if (m_button1.wasPressed())
     {
-        // Serial.println(F("m_backButton was pressed!"));
+        // Serial.println(F("m_button1 was pressed!"));
         if (m_keyEventListener != nullptr)
         {
-            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_BACK);
+            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_1);
         }
         if (m_energySavingPreventor != nullptr)
         {
@@ -31,14 +31,14 @@ void OperatingElements::cycle()
         }
     }
 
-    // --- BUTTON_ENTER -------------------------
-    m_enterButton.read();
-    if (m_enterButton.wasPressed())
+    // --- BUTTON_2 -------------------------
+    m_button2.read();
+    if (m_button2.wasPressed())
     {
-        // Serial.println(F("m_enterButton was pressed!"));
+        // Serial.println(F("m_button2 was pressed!"));
         if (m_keyEventListener != nullptr)
         {
-            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_ENTER);
+            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_2);
         }
         if (m_energySavingPreventor != nullptr)
         {
@@ -46,14 +46,14 @@ void OperatingElements::cycle()
         }
     }
 
-    // --- BUTTON_UP -------------------------
-    m_upButton.read();
-    if (m_upButton.wasPressed())
+    // --- BUTTON_3 -------------------------
+    m_button3.read();
+    if (m_button3.wasPressed())
     {
-        // Serial.println(F("m_upButton was pressed!"));
+        // Serial.println(F("m_button3 was pressed!"));
         if (m_keyEventListener != nullptr)
         {
-            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_UP);
+            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_3);
         }
         if (m_energySavingPreventor != nullptr)
         {
@@ -61,14 +61,14 @@ void OperatingElements::cycle()
         }
     }
 
-    // --- BUTTON_DOWN -------------------------
-    m_downButton.read();
-    if (m_downButton.wasPressed())
+    // --- BUTTON_4 -------------------------
+    m_button4.read();
+    if (m_button4.wasPressed())
     {
-        // Serial.println(F("m_downButton was pressed!"));
+        // Serial.println(F("m_button4 was pressed!"));
         if (m_keyEventListener != nullptr)
         {
-            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_DOWN);
+            m_keyEventListener->keyEventListener(IKeyEventListener::Event::BUTTON_4);
         }
         if (m_energySavingPreventor != nullptr)
         {
