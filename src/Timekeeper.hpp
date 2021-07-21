@@ -41,6 +41,7 @@ class Timekeeper : public virtual ITimeKeeper
     Dusk2Dawn *m_dusk2Dawn;
     IDataStorage *m_dataStorage;
     IOperationModeManager *m_operationModeManager;
+    IOperationModeManager::OpMode m_previousOperationMode; ///< needed to check changes
 
     DateTime m_lastQueriedTime;
     DateTime m_todaysSunrise;
@@ -65,6 +66,14 @@ class Timekeeper : public virtual ITimeKeeper
         bool firedDoorClosing;
         bool firedArtificialLightOn;
         bool firedArtificialLightOff;
+
+        void clearHistory()
+        {
+            firedDoorOpening = false;
+            firedDoorClosing = false;
+            firedArtificialLightOn = false;
+            firedArtificialLightOff = false;
+        }
     } m_eventHistory;
 
     static const int c_listenerArraySize = 10;

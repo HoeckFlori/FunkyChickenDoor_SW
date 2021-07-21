@@ -4,6 +4,7 @@
 Timekeeper::Timekeeper(IDataStorage *dataStorage, IOperationModeManager *operationModeManager)
     : m_dataStorage(dataStorage)
     , m_operationModeManager(operationModeManager)
+    , m_previousOperationMode(operationModeManager->getMode())
     , m_lastQueriedTime(DateTime())
     , m_todaysSunrise(DateTime())
     , m_todaysSunset(DateTime())
@@ -252,6 +253,12 @@ void Timekeeper::cycle()
 {
     // Query time from RTC
     m_lastQueriedTime = m_myClock.now();
+
+    // check if mode changed during last call
+    if (m_previousOperationMode != m_operationModeManager->getMode())
+    {
+        m_eventHistory.clearHistory();
+    }
 
     // do all the automatic stuff, if the OpMode allows it
     if (m_operationModeManager->getMode() == IOperationModeManager::OpMode::AUTOMATIC)
