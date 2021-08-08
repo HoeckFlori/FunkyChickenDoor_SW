@@ -8,6 +8,7 @@ Model::Model(ITimeKeeper *timekeeper, IDoorSteering *doorSteering, IOperationMod
     , m_eventListener(nullptr)
     , m_doorState(IDoorSteering::DoorState::UNDEFINED)
     , m_lightState(false)
+    , m_morningLightState(false)
 {
 }
 
@@ -81,6 +82,20 @@ void Model::cycle()
         {
             m_lightState = lightState;
             // inform listener, if available
+            if (m_eventListener != nullptr)
+            {
+                m_eventListener->modelListener(IModelEventListener::Event::LIGHT_STATE_CHANGED);
+            }
+        }
+    }
+
+    // ---Morning/Artificial Light stuff ---
+    if (m_timeKeeper)
+    {
+        bool enabled = m_timeKeeper->getArtificialLightOptionEnabled();
+        if (m_morningLightState != enabled)
+        {
+            m_morningLightState = enabled;
             if (m_eventListener != nullptr)
             {
                 m_eventListener->modelListener(IModelEventListener::Event::LIGHT_STATE_CHANGED);

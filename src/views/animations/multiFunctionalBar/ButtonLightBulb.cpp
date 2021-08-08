@@ -83,13 +83,17 @@ void ButtonLightBulb::lightStateHandling()
         {
         case IOperationModeManager::OpMode::AUTOMATIC:
             clearButtonArea();
+            drawBulb(m_model->getLightState(), 0, 0);
+            m_tft->textSize(1);
             if (m_model->getArtificialLightOptionEnabled() == true)
             {
-                drawBulb(m_model->getLightState(), 0, 0);
+                m_tft->setCursor(m_x0 + (m_buttonSizeX / 2) - 5, m_y0 + 8);
+                m_tft->print(F("auto"));
             }
             else
             {
-                drawInActive();
+                m_tft->setCursor(m_x0 + (m_buttonSizeX / 2) - 2, m_y0 + 8);
+                m_tft->print(F("off"));
             }
             break;
         case IOperationModeManager::OpMode::MANUAL:

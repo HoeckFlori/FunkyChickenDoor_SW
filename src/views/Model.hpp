@@ -42,4 +42,5 @@ class Model : public virtual IModel
     DateTime m_closingTime;
     IDoorSteering::DoorState m_doorState;
     bool m_lightState;
+    bool m_morningLightState;
 };
