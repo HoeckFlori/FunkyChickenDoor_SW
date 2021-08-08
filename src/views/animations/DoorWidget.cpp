@@ -155,34 +155,34 @@ void DoorWidget::drawError(bool withArrowUp, bool withArrowDown)
     auto yCenter = m_y0 + m_outerHeight / 2;
 
     // Warning sign
-    m_tft->fillTriangle(xCenter, yCenter - 20,      // top
-                        xCenter - 17, yCenter + 10, // left
-                        xCenter + 17, yCenter + 10, // right
-                        ST7735_RED);
     m_tft->fillTriangle(xCenter, yCenter - 17,     // top
-                        xCenter - 14, yCenter + 8, // left
-                        xCenter + 14, yCenter + 8, // right
+                        xCenter - 15, yCenter + 9, // left
+                        xCenter + 15, yCenter + 9, // right
+                        ST7735_RED);
+    m_tft->fillTriangle(xCenter, yCenter - 14,     // top
+                        xCenter - 12, yCenter + 7, // left
+                        xCenter + 12, yCenter + 7, // right
                         ST7735_YELLOW);
 
     // Exclamation mark
-    m_tft->fillRect(xCenter - 1, yCenter - 10, 3, 12, ST7735_RED);
-    m_tft->fillRect(xCenter - 1, yCenter + 4, 3, 3, ST7735_RED);
+    m_tft->fillRect(xCenter - 1, yCenter - 9, 3, 10, ST7735_RED);
+    m_tft->fillRect(xCenter - 1, yCenter + 2, 3, 3, ST7735_RED);
 
     // Arrow to the upside
     if (withArrowUp)
     {
-        m_tft->fillTriangle(xCenter, yCenter - 36,     // top
-                            xCenter - 8, yCenter - 28, // left
-                            xCenter + 8, yCenter - 28, // right
+        m_tft->fillTriangle(xCenter, yCenter - 29,     // top
+                            xCenter - 6, yCenter - 21, // left
+                            xCenter + 6, yCenter - 21, // right
                             ST7735_RED);
     }
 
     // Arrow to the downside
     if (withArrowDown)
     {
-        m_tft->fillTriangle(xCenter, yCenter + 36,     // top
-                            xCenter - 8, yCenter + 28, // left
-                            xCenter + 8, yCenter + 28, // right
+        m_tft->fillTriangle(xCenter, yCenter + 29,     // top
+                            xCenter - 6, yCenter + 21, // left
+                            xCenter + 6, yCenter + 21, // right
                             ST7735_RED);
     }
 }
