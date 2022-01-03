@@ -1,27 +1,91 @@
 # Chickendoor
-TODO(FHk)
-
-## The idea
-TODO(FHk)
+The idea behind the project is to provide a chicken-house-door-controller with simple and easy available components. Opening and closing times (plus additional features) are based on local times for sunrise and sunset. The software is based on the Arduino framework and is written 100% in 'bare-bone' C++.\
+If you can need the software, use it for your private stuff. Commercial use *without agreement* is explicitly forbidden.
+In case of problems, errors or suggestions for improvement, please send me an issue.
 
 ## Features
-- TODO(FHk)
+- TFT based user interface.
+- Battery buffered RTC (real time clock).
+- Calculation for sunrise and sunset for your exact position.
+- Advanced door steering with timeout handling to prevent mechanical damage.
+- 'Not open before' option to keep the door closed until a certain time.\
+  (Can keep the peace with the neighborhood if you have a very ambitious and noisy rooster)
+- 'Closing delay' option let you set the time after sunset when the door has to get closed. 
+- 'Artificial morning light' option to 'lengthen' the day in winter. To keep your chicks working.
+- Automatic energy saving mode to reduce power consumption of the electronic (0,9 W -> 0,4 W )\
+  (Makes it interesting for 'stand alone solutions' that are supplied with power via a small solar system, for example)
+- Choose between manual or automatic operation mode.
+- Serial command line interface for settings access, manual steering, information, ...
 
 ## Hardware
+"Insert Picture here!!!!"\
+You can find mor information about the hardware in this repo:\
+https://github.com/HoeckFlori/FunkyChickenDoor_HW
 
-### The 'flying assembly'
-| What | Link to further information and (possible) vendors | Detailed information | Realistic price (from a well-known auction platform with longer shipping time), mid 2020
-|---|---| ---------| ---|
-| MCU Board 'Mega 2560 PRO (Embed) CH340G/ATmega2560-16AU' | [https://robotdyn.com/mega-2560-pro-embed-ch340g-atmega2560-16au.html](https://robotdyn.com/mega-2560-pro-embed-ch340g-atmega2560-16au.html) |  <ul><li>[Dimensional drawing](https://robotdyn.com/pub/media/0G-00005641==MEGA-PRO-CH340GATmega2560/DOCS/DIM==0G-00005641==MEGA-PRO-CH340GATmega2560.pdf)</li><li>[Input and Output I/O diagram](https://robotdyn.com/pub/media/0G-00005641==MEGA-PRO-CH340GATmega2560/DOCS/PINOUT==0G-00005641==MEGA-PRO-CH340GATmega2560.pdf)</li><li>[Schematic](https://robotdyn.com/pub/media/0G-00005641==MEGA-PRO-CH340GATmega2560/DOCS/Schematic==0G-00005641==MEGA-PRO-CH340GATmega2560.pdf)</li></ul> | ~ 7,- €
-| RTC DS3231 I2C AT24C32 Real Time Clock | https://www.makershop.de/module/rtc/rtc-ds3231-i2c/ | [Interface DS3231 Precision RTC Module with Arduino](https://lastminuteengineers.com/ds3231-rtc-arduino-tutorial/) | ~ 3,- €
-| 1,8 Zoll TFT LCD Display Modul 128×160 | https://www.makershop.de/display/lcd-tft/18-zoll-tft-lcd/ | [1.8" Serial SPI 128x160 Color TFT LCD Module Display](https://www.openhacks.com/uploadsproductos/tutorial_display_tft.pdf), [https://learn.adafruit.com/1-8-tft-display/breakout-pinouts](https://learn.adafruit.com/1-8-tft-display/breakout-pinouts), [Arduino Tutorial: Making the KMR-1.8 SPI (TFT Display) work!](https://www.mschoeffler.de/2019/06/20/arduino-tutorial-making-the-kmr-1-8-spi-tft-display-work/) | ~ 5,-€
+
+## Command line interface
+The command line interface (CLI) allows you to get/set all possible settings, do some kind of manual operation, show current status values, ... and a lot of other stuff. You can access the serial console with the settings 115200/N/1.\
+When you connect to the electronic do you get this screen:
+```
+Hello to the Chicken door terminal
+Type 'help' to list commands.
+
+~
+```
+This is the starting point for everything.
+
+The most important command is *help*. When you enter *help* you get the overview of commands as listen below.
+```
+ Available commands for the Chicken Door Terminal:
+ -> 'help'                 Show this help context
+ -> 'memory'               Show available RAM in bytes
+ -> 'reset'                Initiate a softreset
+ -> 'factoryReset'         Do a factory reset. Attention, all settings get lost!
+ -> 'changeOpMode'         Change the door OperationMode
+ -> 'getTime'              Show actual system time
+ -> 'setTime'              Set new time
+ -> 'setDaylightSaving'    Active the daylight option (summer time)
+ -> 'enableNotOpenBefore'  Enable the 'do not open before option x:xx o'clock' option
+ -> 'disableNotOpenBefore' Disable the 'do not open before ...' option
+ -> 'enableClosingDelay'   Enable the 'closing delay in minutes after sunset' option
+ -> 'disableClosingDelay'  Disable the 'closing delay in minutes after sunset' option
+ -> 'enableMorningLight'   Enable the 'artifical morning light' option for the wintertime
+ -> 'disableMorningLight'  Disable the 'artifical morning light' option
+ -> 'setPosition'          Set geographical position of your chicken house
+ -> 'openDoor'             Open door manually  (changes also the operation mode)
+ -> 'closeDoor'            Close door manually (-"-)
+ -> 'setDoorTimeout'       Set the timeout for the door movement in seconds (-"-)
+ -> 'turnLightOn'          Switch on the (artificial/indoor) light manually
+ -> 'turnLightOff'         Switch off ...      (-"-)
+ -> 'showInfo'             Show all relevant information (dynamic/static) of the system
+```
+Some command can be executed directly, others need may some more arguments. If you need arguments, you get a hint from each command when something is missing. Example: entered *setTime* command without arguments, results in this output.
+```
+~setTime
+-> Usage: 'setTime 28.04.2020 02:30'
+Unknown command
+~
+```
+The rest should be self-explanatory.
+
+## Usage
+!!! Add picture of manual and auto mode !!!
+
+## Getting started development
+!!! write something about the VSCode !!!
+
+For the 
+
 ## Software
 TODO(FHk) write some documentation and getting started tutorial
 
-## FAQ
+## Outlook
+- A settings menu (on the TFT) is to be implemented. Currently just possible via the console.
+- A proper PCB is to be engineered.
 
+## FAQ
+TODO(FHk)
 
 ## Comments, Requests, Bugs & Contributions
-
 All are welcome.
 Please file an Issue or Pull Request at https://github.com/HoeckFlori/Chickendoor

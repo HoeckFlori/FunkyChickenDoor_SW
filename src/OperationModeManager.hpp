@@ -11,7 +11,7 @@ class OperationModeManager : public virtual IOperationModeManager
     virtual ~OperationModeManager() = default;
 
     // IOperationModeManager
-    void cycle() override;
+    // void cycle() override;
     IOperationModeManager::OpMode getMode() const override;
     void changeMode(OpMode newMode) override;
     String getOpModeHumanReadable() const override;

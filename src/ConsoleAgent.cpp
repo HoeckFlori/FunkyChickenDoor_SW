@@ -68,7 +68,7 @@ int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
     dev->println(F(" -> 'memory'               Show available RAM in bytes"));
     dev->println(F(" -> 'reset'                Initiate a softreset"));
     dev->println(F(" -> 'factoryReset'         Do a factory reset. Attention, all settings get lost!"));
-    dev->println(F(" -> 'changeOpMode          Change the door OperationMode"));
+    dev->println(F(" -> 'changeOpMode'         Change the door OperationMode"));
     dev->println(F(" -> 'getTime'              Show actual system time"));
     dev->println(F(" -> 'setTime'              Set new time"));
     dev->println(F(" -> 'setDaylightSaving'    Active the daylight option (summer time)"));
