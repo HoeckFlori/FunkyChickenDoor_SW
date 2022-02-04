@@ -243,7 +243,7 @@ void DoorSteering::eventTimeKeeperListener(ITimeKeeperListener::Event event)
 {
     if (event == ITimeKeeperListener::Event::openDoor)
     {
-        if ((m_doorState != DoorState::OPEN) || (m_doorState != DoorState::OPENING))
+        if (!((m_doorState == DoorState::OPEN) || (m_doorState == DoorState::OPENING)))
         { // check ongoing actions to avoid resets
             stopMotorActions();
             openDoor();
@@ -251,7 +251,7 @@ void DoorSteering::eventTimeKeeperListener(ITimeKeeperListener::Event event)
     }
     else if (event == ITimeKeeperListener::Event::closeDoor)
     {
-        if ((m_doorState != DoorState::CLOSED) || (m_doorState != DoorState::CLOSING))
+        if (!((m_doorState == DoorState::CLOSED) || (m_doorState == DoorState::CLOSING)))
         { // check ongoing actions to avoid resets
             stopMotorActions();
             closeDoor();

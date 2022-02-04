@@ -14,24 +14,6 @@ OperationModeManager::OperationModeManager(IDataStorage *dataStorageAccess, IDoo
     }
 }
 
-// void OperationModeManager::cycle()
-// {
-//     switch (m_mode)
-//     {
-//     case OpMode::AUTOMATIC:
-//         /* code */
-//         break;
-
-//     case OpMode::MANUAL:
-//         /* code */
-//         break;
-
-//     case OpMode::UNDEFINED:
-//         /* code */
-//         break;
-//     }
-// }
-
 IOperationModeManager::OpMode OperationModeManager::getMode() const
 {
     return m_mode;
