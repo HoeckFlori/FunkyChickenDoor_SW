@@ -55,7 +55,7 @@ void ConsoleAgent::cycle()
 // CLI_COMMAND(connectFunction)
 int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 {
-    dev->println(F("\nHello to the Chicken door terminal"));
+    dev->println(F("\nHello to the FunkyChickenDoor terminal"));
     dev->println(F("Type 'help' to list commands."));
     dev->println();
     return 0; // no error
@@ -63,7 +63,7 @@ int ConsoleAgent::connectFunction(CLIClient *dev, int argc, char **argv)
 
 int ConsoleAgent::help(CLIClient *dev, int argc, char **argv)
 {
-    dev->println(F(" Available commands for the Chicken Door Terminal:"));
+    dev->println(F(" Available commands for the FunkyChickenDoor terminal:"));
     dev->println(F(" -> 'help'                 Show this help context"));
     dev->println(F(" -> 'memory'               Show available RAM in bytes"));
     dev->println(F(" -> 'reset'                Initiate a softreset"));

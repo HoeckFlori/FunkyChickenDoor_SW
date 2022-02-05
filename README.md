@@ -27,7 +27,7 @@ https://github.com/HoeckFlori/FunkyChickenDoor_HW
 The command line interface (CLI) allows you to get/set all possible settings, do some kind of manual operation, show current status values, ... and a lot of other stuff. You can access the serial console with the settings 115200/N/1.\
 When you connect to the electronic do you get this screen:
 ```
-Hello to the Chicken door terminal
+Hello to the FunkyChickenDoor terminal
 Type 'help' to list commands.
 
 ~
@@ -36,7 +36,7 @@ This is the starting point for everything.
 
 The most important command is *help*. When you enter *help* you get the overview of commands as listen below.
 ```
- Available commands for the Chicken Door Terminal:
+ Available commands for the FunkyChickenDoor terminal::
  -> 'help'                 Show this help context
  -> 'memory'               Show available RAM in bytes
  -> 'reset'                Initiate a softreset
@@ -69,22 +69,20 @@ Unknown command
 The rest should be self-explanatory.
 
 ## Usage
-!!! Add picture of manual and auto mode !!!
+todo(FHk) !!! Add picture of manual and auto mode !!!
 
 ## Getting started development
-!!! write something about the VSCode !!!
-
-For the 
+todo(FHk) !!! write something about the VSCode !!!
 
 ## Software
-TODO(FHk) write some documentation and getting started tutorial
+todo(FHk) write some documentation and getting started tutorial
 
 ## Outlook
 - A settings menu (on the TFT) is to be implemented. Currently just possible via the console.
 - A proper PCB is to be engineered.
 
 ## FAQ
-TODO(FHk)
+No questions yet.
 
 ## Comments, Requests, Bugs & Contributions
 All are welcome.
