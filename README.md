@@ -1,6 +1,6 @@
 # Chickendoor
 The idea behind the project is to provide a chicken-house-door-controller with simple and easy available components. Opening and closing times (plus additional features) are based on local times for sunrise and sunset. The software is based on the Arduino framework and is written 100% in 'bare-bone' C++.\
-If you can need the software, use it for your private stuff. Commercial use *without agreement* is explicitly forbidden.
+If you can need the software, use it for your private stuff. For commercial use we need to have a talk first.
 In case of problems, errors or suggestions for improvement, please send me an issue.
 
 ## Features
@@ -18,10 +18,33 @@ In case of problems, errors or suggestions for improvement, please send me an is
 - Serial command line interface for settings access, manual steering, information, ...
 
 ## Hardware
-"Insert Picture here!!!!"\
+![hardware build in](./docs/pictures/IMG_20220514_101940871.jpg)\
 You can find mor information about the hardware in this repo:\
 https://github.com/HoeckFlori/FunkyChickenDoor_HW
 
+## General usage
+The device can be used either in __manual mode__ or __automatic mode__. The mode can be adjusted with the left mode-button.
+
+### Manual mode
+Here you can control the light and door control manually. The screen shows you some basic information. The focus is on manual control of the door and the light.
+
+![Manual Mode](./docs/pictures/ModeManual.JPG)
+
+Info: Pictures shows the door control in error state. It wasn't possible to open the door within the adjusted timeout. Normally the door status (open - moving up/down - closed) is shown here.
+
+### Automatic mode
+The default mode the whole project is intended for. The screen shows you the current date and time. The adjusted daylight saving setting (wintertime or summertime). The - for your location - calculated sunrise and sunset. Above and below the door state is shown the opening and closing time for the door. The open and closing time depends on the settings.  
+The only thing you can 'control' here is a emergency-stop for the door control in case of a problem during moving.
+
+![Automatic Mode](./docs/pictures/ModeAutomatic.JPG)
+
+### Things you need to do for initial commissioning
+To use the device you have to adjust following settings first.
+- _setTime_ - For time and date.
+- _setDaylightSaving_ - Very important! Otherwise you may have an one hour offset.
+- _setPosition_ - The geographical position for the exact sunrise/sunset calculation.
+
+See the next chapter on how to do this.
 
 ## Command line interface
 The command line interface (CLI) allows you to get/set all possible settings, do some kind of manual operation, show current status values, ... and a lot of other stuff. You can access the serial console with the settings 115200/N/1.\
@@ -68,22 +91,19 @@ Unknown command
 ```
 The rest should be self-explanatory.
 
-## Usage
-todo(FHk) !!! Add picture of manual and auto mode !!!
-
 ## Getting started development
-todo(FHk) !!! write something about the VSCode !!!
+Install _VSCode_. Add the _PlatformIO IDE_ plug-in. Open the project. Get started. 
 
-## Software
-todo(FHk) write some documentation and getting started tutorial
 
 ## Outlook
 - A settings menu (on the TFT) is to be implemented. Currently just possible via the console.
-- A proper PCB is to be engineered.
 
 ## FAQ
 No questions yet.
 
 ## Comments, Requests, Bugs & Contributions
-All are welcome.
+All are welcome.\
 Please file an Issue or Pull Request at https://github.com/HoeckFlori/Chickendoor
+
+## The staff
+![The workforce](./docs/pictures/IMG_20220605_124124914_HDR.jpg)
